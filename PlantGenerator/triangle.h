@@ -1,5 +1,5 @@
 #pragma once
-/*
+
 #include "dxutils.h"
 
 struct SimpleVertex
@@ -14,4 +14,4 @@ public:
 
 protected:
 	ID3D11Buffer*           g_pVertexBuffer = nullptr;
-};*/
+};

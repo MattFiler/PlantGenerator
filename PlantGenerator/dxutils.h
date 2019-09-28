@@ -1,13 +1,12 @@
 #pragma once
 
-#include <d3d11.h>
+#include "dxshared.h"
 #include <d3dcompiler.h>
-#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "D3DCompiler.lib")
 
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 
-#include "dxshared.h"
 #include "dxerr.h"
 
 /* Handle DX HRESULT errors nicely in debug */
@@ -20,6 +19,39 @@
 		#define HR(x) x;
 	#endif
 #endif
+
+class Utilities
+{
+public:
+	/* Try and compile a shader from file (function created by Microsoft originally) */
+	HRESULT CompileShaderFromFile(LPCWSTR szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
+	{
+		//Request d3d debugging if in debug
+		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+#ifdef _DEBUG
+		dwShaderFlags |= D3DCOMPILE_DEBUG;
+		dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
+		//Try and compile shader, handle errors
+		ID3DBlob* pErrorBlob = nullptr;
+		HRESULT hr = S_OK;
+		hr = D3DCompileFromFile(szFileName, nullptr, nullptr, szEntryPoint, szShaderModel,
+			dwShaderFlags, 0, ppBlobOut, &pErrorBlob);
+		if (FAILED(hr))
+		{
+			if (pErrorBlob)
+			{
+				OutputDebugStringA(reinterpret_cast<const char*>(pErrorBlob->GetBufferPointer()));
+				pErrorBlob->Release();
+			}
+			return hr;
+		}
+		if (pErrorBlob) pErrorBlob->Release();
+
+		return S_OK;
+	}
+};
 
 namespace Memory 
 {
@@ -52,37 +84,4 @@ namespace Memory
 			t = nullptr;
 		}
 	}
-}
-
-class Utilities
-{
-public:
-	/* Try and compile a shader from file (function created by Microsoft originally) */
-	static HRESULT CompileShaderFromFile(LPCWSTR szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
-	{
-		//Request d3d debugging if in debug
-		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-#ifdef _DEBUG
-		dwShaderFlags |= D3DCOMPILE_DEBUG;
-		dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
-#endif
-
-		//Try and compile shader, handle errors
-		ID3DBlob* pErrorBlob = nullptr;
-		HRESULT hr = S_OK;
-		hr = D3DCompileFromFile(szFileName, nullptr, nullptr, szEntryPoint, szShaderModel,
-			dwShaderFlags, 0, ppBlobOut, &pErrorBlob);
-		if (FAILED(hr))
-		{
-			if (pErrorBlob)
-			{
-				OutputDebugStringA(reinterpret_cast<const char*>(pErrorBlob->GetBufferPointer()));
-				pErrorBlob->Release();
-			}
-			return hr;
-		}
-		if (pErrorBlob) pErrorBlob->Release();
-
-		return S_OK;
-	}
-}
+};

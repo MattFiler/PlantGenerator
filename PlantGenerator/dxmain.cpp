@@ -217,13 +217,15 @@ bool dxmain::InitDirectX()
 	//Bind the viewport
 	m_pImmediateContext->RSSetViewports(1, &m_viewport);
 
+	
 	//Share out the device and device context
 	dxshared::SetDevice(m_pDevice);
 	dxshared::SetDeviceContext(m_pImmediateContext);
-
+	
 	//Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
-	result = Utilities::CompileShaderFromFile(L"Tutorial02.fx", "VS", "vs_4_0", &pVSBlob);
+	Utilities dxutils = Utilities();
+	result = dxutils.CompileShaderFromFile(L"triangle.fx", "VS", "vs_4_0", &pVSBlob);
 	if (FAILED(result))
 	{
 		OutputDebugString("The FX file cannot be compiled!!");
@@ -259,7 +261,7 @@ bool dxmain::InitDirectX()
 
 	//Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-	result = Utilities::CompileShaderFromFile(L"Tutorial02.fx", "PS", "ps_4_0", &pPSBlob);
+	result = dxutils.CompileShaderFromFile(L"triangle.fx", "PS", "ps_4_0", &pPSBlob);
 	if (FAILED(result))
 	{
 		OutputDebugString("The FX file cannot be compiled!!");
@@ -276,7 +278,7 @@ bool dxmain::InitDirectX()
 
 	//Set topology for rendering
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	
 	return true;
 }
 
