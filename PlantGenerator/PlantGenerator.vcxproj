@@ -23,6 +23,7 @@
     <ClCompile Include="dxmain.cpp" />
     <ClCompile Include="dxshared.cpp" />
     <ClCompile Include="dxutils.cpp" />
+    <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +31,8 @@
     <ClInclude Include="dxmain.h" />
     <ClInclude Include="dxshared.h" />
     <ClInclude Include="dxutils.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="triangle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

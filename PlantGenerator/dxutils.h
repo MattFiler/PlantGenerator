@@ -7,7 +7,7 @@
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 
-#include "dxshared.h";
+#include "dxshared.h"
 #include "dxerr.h"
 
 /* Handle DX HRESULT errors nicely in debug */
@@ -54,10 +54,11 @@ namespace Memory
 	}
 }
 
-namespace Utilities
+class Utilities
 {
+public:
 	/* Try and compile a shader from file (function created by Microsoft originally) */
-	HRESULT CompileShaderFromFile(WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
+	static HRESULT CompileShaderFromFile(LPCWSTR szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut)
 	{
 		//Request d3d debugging if in debug
 		DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
