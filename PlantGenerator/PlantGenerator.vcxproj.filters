@@ -21,9 +21,15 @@
     <ClCompile Include="dxmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dxutils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxmain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dxutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
