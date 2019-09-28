@@ -38,26 +38,10 @@ dxmain::~dxmain()
 	{
 		m_pImmediateContext->ClearState();
 	}
-	if (m_pRenderTargetView) 
-	{
-		m_pRenderTargetView->Release();
-		m_pRenderTargetView = nullptr;
-	}
-	if (m_pSwapChain)
-	{
-		m_pSwapChain->Release();
-		m_pSwapChain = nullptr;
-	}
-	if (m_pImmediateContext)
-	{
-		m_pImmediateContext->Release();
-		m_pImmediateContext = nullptr;
-	}
-	if (m_pDevice)
-	{
-		m_pDevice->Release();
-		m_pDevice = nullptr;
-	}
+	Memory::SafeRelease(m_pRenderTargetView);
+	Memory::SafeRelease(m_pSwapChain);
+	Memory::SafeRelease(m_pImmediateContext);
+	Memory::SafeRelease(m_pDevice);
 }
 
 /* Keep an eye on Windows messages, and call Update/Render if we aren't told to exit */
@@ -214,6 +198,7 @@ bool dxmain::InitDirectX()
 	ID3D11Texture2D* m_pBackBufferTex = NULL;
 	m_pSwapChain->GetBuffer(NULL, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&m_pBackBufferTex));
 	m_pDevice->CreateRenderTargetView(m_pBackBufferTex, nullptr, &m_pRenderTargetView);
+	Memory::SafeRelease(m_pBackBufferTex);
 
 	//Bind the render target view
 	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr); //no depth stencil view (yet)
