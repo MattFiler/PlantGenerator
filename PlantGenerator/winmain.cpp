@@ -3,15 +3,20 @@
 #include <windows.h>
 #include "dxmain.h"
 
+#include "triangle.h"
+
 class TestApp : public dxmain
 {
 public:
 	TestApp(HINSTANCE hInstance);
-	~TestApp() = default;
+	~TestApp();
 
 	bool Init() override;
 	bool Update(float dt) override;
 	void Render(float dt) override;
+
+private:
+	Triangle a_triangle = Triangle();
 };
 
 TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
@@ -19,9 +24,16 @@ TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
 
 }
 
+TestApp::~TestApp() 
+{
+	a_triangle.Release();
+}
+
 bool TestApp::Init()
 {
-	return dxmain::Init();
+	bool initSuccess = dxmain::Init();
+	a_triangle.Create();
+	return initSuccess;
 }
 
 bool TestApp::Update(float dt)
@@ -32,6 +44,8 @@ bool TestApp::Update(float dt)
 void TestApp::Render(float dt)
 {
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
+
+	a_triangle.Render();
 
 	m_pSwapChain->Present(0, 0);
 }

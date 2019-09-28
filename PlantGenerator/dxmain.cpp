@@ -240,6 +240,7 @@ bool dxmain::InitDirectX()
 		pVSBlob->Release();
 		return false;
 	}
+	dxshared::SetVertexShader(m_vertexShader);
 
 	//Define the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -275,6 +276,7 @@ bool dxmain::InitDirectX()
 	{
 		return false;
 	}
+	dxshared::SetPixelShader(m_pixelShader);
 
 	//Set topology for rendering
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

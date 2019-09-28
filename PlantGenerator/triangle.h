@@ -10,8 +10,10 @@ struct SimpleVertex
 class Triangle
 {
 public:
-	void Create();
+	bool Create();
+	bool Release();
+	bool Render();
 
 protected:
-	ID3D11Buffer*           g_pVertexBuffer = nullptr;
+	ID3D11Buffer* g_pVertexBuffer = nullptr;
 };
