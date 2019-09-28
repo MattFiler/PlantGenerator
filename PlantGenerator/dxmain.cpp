@@ -196,8 +196,8 @@ bool dxmain::InitDirectX()
 
 	//Create the render target view
 	ID3D11Texture2D* m_pBackBufferTex = NULL;
-	m_pSwapChain->GetBuffer(NULL, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&m_pBackBufferTex));
-	m_pDevice->CreateRenderTargetView(m_pBackBufferTex, nullptr, &m_pRenderTargetView);
+	HR(m_pSwapChain->GetBuffer(NULL, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&m_pBackBufferTex)));
+	HR(m_pDevice->CreateRenderTargetView(m_pBackBufferTex, nullptr, &m_pRenderTargetView));
 	Memory::SafeRelease(m_pBackBufferTex);
 
 	//Bind the render target view
@@ -213,6 +213,10 @@ bool dxmain::InitDirectX()
 
 	//Bind the viewport
 	m_pImmediateContext->RSSetViewports(1, &m_viewport);
+
+	//Share out the device and device context
+	dxshared::SetDevice(m_pDevice);
+	dxshared::SetDeviceContext(m_pImmediateContext);
 
 	return true;
 }

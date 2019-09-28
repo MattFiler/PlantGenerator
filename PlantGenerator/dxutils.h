@@ -3,6 +3,20 @@
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
 
+#include "dxshared.h";
+#include "dxerr.h"
+
+/* Handle DX HRESULT errors nicely in debug */
+#ifdef _DEBUG
+	#ifndef HR
+		#define HR(x) { HRESULT hr = x; if (FAILED(hr)) { DXTraceW(__FILEW__, __LINE__, hr, L#x, TRUE); } }
+	#endif
+#else
+	#ifndef HR
+		#define HR(x) x;
+	#endif
+#endif
+
 namespace Memory 
 {
 	/* Safely delete a pointer */

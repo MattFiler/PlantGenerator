@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="dxmain.cpp" />
+    <ClCompile Include="dxshared.cpp" />
     <ClCompile Include="dxutils.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dxerr.h" />
     <ClInclude Include="dxmain.h" />
+    <ClInclude Include="dxshared.h" />
     <ClInclude Include="dxutils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
