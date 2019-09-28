@@ -24,6 +24,40 @@ dxmain::dxmain(HINSTANCE hInstance)
 	m_wndStyle = WS_OVERLAPPEDWINDOW; //todo: do we want this style?
 
 	g_pApp = this;
+
+	m_pDevice = nullptr;
+	m_pImmediateContext = nullptr;
+	m_pRenderTargetView = nullptr;
+	m_pSwapChain = nullptr;
+}
+
+/* Release our d3d resources on exit */
+dxmain::~dxmain()
+{
+	if (m_pImmediateContext)
+	{
+		m_pImmediateContext->ClearState();
+	}
+	if (m_pRenderTargetView) 
+	{
+		m_pRenderTargetView->Release();
+		m_pRenderTargetView = nullptr;
+	}
+	if (m_pSwapChain)
+	{
+		m_pSwapChain->Release();
+		m_pSwapChain = nullptr;
+	}
+	if (m_pImmediateContext)
+	{
+		m_pImmediateContext->Release();
+		m_pImmediateContext = nullptr;
+	}
+	if (m_pDevice)
+	{
+		m_pDevice->Release();
+		m_pDevice = nullptr;
+	}
 }
 
 /* Keep an eye on Windows messages, and call Update/Render if we aren't told to exit */
@@ -49,6 +83,12 @@ int dxmain::Run()
 /* Set appropriate properties and then initialise window */
 bool dxmain::Init()
 {
+	return InitWindow() && InitDirectX();
+}
+
+/* Set appropriate properties and then initialise window */
+bool dxmain::InitWindow()
+{
 	//Setup window class
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
@@ -65,7 +105,7 @@ bool dxmain::Init()
 	wcex.lpszMenuName = NULL;
 	wcex.lpszClassName = "dxmain";
 
-	if (!RegisterClassEx(&wcex)) 
+	if (!RegisterClassEx(&wcex))
 	{
 		OutputDebugString("Failed to setup window class in dxmain!!");
 		return false;
@@ -94,6 +134,104 @@ bool dxmain::Init()
 	ShowWindow(m_hAppWnd, SW_SHOW);
 	return true;
 }
+
+/* Set appropriate properties and then initialise d3d to the window */
+bool dxmain::InitDirectX()
+{
+	//Request d3d debugging if in debug
+	UINT createDeviceFlags = 0;
+#if _DEBUG
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+	//Supported driver types (in order of priority)
+	D3D_DRIVER_TYPE driverTypes[] =
+	{
+		D3D_DRIVER_TYPE_HARDWARE,
+		D3D_DRIVER_TYPE_WARP,
+		D3D_DRIVER_TYPE_REFERENCE
+	};
+	UINT numDriverTypes = ARRAYSIZE(driverTypes);
+
+	//Supported d3d feature levels
+	D3D_FEATURE_LEVEL featureLevels[] =
+	{
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_9_3
+	};
+	UINT numFeatureLevels = ARRAYSIZE(featureLevels);
+
+	//Create & further setup swapchain class
+	DXGI_SWAP_CHAIN_DESC swapDesc;
+	ZeroMemory(&swapDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
+
+	//Buffering
+	swapDesc.BufferCount = 1; //Double buffered
+
+	//Buffer size and format
+	swapDesc.BufferDesc.Width = m_clientWidth;
+	swapDesc.BufferDesc.Height = m_clientHeight;
+	swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; //32-bit unsigned normal
+
+	//Target FPS
+	swapDesc.BufferDesc.RefreshRate.Numerator = 60;
+	swapDesc.BufferDesc.RefreshRate.Denominator = 1;
+
+	//Output to our window
+	swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	swapDesc.OutputWindow = m_hAppWnd;
+	swapDesc.Windowed = true; //Start as windowed
+	swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; //Allow alt+enter fullscreen (doesn't resize buffer)
+
+	//Operation
+	swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; //Most efficient
+
+	//Multisampling
+	swapDesc.SampleDesc.Count = 1;
+	swapDesc.SampleDesc.Quality = 0;
+
+	//Try create the d3d device and swap chain
+	HRESULT result;
+	for (int i = 0; i < numDriverTypes; i++) 
+	{
+		result = D3D11CreateDeviceAndSwapChain(NULL, driverTypes[i], NULL, createDeviceFlags, featureLevels, numFeatureLevels, D3D11_SDK_VERSION, &swapDesc, &m_pSwapChain, &m_pDevice, &m_featureLevel, &m_pImmediateContext);
+		if (SUCCEEDED(result)) 
+		{
+			m_driverType = driverTypes[i];
+			break;
+		}
+	}
+
+	if (FAILED(result)) 
+	{
+		OutputDebugString("Failed to create device and/or swap chain!!");
+		return false;
+	}
+
+	//Create the render target view
+	ID3D11Texture2D* m_pBackBufferTex = NULL;
+	m_pSwapChain->GetBuffer(NULL, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&m_pBackBufferTex));
+	m_pDevice->CreateRenderTargetView(m_pBackBufferTex, nullptr, &m_pRenderTargetView);
+
+	//Bind the render target view
+	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr); //no depth stencil view (yet)
+
+	//Create the viewport
+	m_viewport.Width = static_cast<float>(m_clientWidth);
+	m_viewport.Height = static_cast<float>(m_clientHeight);
+	m_viewport.TopLeftX = 0;
+	m_viewport.TopLeftY = 0;
+	m_viewport.MinDepth = 0.0f;
+	m_viewport.MaxDepth = 1.0f;
+
+	//Bind the viewport
+	m_pImmediateContext->RSSetViewports(1, &m_viewport);
+
+	return true;
+}
+
 
 /* Handle windows messages */
 LRESULT dxmain::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
