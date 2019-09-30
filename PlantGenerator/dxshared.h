@@ -19,9 +19,17 @@ public:
 	static void SetPixelShader(ID3D11PixelShader* pixelShader);
 	static ID3D11PixelShader* GetPixelShader();
 
+	static void SetWidth(UINT width);
+	static UINT GetWidth();
+
+	static void SetHeight(UINT height);
+	static UINT GetHeight();
+
 private:
 	static ID3D11Device* m_pDevice;
 	static ID3D11DeviceContext* m_pImmediateContext;
 	static ID3D11VertexShader* m_vertexShader;
 	static ID3D11PixelShader* m_pixelShader;
+	static UINT m_renderWidth;
+	static UINT m_renderHeight;
 };

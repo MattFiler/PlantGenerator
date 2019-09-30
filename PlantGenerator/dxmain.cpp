@@ -217,6 +217,9 @@ bool dxmain::InitDirectX()
 	//Bind the viewport
 	m_pImmediateContext->RSSetViewports(1, &m_viewport);
 
+	//Share out render size (todo: will need to be done on update for resizing)
+	dxshared::SetWidth(m_clientWidth);
+	dxshared::SetHeight(m_clientHeight);
 	
 	//Share out the device and device context
 	dxshared::SetDevice(m_pDevice);
@@ -225,7 +228,7 @@ bool dxmain::InitDirectX()
 	//Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
 	Utilities dxutils = Utilities();
-	result = dxutils.CompileShaderFromFile(L"triangle.fx", "VS", "vs_4_0", &pVSBlob);
+	result = dxutils.CompileShaderFromFile(L"cube.fx", "VS", "vs_4_0", &pVSBlob);
 	if (FAILED(result))
 	{
 		OutputDebugString("The FX file cannot be compiled!!");
@@ -246,6 +249,7 @@ bool dxmain::InitDirectX()
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
@@ -262,7 +266,7 @@ bool dxmain::InitDirectX()
 
 	//Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-	result = dxutils.CompileShaderFromFile(L"triangle.fx", "PS", "ps_4_0", &pPSBlob);
+	result = dxutils.CompileShaderFromFile(L"cube.fx", "PS", "ps_4_0", &pPSBlob);
 	if (FAILED(result))
 	{
 		OutputDebugString("The FX file cannot be compiled!!");

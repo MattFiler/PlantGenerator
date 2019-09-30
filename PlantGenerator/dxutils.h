@@ -8,6 +8,7 @@
 #include <DirectXColors.h>
 
 #include "dxerr.h"
+#include "SimpleVertex.h"
 
 /* Handle DX HRESULT errors nicely in debug */
 #ifdef _DEBUG

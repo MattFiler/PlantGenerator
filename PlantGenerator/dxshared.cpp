@@ -5,6 +5,8 @@ ID3D11Device* dxshared::m_pDevice = nullptr;
 ID3D11DeviceContext* dxshared::m_pImmediateContext = nullptr;
 ID3D11VertexShader* dxshared::m_vertexShader = nullptr;
 ID3D11PixelShader* dxshared::m_pixelShader = nullptr;
+UINT dxshared::m_renderWidth = 0;
+UINT dxshared::m_renderHeight = 0;
 
 /* Set the shared device */
 void dxshared::SetDevice(ID3D11Device * device)
@@ -68,4 +70,36 @@ ID3D11PixelShader * dxshared::GetPixelShader()
 		OutputDebugString("Tried to get pixel shader, but it was null!!");
 	}
 	return m_pixelShader;
+}
+
+/* Set the render width */
+void dxshared::SetWidth(UINT width)
+{
+	m_renderWidth = width;
+}
+
+/* Get the render width */
+UINT dxshared::GetWidth()
+{
+	if (m_renderWidth == 0)
+	{
+		OutputDebugString("Tried to get render width, but it was null!!");
+	}
+	return m_renderWidth;
+}
+
+/* Set the render height */
+void dxshared::SetHeight(UINT height)
+{
+	m_renderHeight = height;
+}
+
+/* Get the render height */
+UINT dxshared::GetHeight()
+{
+	if (m_renderHeight == 0)
+	{
+		OutputDebugString("Tried to get render height, but it was null!!");
+	}
+	return m_renderHeight;
 }

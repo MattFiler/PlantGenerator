@@ -2,12 +2,7 @@
 
 #include "dxutils.h"
 
-struct SimpleVertex
-{
-	DirectX::XMFLOAT3 Pos;  // Position
-};
-
-class Triangle
+class Cube
 {
 public:
 	bool Create();
@@ -16,4 +11,7 @@ public:
 
 protected:
 	ID3D11Buffer* g_pVertexBuffer = nullptr;
+	ID3D11Buffer* g_pIndexBuffer = nullptr;
+	ID3D11Buffer* g_pConstantBuffer = nullptr;
+	ConstantBuffer m_cBufferObj = ConstantBuffer();
 };

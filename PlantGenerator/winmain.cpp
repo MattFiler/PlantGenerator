@@ -3,7 +3,7 @@
 #include <windows.h>
 #include "dxmain.h"
 
-#include "triangle.h"
+#include "Cube.h"
 
 class TestApp : public dxmain
 {
@@ -16,7 +16,7 @@ public:
 	void Render(float dt) override;
 
 private:
-	Triangle a_triangle = Triangle();
+	Cube a_cube = Cube();
 };
 
 TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
@@ -26,13 +26,13 @@ TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
 
 TestApp::~TestApp() 
 {
-	a_triangle.Release();
+	a_cube.Release();
 }
 
 bool TestApp::Init()
 {
 	bool initSuccess = dxmain::Init();
-	a_triangle.Create();
+	a_cube.Create();
 	return initSuccess;
 }
 
@@ -45,7 +45,7 @@ void TestApp::Render(float dt)
 {
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
 
-	a_triangle.Render();
+	a_cube.Render();
 
 	m_pSwapChain->Present(0, 0);
 }
