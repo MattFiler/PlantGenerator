@@ -38,14 +38,15 @@ bool TestApp::Init()
 
 bool TestApp::Update(float dt)
 {
-	return false;
+	a_cube.Update(dt);
+	return true;
 }
 
 void TestApp::Render(float dt)
 {
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
 
-	a_cube.Render();
+	a_cube.Render(dt);
 
 	m_pSwapChain->Present(0, 0);
 }

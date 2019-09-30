@@ -60,8 +60,23 @@ int dxmain::Run()
 		}
 		else
 		{
-			Update(0.0f); //todo - calculate delta time
-			Render(0.0f);
+			//Update our time 
+			static float t = 0.0f;
+			if (m_driverType == D3D_DRIVER_TYPE_REFERENCE)
+			{
+				t += (float)DirectX::XM_PI * 0.0125f;
+			}
+			else
+			{
+				static ULONGLONG timeStart = 0;
+				ULONGLONG timeCur = GetTickCount64();
+				if (timeStart == 0)
+					timeStart = timeCur;
+				t = (timeCur - timeStart) / 1000.0f;
+			}
+
+			Update(t);
+			Render(t);
 		}
 	}
 	return static_cast<int>(msg.wParam);

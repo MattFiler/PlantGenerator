@@ -7,7 +7,8 @@ class Cube
 public:
 	bool Create();
 	bool Release();
-	bool Render();
+	bool Update(float dt);
+	bool Render(float dt);
 
 protected:
 	ID3D11Buffer* g_pVertexBuffer = nullptr;

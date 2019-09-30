@@ -108,8 +108,17 @@ bool Cube::Release()
 	return true;
 }
 
+/* Update the cube */
+bool Cube::Update(float dt)
+{
+	//Animate the cube 
+	m_cBufferObj.mWorld = XMMatrixRotationY(dt);
+
+	return true;
+}
+
 /* Render the cube */
-bool Cube::Render()
+bool Cube::Render(float dt)
 {
 	//Update variables
 	ConstantBuffer cb;
@@ -123,5 +132,6 @@ bool Cube::Render()
 	dxshared::GetDeviceContext()->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	dxshared::GetDeviceContext()->PSSetShader(dxshared::GetPixelShader(), nullptr, 0);
 	dxshared::GetDeviceContext()->DrawIndexed(36, 0, 0);        //36 vertices needed for 12 triangles in a triangle list 
+
 	return true;
 }
