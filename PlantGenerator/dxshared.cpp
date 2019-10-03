@@ -1,12 +1,13 @@
 #include "dxshared.h"
 
-/* Init shared values to null */
+/* Init shared values */
 ID3D11Device* dxshared::m_pDevice = nullptr;
 ID3D11DeviceContext* dxshared::m_pImmediateContext = nullptr;
 ID3D11VertexShader* dxshared::m_vertexShader = nullptr;
 ID3D11PixelShader* dxshared::m_pixelShader = nullptr;
 UINT dxshared::m_renderWidth = 0;
 UINT dxshared::m_renderHeight = 0;
+int dxshared::renderIndexCount = 0;
 
 /* Set the shared device */
 void dxshared::SetDevice(ID3D11Device * device)

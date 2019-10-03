@@ -24,11 +24,10 @@ VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR )
 	return output;
 }
 
-
 //--------------------------------------------------------------------------------------
 // Pixel Shader
 //--------------------------------------------------------------------------------------
-float4 PS( float4 Pos : SV_POSITION ) : SV_Target
+float4 PS( VS_OUTPUT input ) : SV_Target
 {
-    return float4( 1.0f, 1.0f, 0.0f, 1.0f );    // Yellow, with Alpha = 1
+    return input.Color;
 }

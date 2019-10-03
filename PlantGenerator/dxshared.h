@@ -25,6 +25,8 @@ public:
 	static void SetHeight(UINT height);
 	static UINT GetHeight();
 
+	static int renderIndexCount;
+
 private:
 	static ID3D11Device* m_pDevice;
 	static ID3D11DeviceContext* m_pImmediateContext;

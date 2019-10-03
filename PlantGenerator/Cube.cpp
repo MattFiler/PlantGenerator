@@ -131,7 +131,8 @@ bool Cube::Render(float dt)
 	dxshared::GetDeviceContext()->VSSetShader(dxshared::GetVertexShader(), nullptr, 0);
 	dxshared::GetDeviceContext()->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	dxshared::GetDeviceContext()->PSSetShader(dxshared::GetPixelShader(), nullptr, 0);
-	dxshared::GetDeviceContext()->DrawIndexed(36, 0, 0);        //36 vertices needed for 12 triangles in a triangle list 
+	dxshared::GetDeviceContext()->DrawIndexed(36, dxshared::renderIndexCount, 0);
+	dxshared::renderIndexCount += 36;
 
 	return true;
 }
