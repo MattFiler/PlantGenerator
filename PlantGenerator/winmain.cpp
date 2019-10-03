@@ -45,6 +45,7 @@ bool TestApp::Update(float dt)
 void TestApp::Render(float dt)
 {
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
+	dxshared::renderIndexCount = 0;
 
 	a_cube.Render(dt);
 
