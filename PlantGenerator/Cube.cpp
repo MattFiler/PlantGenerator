@@ -17,16 +17,17 @@ bool Cube::Create()
 		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
 		{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
 	};
+	vertexCount = ARRAYSIZE(vertices);
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(SimpleVertex) * 8;
+	bd.ByteWidth = sizeof(SimpleVertex) * vertexCount;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
 	InitData.pSysMem = vertices;
-	HRESULT hr = dxshared::GetDevice()->CreateBuffer(&bd, &InitData, &g_pVertexBuffer);
+	HRESULT hr = dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pVertexBuffer);
 	if (FAILED(hr))
 	{
 		return false;
@@ -35,7 +36,7 @@ bool Cube::Create()
 	//Set vertex buffer 
 	UINT stride = sizeof(SimpleVertex);
 	UINT offset = 0;
-	dxshared::GetDeviceContext()->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
+	dxshared::m_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
 
 	//Create index buffer 
 	WORD indices[] =
@@ -58,12 +59,13 @@ bool Cube::Create()
 		6,4,5,
 		7,4,6,
 	};
+	indexCount = ARRAYSIZE(indices);
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(WORD) * 36;        //36 vertices needed for 12 triangles in a triangle list 
+	bd.ByteWidth = sizeof(WORD) * indexCount;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	InitData.pSysMem = indices;
-	hr = dxshared::GetDevice()->CreateBuffer(&bd, &InitData, &g_pIndexBuffer);
+	hr = dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pIndexBuffer);
 	if (FAILED(hr))
 	{
 		OutputDebugString("Failed to create index buffer!!");
@@ -71,14 +73,14 @@ bool Cube::Create()
 	}
 
 	//Set index buffer 
-	dxshared::GetDeviceContext()->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+	dxshared::m_pImmediateContext->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
 	//Create the constant buffer 
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
-	hr = dxshared::GetDevice()->CreateBuffer(&bd, nullptr, &g_pConstantBuffer);
+	hr = dxshared::m_pDevice->CreateBuffer(&bd, nullptr, &g_pConstantBuffer);
 	if (FAILED(hr))
 	{
 		OutputDebugString("Failed to create the constant buffer!!");
@@ -86,16 +88,7 @@ bool Cube::Create()
 	}
 
 	//Initialize the world matrix 
-	m_cBufferObj.mWorld = XMMatrixIdentity();
-
-	//Initialize the view matrix 
-	XMVECTOR Eye = XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
-	XMVECTOR At = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	m_cBufferObj.mView = XMMatrixLookAtLH(Eye, At, Up);
-
-	//Initialize the projection matrix 
-	m_cBufferObj.mProjection = XMMatrixPerspectiveFovLH(XM_PIDIV2, dxshared::GetWidth() / (FLOAT)dxshared::GetHeight(), 0.01f, 100.0f);
+	mWorld = XMMatrixIdentity();
 	return true;
 }
 
@@ -112,7 +105,7 @@ bool Cube::Release()
 bool Cube::Update(float dt)
 {
 	//Animate the cube 
-	m_cBufferObj.mWorld = XMMatrixRotationY(dt);
+	mWorld = XMMatrixRotationY(dt);
 
 	return true;
 }
@@ -122,17 +115,16 @@ bool Cube::Render(float dt)
 {
 	//Update variables
 	ConstantBuffer cb;
-	cb.mWorld = XMMatrixTranspose(m_cBufferObj.mWorld);
-	cb.mView = XMMatrixTranspose(m_cBufferObj.mView);
-	cb.mProjection = XMMatrixTranspose(m_cBufferObj.mProjection);
-	dxshared::GetDeviceContext()->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	cb.mWorld = XMMatrixTranspose(mWorld);
+	cb.mView = XMMatrixTranspose(dxshared::mView);
+	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
+	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 
 	//Draw
-	dxshared::GetDeviceContext()->VSSetShader(dxshared::GetVertexShader(), nullptr, 0);
-	dxshared::GetDeviceContext()->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-	dxshared::GetDeviceContext()->PSSetShader(dxshared::GetPixelShader(), nullptr, 0);
-	dxshared::GetDeviceContext()->DrawIndexed(36, dxshared::renderIndexCount, 0);
-	dxshared::renderIndexCount += 36;
+	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	dxshared::m_pImmediateContext->DrawIndexed(indexCount, dxshared::renderIndexCount, dxshared::renderVertexCount);
+	dxshared::renderIndexCount += indexCount;
+	dxshared::renderVertexCount += vertexCount;
 
 	return true;
 }

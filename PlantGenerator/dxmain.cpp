@@ -218,8 +218,32 @@ bool dxmain::InitDirectX()
 	HR(m_pDevice->CreateRenderTargetView(m_pBackBufferTex, nullptr, &m_pRenderTargetView));
 	Memory::SafeRelease(m_pBackBufferTex);
 
+	//Create depth stencil texture
+	D3D11_TEXTURE2D_DESC descDepth;
+	ZeroMemory(&descDepth, sizeof(descDepth));
+	descDepth.Width = m_clientWidth;
+	descDepth.Height = m_clientHeight;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	HR(m_pDevice->CreateTexture2D(&descDepth, nullptr, &g_pDepthStencil));
+
+	//Create the depth stencil view
+	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+	ZeroMemory(&descDSV, sizeof(descDSV));
+	descDSV.Format = descDepth.Format;
+	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	descDSV.Texture2D.MipSlice = 0;
+	HR(m_pDevice->CreateDepthStencilView(g_pDepthStencil, &descDSV, &g_pDepthStencilView));
+
 	//Bind the render target view
-	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr); //no depth stencil view (yet)
+	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, g_pDepthStencilView); 
 
 	//Create the viewport
 	m_viewport.Width = static_cast<float>(m_clientWidth);
@@ -233,12 +257,12 @@ bool dxmain::InitDirectX()
 	m_pImmediateContext->RSSetViewports(1, &m_viewport);
 
 	//Share out render size (todo: will need to be done on update for resizing)
-	dxshared::SetWidth(m_clientWidth);
-	dxshared::SetHeight(m_clientHeight);
+	dxshared::m_renderWidth = m_clientWidth;
+	dxshared::m_renderHeight = m_clientHeight;
 	
 	//Share out the device and device context
-	dxshared::SetDevice(m_pDevice);
-	dxshared::SetDeviceContext(m_pImmediateContext);
+	dxshared::m_pDevice = m_pDevice;
+	dxshared::m_pImmediateContext = m_pImmediateContext;
 	
 	//Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
@@ -258,7 +282,6 @@ bool dxmain::InitDirectX()
 		pVSBlob->Release();
 		return false;
 	}
-	dxshared::SetVertexShader(m_vertexShader);
 
 	//Define the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -295,10 +318,18 @@ bool dxmain::InitDirectX()
 	{
 		return false;
 	}
-	dxshared::SetPixelShader(m_pixelShader);
 
 	//Set topology for rendering
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//Initialize the view matrix 
+	DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
+	DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	dxshared::mView = DirectX::XMMatrixLookAtLH(Eye, At, Up);
+
+	//Initialize the projection matrix 
+	dxshared::mProjection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, dxshared::m_renderWidth / (FLOAT)dxshared::m_renderHeight, 0.01f, 100.0f);
 	
 	return true;
 }

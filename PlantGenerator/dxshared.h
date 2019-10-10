@@ -3,35 +3,20 @@
 #include <windows.h>
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
+#include <DirectXMath.h>
 
 struct dxshared 
 {
 public:
-	static void SetDevice(ID3D11Device* device);
-	static ID3D11Device* GetDevice();
-
-	static void SetDeviceContext(ID3D11DeviceContext* deviceContext);
-	static ID3D11DeviceContext* GetDeviceContext();
-
-	static void SetVertexShader(ID3D11VertexShader* vertexShader);
-	static ID3D11VertexShader* GetVertexShader();
-
-	static void SetPixelShader(ID3D11PixelShader* pixelShader);
-	static ID3D11PixelShader* GetPixelShader();
-
-	static void SetWidth(UINT width);
-	static UINT GetWidth();
-
-	static void SetHeight(UINT height);
-	static UINT GetHeight();
-
 	static int renderIndexCount;
+	static int renderVertexCount;
 
-private:
 	static ID3D11Device* m_pDevice;
 	static ID3D11DeviceContext* m_pImmediateContext;
-	static ID3D11VertexShader* m_vertexShader;
-	static ID3D11PixelShader* m_pixelShader;
+
 	static UINT m_renderWidth;
 	static UINT m_renderHeight;
+
+	static DirectX::XMMATRIX mView;
+	static DirectX::XMMATRIX mProjection;
 };

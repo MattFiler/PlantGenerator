@@ -44,11 +44,22 @@ bool TestApp::Update(float dt)
 
 void TestApp::Render(float dt)
 {
+	//Clear back buffer & depth stencil view
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
-	dxshared::renderIndexCount = 0;
+	m_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+	//Reset shared index counts before rendering anything
+	dxshared::renderIndexCount = 0;
+	dxshared::renderVertexCount = 0;
+
+	//Set global shader to use (might change this to object specific down the line (will need to remove the shader compiler code from dxmain to each class))
+	dxshared::m_pImmediateContext->VSSetShader(m_vertexShader, nullptr, 0);
+	dxshared::m_pImmediateContext->PSSetShader(m_pixelShader, nullptr, 0);
+
+	//Render objects
 	a_cube.Render(dt);
 
+	//Present the back buffer to front buffer
 	m_pSwapChain->Present(0, 0);
 }
 
