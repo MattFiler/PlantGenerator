@@ -33,11 +33,6 @@ bool Cube::Create()
 		return false;
 	}
 
-	//Set vertex buffer 
-	UINT stride = sizeof(SimpleVertex);
-	UINT offset = 0;
-	dxshared::m_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
-
 	//Create index buffer 
 	WORD indices[] =
 	{
@@ -72,9 +67,6 @@ bool Cube::Create()
 		return false;
 	}
 
-	//Set index buffer 
-	dxshared::m_pImmediateContext->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
-
 	//Create the constant buffer 
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(ConstantBuffer);
@@ -104,10 +96,28 @@ bool Cube::Release()
 /* Update the cube */
 bool Cube::Update(float dt)
 {
-	//Animate the cube 
-	mWorld = XMMatrixRotationY(dt);
+	//Set the cube's world based on translations (todo: X rotation)
+	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationZ(rotation.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationY(rotation.y);
 
 	return true;
+}
+
+/* Set the cube's position */
+void Cube::SetPosition(Vector3 _pos)
+{
+	position = _pos;
+}
+
+/* Set the cube's rotation */
+void Cube::SetRotation(Vector3 _rot)
+{
+	rotation = _rot;
+}
+
+/* Set the cube's scale */
+void Cube::SetScale(Vector3 _scale)
+{
+	scale = _scale;
 }
 
 /* Render the cube */
@@ -120,11 +130,17 @@ bool Cube::Render(float dt)
 	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 
+	//Set index buffer 
+	dxshared::m_pImmediateContext->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+
+	//Set vertex buffer 
+	UINT stride = sizeof(SimpleVertex);
+	UINT offset = 0;
+	dxshared::m_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
+
 	//Draw
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-	dxshared::m_pImmediateContext->DrawIndexed(indexCount, dxshared::renderIndexCount, dxshared::renderVertexCount);
-	dxshared::renderIndexCount += indexCount;
-	dxshared::renderVertexCount += vertexCount;
+	dxshared::m_pImmediateContext->DrawIndexed(indexCount, 0, 0);
 
 	return true;
 }
