@@ -1,7 +1,5 @@
 #include "Cube.h"
 
-using namespace DirectX;
-
 /* Create the cube */
 bool Cube::Create()
 {
@@ -10,14 +8,35 @@ bool Cube::Create()
 	//Create vertex buffer 
 	SimpleVertex vertices[] =
 	{
-		{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+
+		{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
+
+		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(0.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
+
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(0.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
+
+		{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
 	};
 	vertexCount = ARRAYSIZE(vertices);
 	D3D11_BUFFER_DESC bd;
@@ -29,11 +48,7 @@ bool Cube::Create()
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
 	InitData.pSysMem = vertices;
-	HRESULT hr = dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pVertexBuffer);
-	if (FAILED(hr))
-	{
-		return false;
-	}
+	HR(dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pVertexBuffer));
 
 	//Create index buffer 
 	WORD indices[] =
@@ -41,20 +56,20 @@ bool Cube::Create()
 		3,1,0,
 		2,1,3,
 
-		0,5,4,
-		1,5,0,
-
-		3,4,7,
-		0,4,3,
-
-		1,6,5,
-		2,6,1,
-
-		2,7,6,
-		3,7,2,
-
 		6,4,5,
 		7,4,6,
+
+		11,9,8,
+		10,9,11,
+
+		14,12,13,
+		15,12,14,
+
+		19,17,16,
+		18,17,19,
+
+		22,20,21,
+		23,20,22
 	};
 	indexCount = ARRAYSIZE(indices);
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -62,67 +77,53 @@ bool Cube::Create()
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	InitData.pSysMem = indices;
-	hr = dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pIndexBuffer);
-	if (FAILED(hr))
-	{
-		OutputDebugString("Failed to create index buffer!!");
-		return false;
-	}
+	HR(dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pIndexBuffer));
 
 	//Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
 	Utilities dxutils = Utilities();
-	hr = dxutils.CompileShaderFromFile(L"cube.fx", "VS", "vs_4_0", &pVSBlob);
-	if (FAILED(hr))
-	{
-		OutputDebugString("The FX file cannot be compiled!!");
-		return false;
-	}
+	HR(dxutils.CompileShaderFromFile(L"cube.fx", "VS", "vs_4_0", &pVSBlob));
 
 	//Create the vertex shader
-	hr = dxshared::m_pDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &m_vertexShader);
-	if (FAILED(hr))
-	{
-		OutputDebugString("Failed to create vertex shader!!");
-		pVSBlob->Release();
-		return false;
-	}
+	HR(dxshared::m_pDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &m_vertexShader));
 
 	//Define the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
 	//Create the input layout
-	hr = dxshared::m_pDevice->CreateInputLayout(layout, numElements, pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &m_vertexLayout);
+	HR(dxshared::m_pDevice->CreateInputLayout(layout, numElements, pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &m_vertexLayout));
 	pVSBlob->Release();
-	if (FAILED(hr))
-	{
-		return false;
-	}
 
 	//Set the input layout
 	dxshared::m_pImmediateContext->IASetInputLayout(m_vertexLayout);
 
 	//Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-	hr = dxutils.CompileShaderFromFile(L"cube.fx", "PS", "ps_4_0", &pPSBlob);
-	if (FAILED(hr))
-	{
-		OutputDebugString("The FX file cannot be compiled!!");
-		return false;
-	}
+	HR(dxutils.CompileShaderFromFile(L"cube.fx", "PS", "ps_4_0", &pPSBlob));
 
 	//Create the pixel shader
-	hr = dxshared::m_pDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &m_pixelShader);
+	HR(dxshared::m_pDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &m_pixelShader));
 	pPSBlob->Release();
-	if (FAILED(hr))
-	{
-		return false;
-	}
+
+	//Load the texture
+	HR(CreateDDSTextureFromFile(dxshared::m_pDevice, L"garfield.dds", nullptr, &g_pTextureRV));
+
+	// Create the sample state
+	D3D11_SAMPLER_DESC sampDesc;
+	ZeroMemory(&sampDesc, sizeof(sampDesc));
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	HR(dxshared::m_pDevice->CreateSamplerState(&sampDesc, &g_pSamplerLinear));
 
 	return true;
 }
@@ -161,6 +162,10 @@ bool Cube::Render(float dt)
 	UINT stride = sizeof(SimpleVertex);
 	UINT offset = 0;
 	dxshared::m_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
+
+	//Set texture and sampler
+	dxshared::m_pImmediateContext->PSSetShaderResources(0, 1, &g_pTextureRV);
+	dxshared::m_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
 
 	//Draw
 	dxshared::m_pImmediateContext->DrawIndexed(indexCount, 0, 0);

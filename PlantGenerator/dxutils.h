@@ -8,7 +8,9 @@
 #include <DirectXColors.h>
 
 #include "dxerr.h"
-#include "SimpleVertex.h"
+#include "DDSTextureLoader.h"
+
+using namespace DirectX;
 
 /* Handle DX HRESULT errors nicely in debug */
 #ifdef _DEBUG
@@ -20,6 +22,19 @@
 		#define HR(x) x;
 	#endif
 #endif
+
+struct SimpleVertex
+{
+	XMFLOAT3 Pos;
+	XMFLOAT2 Tex;
+};
+
+struct ConstantBuffer
+{
+	XMMATRIX mWorld;
+	XMMATRIX mView;
+	XMMATRIX mProjection;
+};
 
 class Utilities
 {

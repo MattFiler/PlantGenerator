@@ -40,7 +40,7 @@ bool TestApp::Init()
 	a_cube2.Create();
 
 	//Set pos of cube 2
-	a_cube2.SetPosition(Vector3(0.0f, 3.0f, 0.0f));
+	a_cube2.SetPosition(XMFLOAT3(0.0f, 3.0f, 0.0f));
 
 	return initSuccess;
 }
@@ -48,8 +48,8 @@ bool TestApp::Init()
 bool TestApp::Update(float dt)
 {
 	//Over time, rotate both cubes in alt directions
-	a_cube.SetRotation(Vector3(0.0f, dt, 0.0f));
-	a_cube2.SetRotation(Vector3(0.0f, -dt, 0.0f));
+	a_cube.SetRotation(XMFLOAT3(0.0f, dt, 0.0f));
+	a_cube2.SetRotation(XMFLOAT3(0.0f, -dt, 0.0f));
 
 	//Update both cubes
 	a_cube.Update(dt);

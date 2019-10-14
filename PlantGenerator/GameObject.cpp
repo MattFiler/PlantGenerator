@@ -1,19 +1,19 @@
 #include "GameObject.h"
 
 /* Set the GameObject's position */
-void GameObject::SetPosition(Vector3 _pos)
+void GameObject::SetPosition(XMFLOAT3 _pos)
 {
 	position = _pos;
 }
 
 /* Set the GameObject's rotation */
-void GameObject::SetRotation(Vector3 _rot)
+void GameObject::SetRotation(XMFLOAT3 _rot)
 {
 	rotation = _rot;
 }
 
 /* Set the GameObject's scale */
-void GameObject::SetScale(Vector3 _scale)
+void GameObject::SetScale(XMFLOAT3 _scale)
 {
 	scale = _scale;
 }
@@ -31,7 +31,7 @@ bool GameObject::Create()
 	HR(dxshared::m_pDevice->CreateBuffer(&bd, nullptr, &g_pConstantBuffer));
 
 	//Initialize the world matrix 
-	mWorld = DirectX::XMMatrixIdentity();
+	mWorld = XMMatrixIdentity();
 
 	return true;
 }
@@ -47,7 +47,7 @@ bool GameObject::Release()
 bool GameObject::Update(float dt) 
 {
 	//Set the cube's world based on translations (todo: X rotation)
-	mWorld = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) * DirectX::XMMatrixRotationZ(rotation.z) * DirectX::XMMatrixTranslation(position.x, position.y, position.z) * DirectX::XMMatrixRotationY(rotation.y);
+	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationZ(rotation.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationY(rotation.y);
 
 	return true;
 }

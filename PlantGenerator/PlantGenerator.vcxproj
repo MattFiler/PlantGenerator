@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="dxmain.cpp" />
     <ClCompile Include="dxshared.cpp" />
@@ -29,12 +30,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="dxmain.h" />
     <ClInclude Include="dxshared.h" />
     <ClInclude Include="dxutils.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="SimpleVertex.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
