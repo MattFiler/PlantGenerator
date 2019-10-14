@@ -242,6 +242,14 @@ bool dxmain::InitDirectX()
 	//Bind the render target view
 	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, g_pDepthStencilView); 
 
+	//Set rasterizer state
+	D3D11_RASTERIZER_DESC wfdesc;
+	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
+	wfdesc.FillMode = D3D11_FILL_SOLID;
+	wfdesc.CullMode = D3D11_CULL_BACK;
+	HR(m_pDevice->CreateRasterizerState(&wfdesc, &WireFrame));
+	m_pImmediateContext->RSSetState(WireFrame);
+
 	//Create the viewport
 	m_viewport.Width = static_cast<float>(m_clientWidth);
 	m_viewport.Height = static_cast<float>(m_clientHeight);
@@ -285,6 +293,10 @@ LRESULT dxmain::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
+		case WM_KEYDOWN:
+			OutputDebugString("KeyDown\n");
+		case WM_KEYUP:
+			OutputDebugString("KeyUp\n");
 		default:
 			return DefWindowProc(hwnd, msg, wParam, lParam);
 	}

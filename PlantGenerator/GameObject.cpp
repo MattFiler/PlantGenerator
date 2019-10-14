@@ -19,7 +19,7 @@ void GameObject::SetScale(XMFLOAT3 _scale)
 }
 
 /* Create our low level GameObject resources */
-bool GameObject::Create()
+void GameObject::Create()
 {
 	//Create the constant buffer 
 	D3D11_BUFFER_DESC bd;
@@ -32,28 +32,23 @@ bool GameObject::Create()
 
 	//Initialize the world matrix 
 	mWorld = XMMatrixIdentity();
-
-	return true;
 }
 
 /* Safely release our low level GameObject memory */
-bool GameObject::Release()
+void GameObject::Release()
 {
 	Memory::SafeRelease(g_pConstantBuffer);
-	return false;
 }
 
 /* Perform low level GameObject update functions */
-bool GameObject::Update(float dt) 
+void GameObject::Update(float dt)
 {
 	//Set the cube's world based on translations (todo: X rotation)
 	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationZ(rotation.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationY(rotation.y);
-
-	return true;
 }
 
 /* Perform low level GameObject render functions */
-bool GameObject::Render(float dt) 
+void GameObject::Render(float dt)
 {
 	//Update and set constant buffer
 	ConstantBuffer cb;
@@ -62,6 +57,4 @@ bool GameObject::Render(float dt)
 	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
-
-	return true;
 }

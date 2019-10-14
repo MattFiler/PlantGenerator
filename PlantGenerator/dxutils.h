@@ -10,6 +10,8 @@
 #include "dxerr.h"
 #include "DDSTextureLoader.h"
 
+#include <string>
+
 using namespace DirectX;
 
 /* Handle DX HRESULT errors nicely in debug */

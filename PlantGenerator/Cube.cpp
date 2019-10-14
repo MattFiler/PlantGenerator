@@ -1,7 +1,7 @@
 #include "Cube.h"
 
 /* Create the cube */
-bool Cube::Create()
+void Cube::Create()
 {
 	GameObject::Create();
 
@@ -124,30 +124,28 @@ bool Cube::Create()
 	sampDesc.MinLOD = 0;
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	HR(dxshared::m_pDevice->CreateSamplerState(&sampDesc, &g_pSamplerLinear));
-
-	return true;
 }
 
 /* Release the cube */
-bool Cube::Release()
+void Cube::Release()
 {
 	GameObject::Release();
 
 	Memory::SafeRelease(g_pVertexBuffer);
 	Memory::SafeRelease(g_pIndexBuffer);
-	return true;
+	Memory::SafeRelease(m_vertexShader);
+	Memory::SafeRelease(m_pixelShader);
+	Memory::SafeRelease(g_pTextureRV);
 }
 
 /* Update the cube */
-bool Cube::Update(float dt)
+void Cube::Update(float dt)
 {
 	GameObject::Update(dt);
-
-	return true;
 }
 
 /* Render the cube */
-bool Cube::Render(float dt)
+void Cube::Render(float dt)
 {
 	GameObject::Render(dt);
 
@@ -169,6 +167,4 @@ bool Cube::Render(float dt)
 
 	//Draw
 	dxshared::m_pImmediateContext->DrawIndexed(indexCount, 0, 0);
-
-	return true;
 }

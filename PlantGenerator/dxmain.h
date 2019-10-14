@@ -37,5 +37,6 @@ protected:
 	D3D_DRIVER_TYPE m_driverType;
 	D3D_FEATURE_LEVEL m_featureLevel;
 	D3D11_VIEWPORT m_viewport;
+	ID3D11RasterizerState* WireFrame;
 };
 

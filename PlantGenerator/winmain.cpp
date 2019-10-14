@@ -4,6 +4,7 @@
 #include "dxmain.h"
 
 #include "Cube.h"
+#include "ModelLoader.h"
 
 class TestApp : public dxmain
 {
@@ -18,6 +19,8 @@ public:
 private:
 	Cube a_cube = Cube();
 	Cube a_cube2 = Cube();
+
+	ModelLoader a_model = ModelLoader();
 };
 
 TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
@@ -29,6 +32,7 @@ TestApp::~TestApp()
 {
 	a_cube.Release();
 	a_cube2.Release();
+	a_model.Release();
 }
 
 bool TestApp::Init()
@@ -39,21 +43,30 @@ bool TestApp::Init()
 	a_cube.Create();
 	a_cube2.Create();
 
-	//Set pos of cube 2
+	//Create model loader and load model
+	a_model.Create();
+	a_model.LoadModel("suzanne.obj");
+
+	//Do some transformations
 	a_cube2.SetPosition(XMFLOAT3(0.0f, 3.0f, 0.0f));
+	a_cube2.SetScale(XMFLOAT3(4.0f, 4.0f, 4.0f));
 
 	return initSuccess;
 }
 
 bool TestApp::Update(float dt)
 {
-	//Over time, rotate both cubes in alt directions
-	a_cube.SetRotation(XMFLOAT3(0.0f, dt, 0.0f));
-	a_cube2.SetRotation(XMFLOAT3(0.0f, -dt, 0.0f));
+	//dxshared::mView *= XMMatrixRotationY(dt/2);
 
 	//Update both cubes
+	a_cube.SetRotation(XMFLOAT3(0.0f, dt, 0.0f));
+	a_cube2.SetRotation(XMFLOAT3(0.0f, -dt, 0.0f));
 	a_cube.Update(dt);
 	a_cube2.Update(dt);
+
+	//Update model
+	a_model.SetRotation(XMFLOAT3(0.0f, -dt, -dt));
+	a_model.Update(dt);
 
 	return true;
 }
@@ -65,8 +78,11 @@ void TestApp::Render(float dt)
 	m_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	//Render both cubes
-	a_cube.Render(dt);
-	a_cube2.Render(dt);
+	//a_cube.Render(dt);
+	//a_cube2.Render(dt);
+
+	//Render model
+	a_model.Render(dt);
 
 	//Present the back buffer to front buffer
 	m_pSwapChain->Present(0, 0);

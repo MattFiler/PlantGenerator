@@ -2,10 +2,10 @@
 
 #include "GameObject.h"
 
-class Cube : public GameObject
+class ModelLoader : public GameObject
 {
 public:
-	~Cube() {
+	~ModelLoader() {
 		Release();
 	}
 
@@ -13,6 +13,8 @@ public:
 	void Release() override;
 	void Update(float dt) override;
 	void Render(float dt) override;
+
+	void LoadModel(std::string path);
 
 protected:
 	ID3D11Buffer* g_pVertexBuffer = nullptr;

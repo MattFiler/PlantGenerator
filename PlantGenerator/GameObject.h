@@ -10,10 +10,10 @@ public:
 		Release();
 	}
 
-	virtual bool Create();
-	virtual bool Release();
-	virtual bool Update(float dt);
-	virtual bool Render(float dt);
+	virtual void Create();
+	virtual void Release();
+	virtual void Update(float dt);
+	virtual void Render(float dt);
 
 	void SetRotation(XMFLOAT3 _rot);
 	void SetPosition(XMFLOAT3 _pos);
