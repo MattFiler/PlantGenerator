@@ -15,9 +15,36 @@ public:
 	virtual void Update(float dt);
 	virtual void Render(float dt);
 
-	void SetRotation(XMFLOAT3 _rot);
-	void SetPosition(XMFLOAT3 _pos);
-	void SetScale(XMFLOAT3 _scale);
+	void SetRotation(XMFLOAT3 _rot)
+	{
+		rotation = _rot;
+	}
+	XMFLOAT3 GetRotation()
+	{
+		return rotation;
+	}
+
+	void SetPosition(XMFLOAT3 _pos)
+	{
+		position = _pos;
+	}
+	XMFLOAT3 GetPosition()
+	{
+		return position;
+	}
+	
+	void SetScale(float _scale) 
+	{
+		scale = XMFLOAT3(_scale, _scale, _scale);
+	}
+	void SetScale(XMFLOAT3 _scale)
+	{
+		scale = _scale;
+	}
+	XMFLOAT3 GetScale()
+	{
+		return scale;
+	}
 
 protected:
 	XMMATRIX mWorld;

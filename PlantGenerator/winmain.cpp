@@ -13,14 +13,13 @@ public:
 	~TestApp();
 
 	bool Init() override;
-	bool Update(float dt) override;
-	void Render(float dt) override;
+	bool Update(double dt) override;
+	void Render(double dt) override;
 
 private:
-	Cube a_cube = Cube();
-	Cube a_cube2 = Cube();
-
-	ModelLoader a_model = ModelLoader();
+	ModelLoader bird_stand = ModelLoader();
+	ModelLoader bird_body = ModelLoader();
+	bool goingForward = false;
 };
 
 TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
@@ -30,59 +29,62 @@ TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
 
 TestApp::~TestApp() 
 {
-	a_cube.Release();
-	a_cube2.Release();
-	a_model.Release();
+	bird_stand.Release();
+	bird_body.Release();
 }
 
 bool TestApp::Init()
 {
 	bool initSuccess = dxmain::Init();
 
-	//Create both cubes
-	a_cube.Create();
-	a_cube2.Create();
+	bird_stand.Create();
+	bird_body.Create();
 
-	//Create model loader and load model
-	a_model.Create();
-	a_model.LoadModel("suzanne.obj");
+	bird_stand.LoadModel("models/bird_stand.obj");
+	bird_body.LoadModel("models/bird_main.obj");
 
-	//Do some transformations
-	a_cube2.SetPosition(XMFLOAT3(0.0f, 3.0f, 0.0f));
-	a_cube2.SetScale(XMFLOAT3(4.0f, 4.0f, 4.0f));
+	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
+	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
 
 	return initSuccess;
 }
 
-bool TestApp::Update(float dt)
+bool TestApp::Update(double dt)
 {
-	//dxshared::mView *= XMMatrixRotationY(dt/2);
+	if (bird_body.GetRotation().z > 2.0f) {
+		goingForward = false;
+	}
+	if (bird_body.GetRotation().z < -0.8f) {
+		goingForward = true;
+	}
 
-	//Update both cubes
-	a_cube.SetRotation(XMFLOAT3(0.0f, dt, 0.0f));
-	a_cube2.SetRotation(XMFLOAT3(0.0f, -dt, 0.0f));
-	a_cube.Update(dt);
-	a_cube2.Update(dt);
+	if (goingForward)
+	{
+		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z+dt));
+	}
+	else
+	{
+		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z-dt));
+	}
 
-	//Update model
-	a_model.SetRotation(XMFLOAT3(0.0f, -dt, -dt));
-	a_model.Update(dt);
+	OutputDebugString(std::to_string(bird_body.GetRotation().z).c_str());
+	OutputDebugString("\n");
+
+	bird_stand.Update(dt);
+	bird_body.Update(dt);
 
 	return true;
 }
 
-void TestApp::Render(float dt)
+void TestApp::Render(double dt)
 {
 	//Clear back buffer & depth stencil view
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
 	m_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	//Render both cubes
-	//a_cube.Render(dt);
-	//a_cube2.Render(dt);
-
-	//Render model
-	a_model.Render(dt);
+	//Render models
+	bird_stand.Render(dt);
+	bird_body.Render(dt);
 
 	//Present the back buffer to front buffer
 	m_pSwapChain->Present(0, 0);

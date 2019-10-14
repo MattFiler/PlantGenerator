@@ -56,7 +56,7 @@ void ModelLoader::Create()
 	pPSBlob->Release();
 
 	//Load the texture
-	HR(CreateDDSTextureFromFile(dxshared::m_pDevice, L"garfield.dds", nullptr, &g_pTextureRV));
+	HR(CreateDDSTextureFromFile(dxshared::m_pDevice, L"models/garfield.dds", nullptr, &g_pTextureRV));
 
 	// Create the sample state
 	D3D11_SAMPLER_DESC sampDesc;
@@ -116,8 +116,6 @@ void ModelLoader::Render(float dt)
 
 	//Draw
 	dxshared::m_pImmediateContext->DrawIndexed(indexCount, 0, 0);
-	OutputDebugString(std::to_string(vertexCount).c_str());
-	OutputDebugString("\n");
 }
 
 /* Load a model file (obj) */

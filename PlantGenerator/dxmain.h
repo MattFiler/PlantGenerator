@@ -12,8 +12,8 @@ public:
 	int Run();
 
 	virtual bool Init();
-	virtual bool Update(float dt) = 0;
-	virtual void Render(float dt) = 0;
+	virtual bool Update(double dt) = 0;
+	virtual void Render(double dt) = 0;
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 protected:

@@ -1,23 +1,5 @@
 #include "GameObject.h"
 
-/* Set the GameObject's position */
-void GameObject::SetPosition(XMFLOAT3 _pos)
-{
-	position = _pos;
-}
-
-/* Set the GameObject's rotation */
-void GameObject::SetRotation(XMFLOAT3 _rot)
-{
-	rotation = _rot;
-}
-
-/* Set the GameObject's scale */
-void GameObject::SetScale(XMFLOAT3 _scale)
-{
-	scale = _scale;
-}
-
 /* Create our low level GameObject resources */
 void GameObject::Create()
 {

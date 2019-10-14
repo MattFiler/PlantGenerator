@@ -48,6 +48,9 @@ dxmain::~dxmain()
 int dxmain::Run()
 {
 	MSG msg = { 0 };
+	static double gameTime = 0.0f;
+	static double prevTime = 0.0f;
+	static ULONGLONG timeStart = 0;
 	while (WM_QUIT != msg.message) 
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE)) 
@@ -57,23 +60,29 @@ int dxmain::Run()
 		}
 		else
 		{
-			//Update our time 
-			static float t = 0.0f;
+			//Update our game time 
 			if (m_driverType == D3D_DRIVER_TYPE_REFERENCE)
 			{
-				t += (float)DirectX::XM_PI * 0.0125f;
+				gameTime += (float)DirectX::XM_PI * 0.0125f;
 			}
 			else
 			{
-				static ULONGLONG timeStart = 0;
 				ULONGLONG timeCur = GetTickCount64();
 				if (timeStart == 0)
 					timeStart = timeCur;
-				t = (timeCur - timeStart) / 1000.0f;
+				gameTime = (timeCur - timeStart) / 1000.0f;
 			}
 
-			Update(t);
-			Render(t);
+			//Update our frame time
+			double frameTime = 0.0f;
+			if (prevTime != 0.0f) 
+			{
+				frameTime = gameTime - prevTime;
+			}
+			prevTime = gameTime;
+
+			Update(frameTime);
+			Render(frameTime);
 		}
 	}
 	return static_cast<int>(msg.wParam);
