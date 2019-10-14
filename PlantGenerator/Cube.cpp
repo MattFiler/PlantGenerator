@@ -5,6 +5,8 @@ using namespace DirectX;
 /* Create the cube */
 bool Cube::Create()
 {
+	GameObject::Create();
+
 	//Create vertex buffer 
 	SimpleVertex vertices[] =
 	{
@@ -67,68 +69,90 @@ bool Cube::Create()
 		return false;
 	}
 
-	//Create the constant buffer 
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBuffer);
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bd.CPUAccessFlags = 0;
-	hr = dxshared::m_pDevice->CreateBuffer(&bd, nullptr, &g_pConstantBuffer);
+	//Compile the vertex shader
+	ID3DBlob* pVSBlob = nullptr;
+	Utilities dxutils = Utilities();
+	hr = dxutils.CompileShaderFromFile(L"cube.fx", "VS", "vs_4_0", &pVSBlob);
 	if (FAILED(hr))
 	{
-		OutputDebugString("Failed to create the constant buffer!!");
+		OutputDebugString("The FX file cannot be compiled!!");
 		return false;
 	}
 
-	//Initialize the world matrix 
-	mWorld = XMMatrixIdentity();
+	//Create the vertex shader
+	hr = dxshared::m_pDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &m_vertexShader);
+	if (FAILED(hr))
+	{
+		OutputDebugString("Failed to create vertex shader!!");
+		pVSBlob->Release();
+		return false;
+	}
+
+	//Define the input layout
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	UINT numElements = ARRAYSIZE(layout);
+
+	//Create the input layout
+	hr = dxshared::m_pDevice->CreateInputLayout(layout, numElements, pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &m_vertexLayout);
+	pVSBlob->Release();
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	//Set the input layout
+	dxshared::m_pImmediateContext->IASetInputLayout(m_vertexLayout);
+
+	//Compile the pixel shader
+	ID3DBlob* pPSBlob = nullptr;
+	hr = dxutils.CompileShaderFromFile(L"cube.fx", "PS", "ps_4_0", &pPSBlob);
+	if (FAILED(hr))
+	{
+		OutputDebugString("The FX file cannot be compiled!!");
+		return false;
+	}
+
+	//Create the pixel shader
+	hr = dxshared::m_pDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &m_pixelShader);
+	pPSBlob->Release();
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
 	return true;
 }
 
 /* Release the cube */
 bool Cube::Release()
 {
+	GameObject::Release();
+
 	Memory::SafeRelease(g_pVertexBuffer);
 	Memory::SafeRelease(g_pIndexBuffer);
-	Memory::SafeRelease(g_pConstantBuffer);
 	return true;
 }
 
 /* Update the cube */
 bool Cube::Update(float dt)
 {
-	//Set the cube's world based on translations (todo: X rotation)
-	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationZ(rotation.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationY(rotation.y);
+	GameObject::Update(dt);
 
 	return true;
-}
-
-/* Set the cube's position */
-void Cube::SetPosition(Vector3 _pos)
-{
-	position = _pos;
-}
-
-/* Set the cube's rotation */
-void Cube::SetRotation(Vector3 _rot)
-{
-	rotation = _rot;
-}
-
-/* Set the cube's scale */
-void Cube::SetScale(Vector3 _scale)
-{
-	scale = _scale;
 }
 
 /* Render the cube */
 bool Cube::Render(float dt)
 {
-	//Update variables
-	ConstantBuffer cb;
-	cb.mWorld = XMMatrixTranspose(mWorld);
-	cb.mView = XMMatrixTranspose(dxshared::mView);
-	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
-	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
+	GameObject::Render(dt);
+
+	//Set shaders to use
+	dxshared::m_pImmediateContext->VSSetShader(m_vertexShader, nullptr, 0);
+	dxshared::m_pImmediateContext->PSSetShader(m_pixelShader, nullptr, 0);
 
 	//Set index buffer 
 	dxshared::m_pImmediateContext->IASetIndexBuffer(g_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
@@ -139,7 +163,6 @@ bool Cube::Render(float dt)
 	dxshared::m_pImmediateContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
 
 	//Draw
-	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	dxshared::m_pImmediateContext->DrawIndexed(indexCount, 0, 0);
 
 	return true;

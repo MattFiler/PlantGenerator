@@ -29,9 +29,6 @@ dxmain::dxmain(HINSTANCE hInstance)
 	m_pImmediateContext = nullptr;
 	m_pRenderTargetView = nullptr;
 	m_pSwapChain = nullptr;
-	m_vertexShader = nullptr;
-	m_pixelShader = nullptr;
-	m_vertexLayout = nullptr;
 }
 
 /* Release our d3d resources on exit */
@@ -263,61 +260,6 @@ bool dxmain::InitDirectX()
 	//Share out the device and device context
 	dxshared::m_pDevice = m_pDevice;
 	dxshared::m_pImmediateContext = m_pImmediateContext;
-	
-	//Compile the vertex shader
-	ID3DBlob* pVSBlob = nullptr;
-	Utilities dxutils = Utilities();
-	result = dxutils.CompileShaderFromFile(L"cube.fx", "VS", "vs_4_0", &pVSBlob);
-	if (FAILED(result))
-	{
-		OutputDebugString("The FX file cannot be compiled!!");
-		return false;
-	}
-
-	//Create the vertex shader
-	result = m_pDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &m_vertexShader);
-	if (FAILED(result))
-	{
-		OutputDebugString("Failed to create vertex shader!!");
-		pVSBlob->Release();
-		return false;
-	}
-
-	//Define the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT numElements = ARRAYSIZE(layout);
-
-	//Create the input layout
-	result = m_pDevice->CreateInputLayout(layout, numElements, pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &m_vertexLayout);
-	pVSBlob->Release();
-	if (FAILED(result))
-	{
-		return false;
-	}
-
-	//Set the input layout
-	m_pImmediateContext->IASetInputLayout(m_vertexLayout);
-
-	//Compile the pixel shader
-	ID3DBlob* pPSBlob = nullptr;
-	result = dxutils.CompileShaderFromFile(L"cube.fx", "PS", "ps_4_0", &pPSBlob);
-	if (FAILED(result))
-	{
-		OutputDebugString("The FX file cannot be compiled!!");
-		return false;
-	}
-
-	//Create the pixel shader
-	result = m_pDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &m_pixelShader);
-	pPSBlob->Release();
-	if (FAILED(result))
-	{
-		return false;
-	}
 
 	//Set topology for rendering
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

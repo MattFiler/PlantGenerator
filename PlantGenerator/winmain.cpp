@@ -64,10 +64,6 @@ void TestApp::Render(float dt)
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, DirectX::Colors::CornflowerBlue);
 	m_pImmediateContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	//Set global shader to use (might change this to object specific down the line (will need to remove the shader compiler code from dxmain to each class))
-	dxshared::m_pImmediateContext->VSSetShader(m_vertexShader, nullptr, 0);
-	dxshared::m_pImmediateContext->PSSetShader(m_pixelShader, nullptr, 0);
-
 	//Render both cubes
 	a_cube.Render(dt);
 	a_cube2.Render(dt);

@@ -24,6 +24,7 @@
     <ClCompile Include="dxmain.cpp" />
     <ClCompile Include="dxshared.cpp" />
     <ClCompile Include="dxutils.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ClInclude Include="dxmain.h" />
     <ClInclude Include="dxshared.h" />
     <ClInclude Include="dxutils.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="SimpleVertex.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
