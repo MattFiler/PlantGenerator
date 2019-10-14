@@ -12,6 +12,8 @@ struct ConstantBuffer
 	DirectX::XMMATRIX mWorld;
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
+	DirectX::XMFLOAT3 lightColour;
+	DirectX::XMFLOAT3 lightPosition;
 };
 
 struct Vector3

@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "dxmain.h"
 
+#include "PointLight.h"
 #include "Cube.h"
 
 class TestApp : public dxmain
@@ -18,6 +19,7 @@ public:
 private:
 	Cube a_cube = Cube();
 	Cube a_cube2 = Cube();
+	PointLight a_light = PointLight();
 };
 
 TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
@@ -39,8 +41,13 @@ bool TestApp::Init()
 	a_cube.Create();
 	a_cube2.Create();
 
+	//Create a light and assign to both cubes
+	a_light.Create();
+	a_cube.UseLight(&a_light);
+	a_cube2.UseLight(&a_light);
+
 	//Set pos of cube 2
-	a_cube2.SetPosition(Vector3(0.0f, 3.0f, 0.0f));
+	a_cube2.SetPosition(DirectX::XMFLOAT3(0.0f, 3.0f, 0.0f));
 
 	return initSuccess;
 }
@@ -48,12 +55,14 @@ bool TestApp::Init()
 bool TestApp::Update(float dt)
 {
 	//Over time, rotate both cubes in alt directions
-	a_cube.SetRotation(Vector3(0.0f, dt, 0.0f));
-	a_cube2.SetRotation(Vector3(0.0f, -dt, 0.0f));
+	a_cube.SetRotation(DirectX::XMFLOAT3(0.0f, dt, 0.0f));
+	a_cube2.SetRotation(DirectX::XMFLOAT3(0.0f, -dt, 0.0f));
 
 	//Update both cubes
 	a_cube.Update(dt);
 	a_cube2.Update(dt);
+
+	a_light.Update(dt);
 
 	return true;
 }
@@ -67,6 +76,8 @@ void TestApp::Render(float dt)
 	//Render both cubes
 	a_cube.Render(dt);
 	a_cube2.Render(dt);
+
+	a_light.Render(dt);
 
 	//Present the back buffer to front buffer
 	m_pSwapChain->Present(0, 0);

@@ -1,22 +1,5 @@
 #include "GameObject.h"
-
-/* Set the GameObject's position */
-void GameObject::SetPosition(Vector3 _pos)
-{
-	position = _pos;
-}
-
-/* Set the GameObject's rotation */
-void GameObject::SetRotation(Vector3 _rot)
-{
-	rotation = _rot;
-}
-
-/* Set the GameObject's scale */
-void GameObject::SetScale(Vector3 _scale)
-{
-	scale = _scale;
-}
+#include "PointLight.h"
 
 /* Create our low level GameObject resources */
 bool GameObject::Create()
@@ -60,8 +43,11 @@ bool GameObject::Render(float dt)
 	cb.mWorld = XMMatrixTranspose(mWorld);
 	cb.mView = XMMatrixTranspose(dxshared::mView);
 	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
+	cb.lightColour = light->GetColour();
+	cb.lightPosition = light->GetPosition();
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	dxshared::m_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 
 	return true;
 }

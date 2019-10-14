@@ -1,6 +1,5 @@
 #pragma once
 
-#include "dxutils.h"
 #include "GameObject.h"
 
 class Cube : public GameObject
@@ -15,7 +14,7 @@ public:
 	bool Update(float dt) override;
 	bool Render(float dt) override;
 
-protected:
+private:
 	ID3D11Buffer* g_pVertexBuffer = nullptr;
 	ID3D11Buffer* g_pIndexBuffer = nullptr;
 
@@ -23,7 +22,6 @@ protected:
 	ID3D11PixelShader* m_pixelShader = nullptr;
 	ID3D11InputLayout* m_vertexLayout = nullptr;
 
-private:
 	int vertexCount = 0;
 	int indexCount = 0;
 };
