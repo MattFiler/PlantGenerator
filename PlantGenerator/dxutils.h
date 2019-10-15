@@ -9,6 +9,7 @@
 
 #include "dxerr.h"
 #include "DDSTextureLoader.h"
+#include "InputHandler.h"
 
 #include <string>
 #include <vector>
@@ -60,6 +61,31 @@ struct LoadedModel {
 
 struct Face {
 	std::vector<VertexGroup> verts = std::vector<VertexGroup>();
+};
+
+/* Debug logger */
+class Debug {
+public:
+	static void Log(std::string msg) {
+		OutputDebugString(msg.c_str());
+		OutputDebugString("\n");
+	}
+	static void Log(int msg) {
+		OutputDebugString(std::to_string(msg).c_str());
+		OutputDebugString("\n");
+	}
+	static void Log(float msg) {
+		OutputDebugString(std::to_string(msg).c_str());
+		OutputDebugString("\n");
+	}
+	static void Log(double msg) {
+		OutputDebugString(std::to_string(msg).c_str());
+		OutputDebugString("\n");
+	}
+	static void Log(unsigned long msg) {
+		OutputDebugString(std::to_string(msg).c_str());
+		OutputDebugString("\n");
+	}
 };
 
 class Utilities

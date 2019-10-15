@@ -42,7 +42,7 @@ bool TestApp::Init()
 	bool initSuccess = dxmain::Init();
 
 	main_cam.Create();
-	//main_cam.SetPosition(DirectX::XMFLOAT3(-5.0f, 0.0f, 0.0f));
+	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
 
 	Utilities dxutils = Utilities();
 	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
@@ -65,7 +65,6 @@ bool TestApp::Update(double dt)
 		goingForward = true;
 	}
 
-	/*
 	if (goingForward)
 	{
 		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z+dt));
@@ -74,7 +73,6 @@ bool TestApp::Update(double dt)
 	{
 		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z-dt));
 	}
-	*/
 
 	bird_stand.Update(dt);
 	bird_body.Update(dt);

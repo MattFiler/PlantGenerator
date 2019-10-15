@@ -1,12 +1,3 @@
 #include "InputHandler.h"
 
-//todo
-
-InputHandler::InputHandler()
-{
-}
-
-
-InputHandler::~InputHandler()
-{
-}
+std::vector<InputState> InputHandler::allInputs = std::vector<InputState>();

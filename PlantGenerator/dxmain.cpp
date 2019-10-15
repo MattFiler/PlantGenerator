@@ -97,6 +97,9 @@ bool dxmain::Init()
 /* Set appropriate properties and then initialise window */
 bool dxmain::InitWindow()
 {
+	//Setup input handler
+	InputHandler::Setup();
+
 	//Setup window class
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
@@ -303,10 +306,11 @@ LRESULT dxmain::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PostQuitMessage(0);
 			return 0;
 		case WM_KEYDOWN:
-			OutputDebugString("KeyDown\n");
+			InputHandler::SetKeyState((WindowsKey)((unsigned long)wParam), true);
+			break;
 		case WM_KEYUP:
-			OutputDebugString("KeyUp\n");
-		default:
-			return DefWindowProc(hwnd, msg, wParam, lParam);
+			InputHandler::SetKeyState((WindowsKey)((unsigned long)wParam), false);
+			break;
 	}
+	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
