@@ -2,10 +2,10 @@
 
 #include "GameObject.h"
 
-class ModelLoader : public GameObject
+class Model : public GameObject
 {
 public:
-	~ModelLoader() {
+	~Model() {
 		Release();
 	}
 
@@ -14,7 +14,15 @@ public:
 	void Update(float dt) override;
 	void Render(float dt) override;
 
-	void LoadModel(std::string path);
+	void SetData(LoadedModel _m) {
+		vertexList = _m.compVertices;
+		indexList = _m.compIndices;
+	}
+	void SetData(std::vector<SimpleVertex> _vl, std::vector<WORD> _il)
+	{
+		vertexList = _vl;
+		indexList = _il;
+	}
 
 protected:
 	ID3D11Buffer* g_pVertexBuffer = nullptr;
@@ -26,6 +34,9 @@ protected:
 	ID3D11VertexShader* m_vertexShader = nullptr;
 	ID3D11PixelShader* m_pixelShader = nullptr;
 	ID3D11InputLayout* m_vertexLayout = nullptr;
+
+	std::vector<SimpleVertex> vertexList = std::vector<SimpleVertex>();
+	std::vector<WORD> indexList = std::vector<WORD>();
 
 private:
 	int vertexCount = 0;

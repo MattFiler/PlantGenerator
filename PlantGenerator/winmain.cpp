@@ -4,7 +4,7 @@
 #include "dxmain.h"
 
 #include "Cube.h"
-#include "ModelLoader.h"
+#include "Model.h"
 
 class TestApp : public dxmain
 {
@@ -17,8 +17,8 @@ public:
 	void Render(double dt) override;
 
 private:
-	ModelLoader bird_stand = ModelLoader();
-	ModelLoader bird_body = ModelLoader();
+	Model bird_stand = Model();
+	Model bird_body = Model();
 	bool goingForward = false;
 };
 
@@ -37,11 +37,12 @@ bool TestApp::Init()
 {
 	bool initSuccess = dxmain::Init();
 
+	Utilities dxutils = Utilities();
+	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
+	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
+
 	bird_stand.Create();
 	bird_body.Create();
-
-	bird_stand.LoadModel("models/bird_stand.obj");
-	bird_body.LoadModel("models/bird_main.obj");
 
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
 	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
