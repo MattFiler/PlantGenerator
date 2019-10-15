@@ -5,6 +5,7 @@
 
 #include "Cube.h"
 #include "Model.h"
+#include "Camera.h"
 
 class TestApp : public dxmain
 {
@@ -17,6 +18,8 @@ public:
 	void Render(double dt) override;
 
 private:
+	Camera main_cam = Camera();
+
 	Model bird_stand = Model();
 	Model bird_body = Model();
 	bool goingForward = false;
@@ -29,6 +32,7 @@ TestApp::TestApp(HINSTANCE hInstance) : dxmain(hInstance)
 
 TestApp::~TestApp() 
 {
+	main_cam.Release();
 	bird_stand.Release();
 	bird_body.Release();
 }
@@ -37,14 +41,16 @@ bool TestApp::Init()
 {
 	bool initSuccess = dxmain::Init();
 
+	main_cam.Create();
+	//main_cam.SetPosition(DirectX::XMFLOAT3(-5.0f, 0.0f, 0.0f));
+
 	Utilities dxutils = Utilities();
 	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
 	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
 
 	bird_stand.Create();
-	bird_body.Create();
-
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
+	bird_body.Create();
 	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
 
 	return initSuccess;
@@ -59,6 +65,7 @@ bool TestApp::Update(double dt)
 		goingForward = true;
 	}
 
+	/*
 	if (goingForward)
 	{
 		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z+dt));
@@ -67,12 +74,12 @@ bool TestApp::Update(double dt)
 	{
 		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z-dt));
 	}
-
-	OutputDebugString(std::to_string(bird_body.GetRotation().z).c_str());
-	OutputDebugString("\n");
+	*/
 
 	bird_stand.Update(dt);
 	bird_body.Update(dt);
+
+	main_cam.Update(dt);
 
 	return true;
 }

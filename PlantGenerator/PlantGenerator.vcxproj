@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="dxerr.cpp" />
@@ -26,10 +27,12 @@
     <ClCompile Include="dxshared.cpp" />
     <ClCompile Include="dxutils.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="dxerr.h" />
@@ -37,6 +40,7 @@
     <ClInclude Include="dxshared.h" />
     <ClInclude Include="dxutils.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

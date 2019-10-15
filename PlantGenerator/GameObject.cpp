@@ -25,8 +25,7 @@ void GameObject::Release()
 /* Perform low level GameObject update functions */
 void GameObject::Update(float dt)
 {
-	//Set the cube's world based on translations (todo: X rotation)
-	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationZ(rotation.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationY(rotation.y);
+	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 }
 
 /* Perform low level GameObject render functions */
