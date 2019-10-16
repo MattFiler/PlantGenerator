@@ -57,6 +57,7 @@ enum VertReaderType {
 struct LoadedModel {
 	std::vector<SimpleVertex> compVertices = std::vector<SimpleVertex>();
 	std::vector<WORD> compIndices = std::vector<WORD>();
+	std::string textureName = ""; //TODO: Read texture/colour data from MTL
 };
 
 struct Face {
@@ -121,7 +122,7 @@ public:
 	}
 
 	/* Load a model and return its indices and vertexes (todo: make it condense the vertex array, and parse an MTL) */
-	LoadedModel LoadModel(std::string path)
+	LoadedModel LoadModel(std::string path, std::string texture) //TEXTURE PARAM HERE SHOULD BE REMOVED WHEN MTL PARSING IS DONE
 	{
 		//Open OBJ
 		std::ifstream in(path.c_str());
@@ -260,6 +261,7 @@ public:
 				totalIndex++;
 			}
 		}
+		thisModel.textureName = texture; //TODO read this info from MTL and parse per model part
 		return thisModel;
 	}
 };

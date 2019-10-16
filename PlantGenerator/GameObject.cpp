@@ -25,6 +25,7 @@ void GameObject::Release()
 /* Perform low level GameObject update functions */
 void GameObject::Update(float dt)
 {
+	if (!isActive) return;
 	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 }
 

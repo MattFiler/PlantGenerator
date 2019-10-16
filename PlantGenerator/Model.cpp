@@ -8,7 +8,7 @@ void Model::Create()
 	GameObject::Create();
 
 	//Create vertex buffer 
-	vertexCount = vertexList.size();
+	vertexCount = modelMetaData.compVertices.size();
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -17,16 +17,16 @@ void Model::Create()
 	bd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
-	InitData.pSysMem = vertexList.data();
+	InitData.pSysMem = modelMetaData.compVertices.data();
 	HR(dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pVertexBuffer));
 
 	//Create index buffer 
-	indexCount = indexList.size();
+	indexCount = modelMetaData.compIndices.size();
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(WORD) * indexCount;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
-	InitData.pSysMem = indexList.data();
+	InitData.pSysMem = modelMetaData.compIndices.data();
 	HR(dxshared::m_pDevice->CreateBuffer(&bd, &InitData, &g_pIndexBuffer));
 
 	//Compile the vertex shader
@@ -61,8 +61,9 @@ void Model::Create()
 	pPSBlob->Release();
 
 	//Load the texture
-	HR(CreateDDSTextureFromFile(dxshared::m_pDevice, L"models/garfield.dds", nullptr, &g_pTextureRV));
-
+	std::wstring widestr = std::wstring(modelMetaData.textureName.begin(), modelMetaData.textureName.end());
+	HR(CreateDDSTextureFromFile(dxshared::m_pDevice, widestr.c_str(), nullptr, &g_pTextureRV));
+	
 	// Create the sample state
 	D3D11_SAMPLER_DESC sampDesc;
 	ZeroMemory(&sampDesc, sizeof(sampDesc));
@@ -100,6 +101,7 @@ void Model::Update(float dt)
 void Model::Render(float dt)
 {
 	if (vertexCount == 0 && indexCount == 0) return;
+	if (!isActive) return;
 
 	GameObject::Render(dt);
 

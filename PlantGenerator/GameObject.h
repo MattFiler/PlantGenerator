@@ -46,6 +46,15 @@ public:
 		return scale;
 	}
 
+	void SetActive(bool _active) 
+	{
+		isActive = _active;
+	}
+	bool GetActive() 
+	{
+		return isActive;
+	}
+
 protected:
 	XMMATRIX mWorld;
 	ID3D11Buffer* g_pConstantBuffer = nullptr;
@@ -53,5 +62,6 @@ protected:
 	XMFLOAT3 position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	bool isActive = true;
 };
 

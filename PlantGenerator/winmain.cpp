@@ -45,8 +45,8 @@ bool TestApp::Init()
 	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
 
 	Utilities dxutils = Utilities();
-	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
-	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
+	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj", "models/metal_base.dds"));
+	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj", "models/plastic_base.dds"));
 
 	bird_stand.Create();
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));

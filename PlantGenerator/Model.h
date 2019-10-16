@@ -15,13 +15,13 @@ public:
 	void Render(float dt) override;
 
 	void SetData(LoadedModel _m) {
-		vertexList = _m.compVertices;
-		indexList = _m.compIndices;
+		modelMetaData = _m;
 	}
-	void SetData(std::vector<SimpleVertex> _vl, std::vector<WORD> _il)
+	void SetData(std::vector<SimpleVertex> _vl, std::vector<WORD> _il, std::string _t)
 	{
-		vertexList = _vl;
-		indexList = _il;
+		modelMetaData.compVertices = _vl;
+		modelMetaData.compIndices = _il;
+		modelMetaData.textureName = _t;
 	}
 
 protected:
@@ -35,8 +35,7 @@ protected:
 	ID3D11PixelShader* m_pixelShader = nullptr;
 	ID3D11InputLayout* m_vertexLayout = nullptr;
 
-	std::vector<SimpleVertex> vertexList = std::vector<SimpleVertex>();
-	std::vector<WORD> indexList = std::vector<WORD>();
+	LoadedModel modelMetaData = LoadedModel();
 
 private:
 	int vertexCount = 0;

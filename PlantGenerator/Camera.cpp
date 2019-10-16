@@ -17,6 +17,8 @@ void Camera::Release()
 /* Update the Camera */
 void Camera::Update(float dt)
 {
+	if (!isActive) return;
+
 	GameObject::Update(dt);
 	dxshared::mView = mWorld;
 
