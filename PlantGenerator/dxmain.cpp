@@ -81,7 +81,7 @@ int dxmain::Run()
 			}
 			prevTime = gameTime;
 
-			Update(frameTime);
+			if (!Update(frameTime)) break;
 			Render(frameTime);
 		}
 	}
