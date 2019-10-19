@@ -47,4 +47,5 @@ void GameObject::Render(float dt)
 	}
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	dxshared::m_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 }

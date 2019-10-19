@@ -6,6 +6,7 @@ void Cube::Create()
 	GameObject::Create();
 
 	//Create vertex buffer 
+	/*
 	SimpleVertex vertices[] =
 	{
 		{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
@@ -124,6 +125,7 @@ void Cube::Create()
 	sampDesc.MinLOD = 0;
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	HR(dxshared::m_pDevice->CreateSamplerState(&sampDesc, &g_pSamplerLinear));
+	*/
 }
 
 /* Release the cube */
