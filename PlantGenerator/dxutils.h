@@ -42,6 +42,7 @@ struct ConstantBuffer
 	XMMATRIX mWorld;
 	XMMATRIX mView;
 	XMMATRIX mProjection;
+	XMFLOAT4 colourTint;
 	int numOfLights; //This defines how many lights are actually used - the size of the arrays below are the absolute maximums, not necessarily the number of lights passed
 	XMFLOAT3 lightPosition[10];
 	XMFLOAT4 lightColour[10];
@@ -116,6 +117,10 @@ public:
 		OutputDebugString("\n");
 	}
 	static void Log(unsigned long msg) {
+		OutputDebugString(std::to_string(msg).c_str());
+		OutputDebugString("\n");
+	}
+	static void Log(size_t msg) {
 		OutputDebugString(std::to_string(msg).c_str());
 		OutputDebugString("\n");
 	}
@@ -256,6 +261,10 @@ public:
 						char thisChar = str[i];
 						if (thisChar == '/' || thisChar == ' ' || i == str.length())
 						{
+							if (currentNumber == "") {
+								if (normals.size() == 0) Debug::Log("This model has no normals!");
+								continue;
+							}
 							switch (next) {
 							case VertReaderType::VERTEX:
 								thisVert.v = std::stoi(currentNumber);
@@ -420,11 +429,12 @@ public:
 						thisModel.modelParts.push_back(modelPart);
 						modelPart = LoadedModelPart();
 					}
-					for (int i = 0; i < materials.size(); i++)
+					for (int y = 0; y < materials.size(); y++)
 					{
-						if (materials[i].materialName == faces[i].materialName)
+						if (materials[y].materialName == faces[i].materialName)
 						{
-							modelPart.thisMaterial = materials[i];
+							modelPart.thisMaterial = materials[y];
+							break;
 						}
 					}
 				}
@@ -436,6 +446,7 @@ public:
 			}
 		}
 		thisModel.modelParts.push_back(modelPart);
+		Debug::Log(std::to_string(thisModel.modelParts.size()));
 		return thisModel;
 	}
 };

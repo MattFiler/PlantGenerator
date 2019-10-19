@@ -1,7 +1,7 @@
 # Blender v2.79 (sub 0) OBJ File: ''
 # www.blender.org
 mtllib bird_stand.mtl
-o entry_3844_pkOBJ
+o entry_12481_pkOBJ
 v 0.109375 3.105469 -0.603515
 v 0.111328 3.076172 -0.603515
 v 0.111328 3.076172 -0.628906
@@ -1132,7 +1132,7 @@ vn 0.0782 0.9969 0.0000
 vn -0.5019 0.8649 0.0000
 vn -0.8965 0.4430 0.0000
 vn -0.9912 0.1321 0.0000
-usemtl None
+usemtl Material.005
 s 1
 f 3/1/1 2/2/1 1/3/1
 f 6/4/2 5/5/2 4/6/2

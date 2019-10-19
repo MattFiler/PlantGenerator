@@ -6,6 +6,7 @@ cbuffer ConstantBuffer : register( b0 )
 	matrix World;
 	matrix View;
 	matrix Projection;
+	float4 colourTint;
 	int numOfLights;
 	float3 lightPosition[10];
 	float4 lightColour[10];
@@ -46,11 +47,9 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
 {
-    //float4 textureBase = txDiffuse.Sample( samLinear, input.Tex );
 	float4 textureBase = 0;
 	for (int i = 0; i < numOfLights; i++) {
-        textureBase += saturate( dot( lightPosition[i],input.Norm) * lightColour[i] * txDiffuse.Sample( samLinear, input.Tex ) );
+		textureBase += saturate( dot( lightPosition[i],input.Norm) * lightColour[i] * txDiffuse.Sample( samLinear, input.Tex ) * colourTint);
 	}
-    textureBase.a = 1;
     return textureBase;
 }
