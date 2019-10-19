@@ -38,7 +38,7 @@ void GameObject::Render(float dt)
 	cb.mWorld = XMMatrixTranspose(mWorld);
 	cb.mView = XMMatrixTranspose(dxshared::mView);
 	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
-	cb.numOfLights = LightManager::GetLightCount();
+	cb.numOfLights = (LightManager::GetLightCount() > 10) ? 10 : LightManager::GetLightCount();
 	Debug::Log(cb.numOfLights);
 	for (int i = 0; i < 10; i++) {
 		if (i >= LightManager::GetLightCount()) break;
