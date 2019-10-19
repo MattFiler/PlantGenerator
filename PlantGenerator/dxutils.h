@@ -33,7 +33,7 @@ using namespace DirectX;
 struct SimpleVertex
 {
 	XMFLOAT3 Pos;
-	//XMFLOAT2 Tex;
+	XMFLOAT2 Tex;
 	XMFLOAT3 Normal;
 };
 
@@ -261,7 +261,7 @@ public:
 				SimpleVertex thisVertInfo = SimpleVertex();
 				VertexGroup thisGroup = faces[i].verts[x];
 				thisVertInfo.Pos = verts[thisGroup.v - 1];
-				//thisVertInfo.Tex = coords[thisGroup.c - 1];
+				thisVertInfo.Tex = coords[thisGroup.c - 1];
 				thisVertInfo.Normal = normals[thisGroup.n - 1];
 				thisModel.compVertices.push_back(thisVertInfo);
 				thisModel.compIndices.push_back((WORD)totalIndex);
