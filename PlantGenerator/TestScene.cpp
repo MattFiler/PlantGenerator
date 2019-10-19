@@ -51,6 +51,8 @@ bool TestScene::Update(double dt)
 
 	main_cam.Update(dt);
 
+	light_source.Update(dt);
+
 	return true;
 }
 
