@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: 'Default Item.blend'
 # www.blender.org
-#mtllib DEFAULT_ITEM.MTL
+mtllib cube.mtl
 o Cube_Cube.001
 v -1.000000 1.000000 1.000000
 v -1.000000 -1.000000 -1.000000

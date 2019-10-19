@@ -118,7 +118,7 @@ bool dxmain::InitWindow()
 
 	if (!RegisterClassEx(&wcex))
 	{
-		OutputDebugString("Failed to setup window class in dxmain!!");
+		Debug::Log("Failed to setup window class in dxmain!!");
 		return false;
 	}
 
@@ -137,7 +137,7 @@ bool dxmain::InitWindow()
 
 	if (!m_hAppWnd)
 	{
-		OutputDebugString("Failed to create window in dxmain!!");
+		Debug::Log("Failed to create window in dxmain!!");
 		return false;
 	}
 
@@ -217,7 +217,7 @@ bool dxmain::InitDirectX()
 
 	if (FAILED(result)) 
 	{
-		OutputDebugString("Failed to create device and/or swap chain!!");
+		Debug::Log("Failed to create device and/or swap chain!!");
 		return false;
 	}
 

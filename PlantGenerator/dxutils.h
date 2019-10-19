@@ -47,31 +47,57 @@ struct ConstantBuffer
 	XMFLOAT4 lightColour[10];
 };
 
-struct VertexGroup {
+struct VertexGroup
+{
 	int v; //Vertex
 	int c; //Tex coord
 	int n; //Normal
 	bool set = false;
 };
 
-enum VertReaderType {
+enum VertReaderType
+{
 	VERTEX,
 	COORDINATE,
 	NORMAL,
 };
 
-struct LoadedModel {
-	std::vector<SimpleVertex> compVertices = std::vector<SimpleVertex>();
-	std::vector<WORD> compIndices = std::vector<WORD>();
-	std::string textureName = ""; //TODO: Read texture/colour data from MTL
+struct Material
+{
+	std::string materialName = "";
+
+	float r, g, b, a = 1.0f;
+	std::string texturePath = "models/plastic_base.dds"; //placeholder blank texture
 };
 
-struct Face {
-	std::vector<VertexGroup> verts = std::vector<VertexGroup>();
+struct LoadedMaterial
+{
+	std::string materialName = "";
+	ID3D11ShaderResourceView* materialTexture = nullptr;
+	XMFLOAT4 materialColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+};
+
+struct LoadedModelPart
+{
+	std::vector<SimpleVertex> compVertices = std::vector<SimpleVertex>();
+	std::vector<WORD> compIndices = std::vector<WORD>();
+	Material thisMaterial = Material();
+};
+
+struct LoadedModel 
+{
+	std::vector<LoadedModelPart> modelParts = std::vector<LoadedModelPart>();
+};
+
+struct Face
+{
+	std::vector<VertexGroup> verts = std::vector<VertexGroup>(); //Vertices (SHOULD BE 3 - TRIANGULATED)
+	std::string materialName = ""; //Material name to link with MTL
 };
 
 /* Debug logger */
-class Debug {
+class Debug
+{
 public:
 	static void Log(std::string msg) {
 		OutputDebugString(msg.c_str());
@@ -127,12 +153,12 @@ public:
 		return S_OK;
 	}
 
-	/* Load a model and return its indices and vertexes (todo: make it condense the vertex array, and parse an MTL) */
-	LoadedModel LoadModel(std::string path, std::string texture) //TEXTURE PARAM HERE SHOULD BE REMOVED WHEN MTL PARSING IS DONE
+	/* Load a model and return its indices and vertexes (todo: make it condense the vertex array) */
+	LoadedModel LoadModel(std::string path)
 	{
 		//Open OBJ
 		std::ifstream in(path.c_str());
-		if (!in) OutputDebugString("Failed to open model file!");
+		if (!in) Debug::Log("Failed to open model file!");
 
 		//Parse the OBJ to vertices/texcoords/normals
 		std::vector<XMFLOAT3> verts;
@@ -140,11 +166,17 @@ public:
 		std::vector<XMFLOAT3> normals;
 		std::vector<Face> faces;
 		std::string str;
+		std::string materialLibrary = "";
+		std::string currentMaterial = "";
 		while (std::getline(in, str))
 		{
 			if (str.size() > 0)
 			{
-				if (str[0] == 'v' && str[1] == ' ')
+				if (str.length() > 7 && str.substr(0, 7) == "mtllib ")
+				{
+					materialLibrary = str.substr(7);
+				}
+				else if (str.length() > 2 && str.substr(0, 2) == "v ")
 				{
 					str = str.substr(2);
 					std::string thisPos = "";
@@ -166,7 +198,7 @@ public:
 					}
 					verts.push_back(thisVertPos);
 				}
-				else if (str[0] == 'v' && str[1] == 't')
+				else if (str.length() > 3 && str.substr(0, 3) == "vt ")
 				{
 					str = str.substr(3);
 					std::string thisPos = "";
@@ -187,7 +219,7 @@ public:
 					}
 					coords.push_back(thisTexCoord);
 				}
-				else if (str[0] == 'v' && str[1] == 'n')
+				else if (str.length() > 3 && str.substr(0, 3) == "vn ")
 				{
 					str = str.substr(3);
 					std::string thisPos = "";
@@ -209,7 +241,11 @@ public:
 					}
 					normals.push_back(thisNormal);
 				}
-				else if (str[0] == 'f' && str[1] == ' ')
+				else if (str.length() > 7 && str.substr(0, 7) == "usemtl ")
+				{
+					currentMaterial = str.substr(7);
+				}
+				else if (str.length() > 2 && str.substr(0, 2) == "f ")
 				{
 					str = str.substr(2);
 					Face thisFace = Face();
@@ -245,30 +281,161 @@ public:
 						}
 						currentNumber += thisChar;
 					}
+					thisFace.materialName = currentMaterial;
 					faces.push_back(thisFace);
 				}
 			}
 		}
 		in.close();
 
+		//Open and parse MTL if it exists
+		std::vector<Material> materials = std::vector<Material>();
+		if (materialLibrary != "")
+		{
+			//Get model path parts
+			std::vector<std::string> modelPath = std::vector<std::string>();
+			std::string currentPath = "";
+			for (int i = 0; i < path.length(); i++) 
+			{
+				if (path[i] == '/' || path[i] == '\\')
+				{
+					modelPath.push_back(currentPath);
+					currentPath = "";
+					continue;
+				}
+				currentPath += path[i];
+			}
+			modelPath.push_back(currentPath);
+
+			//Get material path parts
+			std::vector<std::string> mtlPath = std::vector<std::string>();
+			currentPath = "";
+			for (int i = 0; i < materialLibrary.length(); i++)
+			{
+				if (materialLibrary[i] == '/' || materialLibrary[i] == '\\')
+				{
+					mtlPath.push_back(currentPath);
+					currentPath = "";
+					continue;
+				}
+				currentPath += materialLibrary[i];
+			}
+			mtlPath.push_back(currentPath);
+
+			//Reconstruct a good path to MTL using model path
+			std::string pathToMtl = "";
+			if (mtlPath.size() == 1) 
+			{
+				if (modelPath.size() == 1) 
+				{
+					pathToMtl = mtlPath[0];
+				}
+				else
+				{
+					for (int i = 0; i < modelPath.size() - 1; i++) 
+					{
+						pathToMtl += modelPath[i] + "/";
+					}
+					pathToMtl += mtlPath[0];
+				}
+			}
+			else
+			{
+				pathToMtl = materialLibrary;
+			}
+
+			//Open MTL
+			std::ifstream in2(pathToMtl.c_str());
+			if (!in2) Debug::Log("Failed to open material file!"); 
+			
+			//Parse MTL into materials
+			std::string str;
+			Material currentMaterial = Material();
+			while (std::getline(in2, str))
+			{
+				if (str.size() > 0)
+				{
+					if (str.length() > 7 && str.substr(0, 7) == "newmtl ")
+					{
+						if (currentMaterial.materialName != "")
+						{
+							materials.push_back(currentMaterial);
+							currentMaterial = Material();
+						}
+						currentMaterial.materialName = str.substr(7);
+					}
+					else if (str.length() > 3 && str.substr(0, 3) == "Kd ")
+					{
+						str = str.substr(3);
+						std::string thisColour = "";
+						int thisColourIndex = 0;
+						for (int i = 0; i < str.length() + 1; i++)
+						{
+							if (str[i] == ' ' || i == str.length())
+							{
+								if (thisColour == "") continue;
+								if (thisColourIndex == 0) currentMaterial.r = std::stof(thisColour);
+								if (thisColourIndex == 1) currentMaterial.g = std::stof(thisColour);
+								if (thisColourIndex == 2) currentMaterial.b = std::stof(thisColour);
+								thisColourIndex++;
+								thisColour = "";
+								continue;
+							}
+							thisColour += str[i];
+						}
+					}
+					else if (str.length() > 2 && str.substr(0, 2) == "d ")
+					{
+						currentMaterial.a = std::stof(str.substr(2));
+					}
+					else if (str.length() > 7 && str.substr(0, 7) == "map_Kd ")
+					{
+						currentMaterial.texturePath = str.substr(7);
+					}
+				}
+			}
+			if (currentMaterial.materialName != "")
+			{
+				materials.push_back(currentMaterial);
+			}
+		}
+
 		//Create vertex and index arrays from the data
 		LoadedModel thisModel = LoadedModel();
+		LoadedModelPart modelPart = LoadedModelPart();
 		int totalIndex = 0;
 		for (int i = 0; i < faces.size(); i++)
 		{
 			for (int x = 0; x < faces[i].verts.size(); x++)
 			{
 				SimpleVertex thisVertInfo = SimpleVertex();
-				VertexGroup thisGroup = faces[i].verts[x];
-				thisVertInfo.Pos = verts[thisGroup.v - 1];
-				thisVertInfo.Tex = coords[thisGroup.c - 1];
-				thisVertInfo.Normal = normals[thisGroup.n - 1];
-				thisModel.compVertices.push_back(thisVertInfo);
-				thisModel.compIndices.push_back((WORD)totalIndex);
+				thisVertInfo.Pos = verts[faces[i].verts[x].v - 1];
+				thisVertInfo.Tex = coords[faces[i].verts[x].c - 1];
+				thisVertInfo.Normal = normals[faces[i].verts[x].n - 1];
+
+				if (modelPart.thisMaterial.materialName != faces[i].materialName) 
+				{
+					if (totalIndex != 0)
+					{
+						thisModel.modelParts.push_back(modelPart);
+						modelPart = LoadedModelPart();
+					}
+					for (int i = 0; i < materials.size(); i++)
+					{
+						if (materials[i].materialName == faces[i].materialName)
+						{
+							modelPart.thisMaterial = materials[i];
+						}
+					}
+				}
+
+				modelPart.compVertices.push_back(thisVertInfo);
+				modelPart.compIndices.push_back((WORD)totalIndex);
+
 				totalIndex++;
 			}
 		}
-		thisModel.textureName = texture; //TODO read this info from MTL and parse per model part
+		thisModel.modelParts.push_back(modelPart);
 		return thisModel;
 	}
 };
