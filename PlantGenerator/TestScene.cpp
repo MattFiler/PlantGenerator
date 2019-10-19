@@ -7,15 +7,18 @@ void TestScene::Init()
 	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
 
 	Utilities dxutils = Utilities();
-	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj", "models/metal_base.dds"));
-	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj", "models/plastic_base.dds"));
+	bird_stand.SetData(dxutils.LoadModel("models/bird_main.obj", "models/metal_base.dds"));
+	//bird_body.SetData(dxutils.LoadModel("models/bird_main.obj", "models/plastic_base.dds"));
 
 	bird_stand.Create();
-	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
-	bird_body.Create();
-	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
+	bird_stand.SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	//bird_body.Create();
+	//bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
 
 	light_source.Create();
+	light_source.SetPosition(XMFLOAT3(0.0f, 1.0f, 0.0f));
+
+	//test_cube.Create();
 }
 
 /* Release the objects in the scene */
@@ -23,13 +26,15 @@ void TestScene::Release()
 {
 	main_cam.Release();
 	bird_stand.Release();
-	bird_body.Release();
+	//bird_body.Release();
 	light_source.Release();
+	//test_cube.Release();
 }
 
 /* Update the objects in the scene */
 bool TestScene::Update(double dt)
 {
+	/*
 	if (bird_body.GetRotation().z > 2.0f) {
 		goingForward = false;
 	}
@@ -45,11 +50,16 @@ bool TestScene::Update(double dt)
 	{
 		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z - dt));
 	}
+	*/
 
 	bird_stand.Update(dt);
-	bird_body.Update(dt);
+	//bird_body.Update(dt);
 
 	main_cam.Update(dt);
+
+	light_source.Update(dt);
+
+	//test_cube.Update(dt);
 
 	return true;
 }
@@ -58,5 +68,6 @@ bool TestScene::Update(double dt)
 void TestScene::Render(double dt)
 {
 	bird_stand.Render(dt);
-	bird_body.Render(dt);
+	//bird_body.Render(dt);
+	//test_cube.Update(dt);
 }

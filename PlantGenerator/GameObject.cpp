@@ -44,7 +44,11 @@ void GameObject::Render(float dt)
 		if (i >= LightManager::GetLightCount()) break;
 		cb.lightPosition[i] = LightManager::GetLights()[i]->GetPosition();
 		cb.lightColour[i] = LightManager::GetLights()[i]->GetColour();
+
+		Debug::Log("Added light to constant buffer!");
+		Debug::Log("Light pos = X:" + std::to_string(LightManager::GetLights()[i]->GetPosition().x) + ", Y:" + std::to_string(LightManager::GetLights()[i]->GetPosition().y) + ", Z:" + std::to_string(LightManager::GetLights()[i]->GetPosition().z));
 	}
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
+	dxshared::m_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 }

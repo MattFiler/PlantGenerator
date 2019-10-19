@@ -19,5 +19,7 @@ private:
 	bool goingForward = false;
 
 	Light light_source = Light();
+
+	Cube test_cube = Cube();
 };
 
