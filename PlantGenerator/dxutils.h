@@ -11,6 +11,7 @@
 #include "dxerr.h"
 #include "DDSTextureLoader.h"
 #include "InputHandler.h"
+#include "LightManager.h"
 
 #include <string>
 #include <vector>
@@ -33,6 +34,7 @@ struct SimpleVertex
 {
 	XMFLOAT3 Pos;
 	XMFLOAT2 Tex;
+	XMFLOAT3 Normal;
 };
 
 struct ConstantBuffer
@@ -40,6 +42,9 @@ struct ConstantBuffer
 	XMMATRIX mWorld;
 	XMMATRIX mView;
 	XMMATRIX mProjection;
+	int numOfLights; //This defines how many lights are actually used - the size of the arrays below are the absolute maximums, not necessarily the number of lights passed
+	XMFLOAT3 lightPosition[10];
+	XMFLOAT4 lightColour[10];
 };
 
 struct VertexGroup {
@@ -257,6 +262,7 @@ public:
 				VertexGroup thisGroup = faces[i].verts[x];
 				thisVertInfo.Pos = verts[thisGroup.v - 1];
 				thisVertInfo.Tex = coords[thisGroup.c - 1];
+				thisVertInfo.Normal = normals[thisGroup.n - 1];
 				thisModel.compVertices.push_back(thisVertInfo);
 				thisModel.compIndices.push_back((WORD)totalIndex);
 				totalIndex++;

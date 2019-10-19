@@ -5,6 +5,7 @@
 #include "Cube.h"
 #include "Model.h"
 #include "Camera.h"
+#include "Light.h"
 
 class Scene
 {

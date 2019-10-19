@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "Light.h"
 
 /* Create our low level GameObject resources */
 void GameObject::Create()
@@ -37,6 +38,13 @@ void GameObject::Render(float dt)
 	cb.mWorld = XMMatrixTranspose(mWorld);
 	cb.mView = XMMatrixTranspose(dxshared::mView);
 	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
+	cb.numOfLights = LightManager::GetLightCount();
+	Debug::Log(cb.numOfLights);
+	for (int i = 0; i < 10; i++) {
+		if (i >= LightManager::GetLightCount()) break;
+		cb.lightPosition[i] = LightManager::GetLights()[i]->GetPosition();
+		cb.lightColour[i] = LightManager::GetLights()[i]->GetColour();
+	}
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 }

@@ -14,6 +14,8 @@ void TestScene::Init()
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
 	bird_body.Create();
 	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
+
+	light_source.Create();
 }
 
 /* Release the objects in the scene */
@@ -22,6 +24,7 @@ void TestScene::Release()
 	main_cam.Release();
 	bird_stand.Release();
 	bird_body.Release();
+	light_source.Release();
 }
 
 /* Update the objects in the scene */
