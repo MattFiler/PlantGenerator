@@ -78,8 +78,8 @@ void ModelPart::Render(float dt)
 	//cb.numOfLights = (LightManager::GetLightCount() > 10) ? 10 : LightManager::GetLightCount();
 	//for (int i = 0; i < 10; i++) {
 		//if (i >= LightManager::GetLightCount()) break;
-		cb.lightPosition = LightManager::GetLights()[0]->GetPosition();
-		cb.lightColour = LightManager::GetLights()[0]->GetColour();
+		cb.lightPosition = GameObjectManager::GetLights()[0]->GetPosition();
+		cb.lightColour = GameObjectManager::GetLights()[0]->GetColour();
 	//}
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);

@@ -3,6 +3,7 @@
 #include <vector>
 
 class GameObject;
+class Light;
 
 class GameObjectManager
 {
@@ -16,6 +17,8 @@ public:
 		allGameObjects.push_back(_aLight);
 	}
 	static void RemoveObject(GameObject* _aLight);
+
+	static std::vector<Light*> GetLights();
 
 	static void Create();
 	static void Release();

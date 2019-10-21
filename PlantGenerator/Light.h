@@ -11,8 +11,6 @@ public:
 
 	void Create() override {
 		GameObject::Create();
-
-		LightManager::AddLight(this);
 	}
 	void Release() override {
 		GameObject::Release();

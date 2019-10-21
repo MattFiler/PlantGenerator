@@ -11,7 +11,6 @@
 #include "dxerr.h"
 #include "DDSTextureLoader.h"
 #include "InputHandler.h"
-#include "LightManager.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"

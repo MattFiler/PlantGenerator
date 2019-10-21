@@ -1,8 +1,10 @@
 #include "GameObjectManager.h"
 #include "GameObject.h"
+#include "Light.h"
 
 std::vector<GameObject*> GameObjectManager::allGameObjects = std::vector<GameObject*>();
 
+/* Remove a game object from the game object pool */
 void GameObjectManager::RemoveObject(GameObject * _aLight)
 {
 	for (int i = 0; i < allGameObjects.size(); i++) {
@@ -13,6 +15,19 @@ void GameObjectManager::RemoveObject(GameObject * _aLight)
 	}
 }
 
+/* Get all lights in the current game object pool */
+std::vector<Light*> GameObjectManager::GetLights()
+{
+	std::vector<Light*> allLights = std::vector<Light*>();
+	for (int i = 0; i < allGameObjects.size(); i++) {
+		if (dynamic_cast<Light*>(allGameObjects[i])) {
+			allLights.push_back(dynamic_cast<Light*>(allGameObjects[i]));
+		}
+	}
+	return allLights;
+}
+
+/* Run "Create()" on all gameobjects in the pool */
 void GameObjectManager::Create()
 {
 	for (int i = 0; i < allGameObjects.size(); i++) {
@@ -20,6 +35,7 @@ void GameObjectManager::Create()
 	}
 }
 
+/* Run "Release()" on all gameobjects in the pool */
 void GameObjectManager::Release()
 {
 	for (int i = 0; i < allGameObjects.size(); i++) {
@@ -28,6 +44,7 @@ void GameObjectManager::Release()
 	allGameObjects.clear();
 }
 
+/* Run "Update(dt)" on all gameobjects in the pool */
 void GameObjectManager::Update(float dt)
 {
 	for (int i = 0; i < allGameObjects.size(); i++) {
@@ -35,6 +52,7 @@ void GameObjectManager::Update(float dt)
 	}
 }
 
+/* Run "Render(dt)" on all gameobjects in the pool */
 void GameObjectManager::Render(float dt)
 {
 	for (int i = 0; i < allGameObjects.size(); i++) {
