@@ -10,6 +10,9 @@ void TestScene::Init()
 	bird_body = Model();
 	light_source = Light();
 
+	doAnimation = true;
+	goingForward = false;
+
 	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
 	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
 
