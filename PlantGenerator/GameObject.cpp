@@ -113,6 +113,7 @@ void GameObject::Update(float dt)
 /* Perform low level GameObject render functions */
 void GameObject::Render(float dt)
 {
+	if (!isActive) return;
 #ifdef _DEBUG
 	if (InputHandler::KeyPressed(WindowsKey::P)) {
 		//Input layout

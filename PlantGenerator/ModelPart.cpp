@@ -57,17 +57,19 @@ void ModelPart::Release()
 /* Update the model */
 void ModelPart::Update(float dt)
 {
+	GameObject::Update(dt);
+
 	if (!isActive) return;
 	if (indexCount == 0) return;
-	GameObject::Update(dt);
 }
 
 /* Render the model */
 void ModelPart::Render(float dt)
 {
+	//GameObject::Render(dt);
+
 	if (!isActive) return;
 	if (indexCount == 0) return;
-	//GameObject::Render(dt);
 
 	//Update and set constant buffer
 	ConstantBuffer cb;

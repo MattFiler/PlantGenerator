@@ -20,7 +20,6 @@ void TestScene::Init()
 	GameObjectManager::AddObject(&bird_body);
 	GameObjectManager::AddObject(&main_cam);
 	GameObjectManager::AddObject(&light_source);
-
 	GameObjectManager::Create();
 
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));

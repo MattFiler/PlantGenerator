@@ -77,14 +77,16 @@ void Model::Release()
 	for (int i = 0; i < allModels.size(); i++) {
 		allModels[i].Release();
 	}
+	allModels.clear();
 }
 
 /* Update all model parts */
 void Model::Update(float dt)
 {
+	GameObject::Update(dt);
+
 	if (!isActive) return;
 	if (vertexCount == 0) return;
-	GameObject::Update(dt);
 
 	for (int i = 0; i < allModels.size(); i++) {
 		allModels[i].Update(dt);
@@ -94,9 +96,10 @@ void Model::Update(float dt)
 /* Render all model parts */
 void Model::Render(float dt)
 {
+	GameObject::Render(dt);
+
 	if (!isActive) return;
 	if (vertexCount == 0) return;
-	GameObject::Render(dt);
 
 	//Set shaders to use
 	dxshared::m_pImmediateContext->VSSetShader(m_vertexShader, nullptr, 0);

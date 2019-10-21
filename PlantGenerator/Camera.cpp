@@ -17,9 +17,9 @@ void Camera::Release()
 /* Update the Camera */
 void Camera::Update(float dt)
 {
-	if (!isActive) return;
-
 	GameObject::Update(dt);
+
+	if (!isActive) return;
 	dxshared::mView = mWorld;
 
 	double moveSpeed = dt;
