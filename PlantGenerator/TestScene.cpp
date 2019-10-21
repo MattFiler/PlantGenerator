@@ -33,29 +33,38 @@ void TestScene::Release()
 /* Update the objects in the scene */
 bool TestScene::Update(double dt)
 {
-	if (bird_body.GetRotation().z > 2.0f) {
-		goingForward = false;
-	}
-	if (bird_body.GetRotation().z < -0.8f) {
-		goingForward = true;
-	}
+	XMFLOAT3 lightPos = light_source.GetPosition();
+	ImGui::Begin("Plant Generator");
+	ImGui::Checkbox("Do Animation", &doAnimation);
+	ImGui::SliderFloat("Light X", &lightPos.x, -20.0f, 20.0f);
+	ImGui::SliderFloat("Light Y", &lightPos.y, -20.0f, 20.0f);
+	ImGui::SliderFloat("Light Z", &lightPos.z, -20.0f, 20.0f);
+	ImGui::End();
+	light_source.SetPosition(lightPos);
 
-	if (goingForward)
+	if (doAnimation) 
 	{
-		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z + dt));
-	}
-	else
-	{
-		bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z - dt));
+		if (bird_body.GetRotation().z > 2.0f) {
+			goingForward = false;
+		}
+		if (bird_body.GetRotation().z < -0.8f) {
+			goingForward = true;
+		}
+
+		if (goingForward)
+		{
+			bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z + dt));
+		}
+		else
+		{
+			bird_body.SetRotation(XMFLOAT3(0.0f, -1.0f, bird_body.GetRotation().z - dt));
+		}
 	}
 
 	bird_stand.Update(dt);
 	bird_body.Update(dt);
 
 	main_cam.Update(dt);
-
-	ImGui::Begin("Test");
-	ImGui::End();
 
 	light_source.Update(dt);
 

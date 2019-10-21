@@ -16,6 +16,8 @@ private:
 
 	Model bird_stand = Model();
 	Model bird_body = Model();
+
+	bool doAnimation = true;
 	bool goingForward = false;
 
 	Light light_source = Light();
