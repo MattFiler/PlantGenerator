@@ -3,20 +3,22 @@
 /* Init the objects in the scene */
 void TestScene::Init()
 {
+	Utilities dxutils = Utilities();
+
 	main_cam.Create();
 	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
 
-	Utilities dxutils = Utilities();
 	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
-	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
-
 	bird_stand.Create();
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
-	bird_body.Create();
 	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
 
+	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
+	bird_body.Create();
+
 	light_source.Create();
-	light_source.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
+	light_source.SetColour(XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
+	light_source.SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -4.1f));
 }
 
 /* Release the objects in the scene */
