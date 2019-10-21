@@ -18,8 +18,8 @@ dxmain::dxmain(HINSTANCE hInstance)
 {
 	m_hAppInstance = hInstance;
 	m_hAppWnd = NULL;
-	m_clientWidth = 800;
-	m_clientHeight = 600; //todo: alt sizes
+	m_clientWidth = 1280;
+	m_clientHeight = 720; //todo: alt sizes
 	m_appTitle = "Plant Generator";
 	m_wndStyle = WS_OVERLAPPEDWINDOW; //todo: do we want this style?
 

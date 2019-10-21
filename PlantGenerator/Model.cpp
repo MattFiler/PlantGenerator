@@ -34,7 +34,7 @@ void Model::Create()
 	//Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
 	Utilities dxutils = Utilities();
-	HR(dxutils.CompileShaderFromFile(L"cube.fx", "VS", "vs_4_0", &pVSBlob));
+	HR(dxutils.CompileShaderFromFile(L"ObjectShader.fx", "VS", "vs_4_0", &pVSBlob));
 
 	//Create the vertex shader
 	HR(dxshared::m_pDevice->CreateVertexShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &m_vertexShader));
@@ -54,14 +54,11 @@ void Model::Create()
 
 	//Compile the pixel shader
 	ID3DBlob* pPSBlob = nullptr;
-	HR(dxutils.CompileShaderFromFile(L"cube.fx", "PS", "ps_4_0", &pPSBlob));
+	HR(dxutils.CompileShaderFromFile(L"ObjectShader.fx", "PS", "ps_4_0", &pPSBlob));
 
 	//Create the pixel shader
 	HR(dxshared::m_pDevice->CreatePixelShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &m_pixelShader));
 	pPSBlob->Release();
-
-	//Set the input layout
-	dxshared::m_pImmediateContext->IASetInputLayout(m_vertexLayout);
 
 	for (int i = 0; i < allModels.size(); i++) {
 		allModels[i].Create();
@@ -113,9 +110,11 @@ void Model::Render(float dt)
 	//Set sampler
 	dxshared::m_pImmediateContext->PSSetSamplers(0, 1, &g_pSamplerLinear);
 
+	//Set input layout (submeshes don't use GO render state, so we can do this here)
+	dxshared::m_pImmediateContext->IASetInputLayout(m_vertexLayout);
+
 	//Render each model part
 	for (int i = 0; i < allModels.size(); i++) {
-		Debug::Log(i);
 		allModels[i].Render(dt);
 	}
 }

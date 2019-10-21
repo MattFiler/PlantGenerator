@@ -37,15 +37,28 @@ struct SimpleVertex
 	XMFLOAT3 Normal;
 };
 
+struct SimpleVertexAlt
+{
+	XMFLOAT3 Pos;
+	XMFLOAT4 Color;
+};
+
 struct ConstantBuffer
 {
 	XMMATRIX mWorld;
 	XMMATRIX mView;
 	XMMATRIX mProjection;
 	XMFLOAT4 colourTint;
-	int numOfLights; //This defines how many lights are actually used - the size of the arrays below are the absolute maximums, not necessarily the number of lights passed
-	XMFLOAT3 lightPosition[10];
-	XMFLOAT4 lightColour[10];
+	//int numOfLights; //This defines how many lights are actually used - the size of the arrays below are the absolute maximums, not necessarily the number of lights passed
+	XMFLOAT3 lightPosition;
+	XMFLOAT4 lightColour;
+};
+
+struct ConstantBufferAlt
+{
+	XMMATRIX mWorld;
+	XMMATRIX mView;
+	XMMATRIX mProjection;
 };
 
 struct VertexGroup
@@ -400,6 +413,7 @@ public:
 					else if (str.length() > 7 && str.substr(0, 7) == "map_Kd ")
 					{
 						currentMaterial.texturePath = str.substr(7);
+						//todo: work out if this path is system or relative, and if the latter, prepend mtl path
 					}
 				}
 			}

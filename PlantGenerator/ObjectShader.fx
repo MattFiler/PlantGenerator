@@ -7,9 +7,9 @@ cbuffer ConstantBuffer : register( b0 )
 	matrix View;
 	matrix Projection;
 	float4 colourTint;
-	int numOfLights;
-	float3 lightPosition[10];
-	float4 lightColour[10];
+	//int numOfLights;
+	float3 lightPosition;
+	float4 lightColour;
 }
 
 struct VS_INPUT
@@ -26,9 +26,7 @@ struct PS_INPUT
     float3 Norm : NORMAL;
 };
 
-//--------------------------------------------------------------------------------------
-// Vertex Shader
-//--------------------------------------------------------------------------------------
+//Base Vertex Shader
 PS_INPUT VS( VS_INPUT input )
 {
     PS_INPUT output = (PS_INPUT)0;
@@ -41,15 +39,12 @@ PS_INPUT VS( VS_INPUT input )
     return output;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Pixel Shader
-//--------------------------------------------------------------------------------------
+//Base Pixel Shader
 float4 PS( PS_INPUT input) : SV_Target
 {
 	float4 textureBase = 0;
-	for (int i = 0; i < numOfLights; i++) {
-		textureBase += saturate( dot( lightPosition[i],input.Norm) * lightColour[i] * txDiffuse.Sample( samLinear, input.Tex ) * colourTint);
-	}
+	//for (int i = 0; i < numOfLights; i++) {
+		textureBase += saturate( dot( lightPosition,input.Norm) * lightColour * txDiffuse.Sample( samLinear, input.Tex ) * colourTint);
+	//}
     return textureBase;
 }

@@ -16,6 +16,7 @@ void TestScene::Init()
 	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
 
 	light_source.Create();
+	light_source.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
 }
 
 /* Release the objects in the scene */
@@ -61,4 +62,5 @@ void TestScene::Render(double dt)
 {
 	bird_stand.Render(dt);
 	bird_body.Render(dt);
+	light_source.Render(dt);
 }

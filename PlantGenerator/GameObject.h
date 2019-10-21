@@ -62,5 +62,16 @@ protected:
 	XMFLOAT3 rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	bool isActive = true;
+
+#ifdef _DEBUG
+	ID3D11Buffer* GO_ConstantBuffer = nullptr;
+	ID3D11Buffer* GO_VertexBuffer = nullptr;
+	ID3D11Buffer* GO_IndexBuffer = nullptr;
+	ID3D11VertexShader* GO_VertexShader = nullptr;
+	ID3D11PixelShader* GO_PixelShader = nullptr;
+	ID3D11InputLayout* GO_VertLayout = nullptr;
+	int GO_VertCount = 0;
+	int GO_IndexCount = 0;
+#endif
 };
 

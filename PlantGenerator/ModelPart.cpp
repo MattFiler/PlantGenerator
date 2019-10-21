@@ -67,7 +67,7 @@ void ModelPart::Render(float dt)
 {
 	if (!isActive) return;
 	if (indexCount == 0) return;
-	GameObject::Render(dt);
+	//GameObject::Render(dt);
 
 	//Update and set constant buffer
 	ConstantBuffer cb;
@@ -75,12 +75,12 @@ void ModelPart::Render(float dt)
 	cb.mView = XMMatrixTranspose(dxshared::mView);
 	cb.mProjection = XMMatrixTranspose(dxshared::mProjection);
 	cb.colourTint = loadedMaterial.materialColour;
-	cb.numOfLights = (LightManager::GetLightCount() > 10) ? 10 : LightManager::GetLightCount();
-	for (int i = 0; i < 10; i++) {
-		if (i >= LightManager::GetLightCount()) break;
-		cb.lightPosition[i] = LightManager::GetLights()[i]->GetPosition();
-		cb.lightColour[i] = LightManager::GetLights()[i]->GetColour();
-	}
+	//cb.numOfLights = (LightManager::GetLightCount() > 10) ? 10 : LightManager::GetLightCount();
+	//for (int i = 0; i < 10; i++) {
+		//if (i >= LightManager::GetLightCount()) break;
+		cb.lightPosition = LightManager::GetLights()[0]->GetPosition();
+		cb.lightColour = LightManager::GetLights()[0]->GetColour();
+	//}
 	dxshared::m_pImmediateContext->UpdateSubresource(g_pConstantBuffer, 0, nullptr, &cb, 0, 0);
 	dxshared::m_pImmediateContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer);
 	dxshared::m_pImmediateContext->PSSetConstantBuffers(0, 1, &g_pConstantBuffer);
