@@ -91,7 +91,7 @@ int dxmain::Run()
 /* Set appropriate properties and then initialise window */
 bool dxmain::Init()
 {
-	return InitWindow() && InitDirectX();
+	return InitWindow() && InitDirectX() && InitImGUI();
 }
 
 /* Set appropriate properties and then initialise window */
@@ -296,10 +296,26 @@ bool dxmain::InitDirectX()
 	return true;
 }
 
+/* Initialise ImGUI */
+bool dxmain::InitImGUI()
+{
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplWin32_Init(m_hAppWnd);
+	ImGui_ImplDX11_Init(m_pDevice, m_pImmediateContext);
+	ImGui::StyleColorsDark();
+
+	return true;
+}
 
 /* Handle windows messages */
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT dxmain::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+		return true;
+
 	switch (msg) 
 	{
 		case WM_DESTROY:

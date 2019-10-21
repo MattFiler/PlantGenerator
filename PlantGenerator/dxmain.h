@@ -37,5 +37,8 @@ protected:
 	D3D_FEATURE_LEVEL m_featureLevel;
 	D3D11_VIEWPORT m_viewport;
 	ID3D11RasterizerState* WireFrame;
+
+	//ImGUI
+	bool InitImGUI();
 };
 

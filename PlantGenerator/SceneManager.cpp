@@ -29,6 +29,11 @@ bool SceneManager::Update(double dt)
 		currentSceneIndex = requestedSceneIndex;
 		availableScenes[currentSceneIndex]->Init();
 	}
+
+	//New ImGui frame
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
 	
 	//Update current scene
 	if (currentSceneIndex != -1)
@@ -45,6 +50,10 @@ void SceneManager::Render(double dt)
 	//Render scene
 	if (currentSceneIndex != -1)
 		availableScenes[currentSceneIndex]->Render(dt);
+
+	//Render ImGui
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	//Present the back buffer to front buffer
 	m_pSwapChain->Present(0, 0);

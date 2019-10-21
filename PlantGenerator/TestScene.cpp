@@ -52,6 +52,9 @@ bool TestScene::Update(double dt)
 
 	main_cam.Update(dt);
 
+	ImGui::Begin("Test");
+	ImGui::End();
+
 	light_source.Update(dt);
 
 	return true;
