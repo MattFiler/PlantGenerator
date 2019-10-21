@@ -5,18 +5,21 @@ void TestScene::Init()
 {
 	Utilities dxutils = Utilities();
 
-	main_cam.Create();
-	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
-
 	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
-	bird_stand.Create();
+	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
+
+	GameObjectManager::AddObject(&bird_stand);
+	GameObjectManager::AddObject(&bird_body);
+	GameObjectManager::AddObject(&main_cam);
+	GameObjectManager::AddObject(&light_source);
+
+	GameObjectManager::Create();
+
 	bird_stand.SetPosition(XMFLOAT3(0.0f, -3.0f, 0.0f));
 	bird_stand.SetRotation(XMFLOAT3(0.0f, -1.0f, 0.0f));
 
-	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
-	bird_body.Create();
+	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
 
-	light_source.Create();
 	light_source.SetColour(XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
 	light_source.SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -4.1f));
 }
@@ -24,10 +27,7 @@ void TestScene::Init()
 /* Release the objects in the scene */
 void TestScene::Release()
 {
-	main_cam.Release();
-	bird_stand.Release();
-	bird_body.Release();
-	light_source.Release();
+	GameObjectManager::Release();
 }
 
 /* Update the objects in the scene */
@@ -61,12 +61,7 @@ bool TestScene::Update(double dt)
 		}
 	}
 
-	bird_stand.Update(dt);
-	bird_body.Update(dt);
-
-	main_cam.Update(dt);
-
-	light_source.Update(dt);
+	GameObjectManager::Update(dt);
 
 	return true;
 }
@@ -74,7 +69,5 @@ bool TestScene::Update(double dt)
 /* Render the objects in the scene */
 void TestScene::Render(double dt)
 {
-	bird_stand.Render(dt);
-	bird_body.Render(dt);
-	light_source.Render(dt);
+	GameObjectManager::Render(dt);
 }

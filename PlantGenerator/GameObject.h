@@ -1,12 +1,14 @@
 #pragma once
 
 #include "dxutils.h"
+#include "GameObjectManager.h"
 
 class GameObject
 {
 public:
 	GameObject() = default;
 	~GameObject() {
+		GameObjectManager::RemoveObject(this);
 		Release();
 	}
 
