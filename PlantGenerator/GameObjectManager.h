@@ -7,30 +7,15 @@ class GameObject;
 class GameObjectManager
 {
 public:
-	GameObjectManager() {
-		ClearObjects();
-	}
+	GameObjectManager() = default;
 	~GameObjectManager() {
-		ClearObjects();
+		Release();
 	}
 
 	static void AddObject(GameObject* _aLight) {
 		allGameObjects.push_back(_aLight);
 	}
-	static void RemoveObject(GameObject* _aLight) {
-		for (int i = 0; i < allGameObjects.size(); i++) {
-			if (allGameObjects[i] == _aLight) {
-				allGameObjects.erase(allGameObjects.begin() + i);
-			}
-		}
-	}
-
-	static std::vector<GameObject*> GetObjects() {
-		return allGameObjects;
-	}
-	static void ClearObjects() {
-		allGameObjects.clear();
-	}
+	static void RemoveObject(GameObject* _aLight);
 
 	static void Create();
 	static void Release();

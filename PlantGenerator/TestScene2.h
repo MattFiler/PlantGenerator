@@ -2,7 +2,7 @@
 
 #include "Scene.h"
 
-class TestScene : public Scene
+class TestScene2 : public Scene
 {
 public:
 	void Init() override;
@@ -13,13 +13,7 @@ public:
 
 private:
 	Camera main_cam;
-
-	Model bird_stand;
-	Model bird_body;
-
-	bool doAnimation = true;
-	bool goingForward = false;
-
+	Model cube_model;
 	Light light_source;
 };
 

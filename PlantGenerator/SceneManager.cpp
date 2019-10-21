@@ -13,6 +13,7 @@ bool SceneManager::Init()
 	bool dxInit = dxmain::Init();
 
 	AddScene(&newScene);
+	AddScene(&newScene2);
 	ChangeScene(0);
 
 	return dxInit;
@@ -34,6 +35,11 @@ bool SceneManager::Update(double dt)
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	//Scene manager ImGui control
+	ImGui::Begin("Scene Manager");
+	ImGui::SliderInt("Current scene", &requestedSceneIndex, 0, availableScenes.size()-1);
+	ImGui::End();
 	
 	//Update current scene
 	if (currentSceneIndex != -1)

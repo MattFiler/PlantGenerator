@@ -2,6 +2,7 @@
 
 #include "dxmain.h"
 #include "TestScene.h"
+#include "TestScene2.h"
 
 class Scene;
 
@@ -17,6 +18,7 @@ public:
 
 	void ChangeScene(int _newScene) 
 	{
+		if (requestedSceneIndex == _newScene) return;
 		Debug::Log("Switching to scene: " + std::to_string(_newScene));
 		requestedSceneIndex = _newScene;
 	}
@@ -33,5 +35,6 @@ private:
 	std::vector<Scene*> availableScenes = std::vector<Scene*>();
 
 	TestScene newScene = TestScene();
+	TestScene2 newScene2 = TestScene2();
 };
 

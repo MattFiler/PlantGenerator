@@ -5,6 +5,11 @@ void TestScene::Init()
 {
 	Utilities dxutils = Utilities();
 
+	main_cam = Camera();
+	bird_stand = Model();
+	bird_body = Model();
+	light_source = Light();
+
 	bird_stand.SetData(dxutils.LoadModel("models/bird_stand.obj"));
 	bird_body.SetData(dxutils.LoadModel("models/bird_main.obj"));
 
@@ -34,7 +39,7 @@ void TestScene::Release()
 bool TestScene::Update(double dt)
 {
 	XMFLOAT3 lightPos = light_source.GetPosition();
-	ImGui::Begin("Plant Generator");
+	ImGui::Begin("TestScene Control");
 	ImGui::Checkbox("Do Animation", &doAnimation);
 	ImGui::SliderFloat("Light X", &lightPos.x, -20.0f, 20.0f);
 	ImGui::SliderFloat("Light Y", &lightPos.y, -20.0f, 20.0f);
