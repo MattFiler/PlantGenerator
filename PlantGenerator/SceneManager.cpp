@@ -14,6 +14,7 @@ bool SceneManager::Init()
 
 	AddScene(&newScene);
 	AddScene(&newScene2);
+	AddScene(&newScene3);
 	ChangeScene(0);
 
 	return dxInit;

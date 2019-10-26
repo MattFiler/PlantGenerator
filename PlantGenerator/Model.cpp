@@ -99,6 +99,7 @@ void Model::Render(float dt)
 	GameObject::Render(dt);
 
 	if (!isActive) return;
+	if (isInvisible) return;
 	if (vertexCount == 0) return;
 
 	//Set shaders to use

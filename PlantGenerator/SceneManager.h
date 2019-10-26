@@ -3,6 +3,7 @@
 #include "dxmain.h"
 #include "TestScene.h"
 #include "TestScene2.h"
+#include "TestScene3.h"
 
 class Scene;
 
@@ -36,5 +37,6 @@ private:
 
 	TestScene newScene = TestScene();
 	TestScene2 newScene2 = TestScene2();
+	TestScene3 newScene3 = TestScene3();
 };
 

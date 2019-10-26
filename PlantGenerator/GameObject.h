@@ -57,13 +57,23 @@ public:
 		return isActive;
 	}
 
+	void SetInvisible(bool _invis)
+	{
+		isInvisible = _invis;
+	}
+	bool GetInvisible()
+	{
+		return isInvisible;
+	}
+
 protected:
 	XMMATRIX mWorld;
 
 	XMFLOAT3 position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-	bool isActive = true;
+	bool isActive = true; //If false, won't render or update
+	bool isInvisible = false; //If true, will update but not render
 
 #ifdef _DEBUG
 	ID3D11Buffer* GO_ConstantBuffer = nullptr;

@@ -114,6 +114,7 @@ void GameObject::Update(float dt)
 void GameObject::Render(float dt)
 {
 	if (!isActive) return;
+	if (isInvisible) return;
 #ifdef _DEBUG
 	if (InputHandler::KeyPressed(WindowsKey::P)) {
 		//Input layout

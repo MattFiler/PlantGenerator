@@ -36,10 +36,12 @@
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="ModelPart.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="PlantGeneration.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TestScene2.cpp" />
+    <ClCompile Include="TestScene3.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -64,11 +66,13 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModelPart.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="PlantGeneration.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TestScene2.h" />
+    <ClInclude Include="TestScene3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
