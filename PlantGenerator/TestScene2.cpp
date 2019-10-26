@@ -9,7 +9,7 @@ void TestScene2::Init()
 	cube_model = Model();
 	light_source = Light();
 
-	cube_model.SetData(dxutils.LoadModel("models/cube.obj"));
+	cube_model.SetData(dxutils.LoadModel("models/plant_parts/petal_low90.obj"));
 
 	GameObjectManager::AddObject(&cube_model);
 	GameObjectManager::AddObject(&light_source);

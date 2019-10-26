@@ -72,7 +72,7 @@ struct VertexGroup
 	bool set = false;
 };
 
-enum VertReaderType
+enum VertReaderType  
 {
 	VERTEX,
 	COORDINATE,
@@ -278,6 +278,8 @@ public:
 						if (thisChar == '/' || thisChar == ' ' || i == str.length())
 						{
 							if (currentNumber == "") {
+								if (verts.size() == 0) Debug::Log("This model has no vertices!");
+								if (coords.size() == 0) Debug::Log("This model has no UVs!");
 								if (normals.size() == 0) Debug::Log("This model has no normals!");
 								continue;
 							}
@@ -306,6 +308,7 @@ public:
 						}
 						currentNumber += thisChar;
 					}
+					if (thisFace.verts.size() != 3) Debug::Log("This model is not triangulated!");
 					thisFace.materialName = currentMaterial;
 					faces.push_back(thisFace);
 				}
@@ -416,7 +419,23 @@ public:
 					else if (str.length() > 7 && str.substr(0, 7) == "map_Kd ")
 					{
 						currentMaterial.texturePath = str.substr(7);
-						//todo: work out if this path is system or relative, and if the latter, prepend mtl path
+						if (currentMaterial.texturePath[1] == ':') {
+							Debug::Log("Texture uses system path! " + currentMaterial.texturePath);
+						}
+						else
+						{
+							std::string texPrepend = "";
+							for (int i = pathToMtl.length(); i >= 0; i--)
+							{
+								if (pathToMtl[i] == '/' || pathToMtl[i] == '\\')
+								{
+									texPrepend = pathToMtl.substr(0, i);
+									break;
+								}
+							}
+							currentMaterial.texturePath = texPrepend + "/" + currentMaterial.texturePath;
+							Debug::Log(currentMaterial.texturePath);
+						}
 					}
 				}
 			}
