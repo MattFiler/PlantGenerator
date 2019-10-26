@@ -52,9 +52,9 @@ struct ConstantBuffer
 	XMMATRIX mView;
 	XMMATRIX mProjection;
 	XMFLOAT4 colourTint;
-	//int numOfLights; //This defines how many lights are actually used - the size of the arrays below are the absolute maximums, not necessarily the number of lights passed
-	XMFLOAT3 lightPosition;
-	XMFLOAT4 lightColour;
+	XMFLOAT4 ambientLight;
+	XMFLOAT4 pointlightPosition; //W is used for intensity
+	XMFLOAT4 pointlightColour;
 };
 
 struct ConstantBufferAlt

@@ -281,6 +281,9 @@ bool dxmain::InitDirectX()
 	dxshared::m_pDevice = m_pDevice;
 	dxshared::m_pImmediateContext = m_pImmediateContext;
 
+	//Set default ambient lighting
+	dxshared::ambientLightColour = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+
 	//Set topology for rendering
 	m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

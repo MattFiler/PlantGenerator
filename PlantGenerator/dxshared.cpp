@@ -9,3 +9,5 @@ UINT dxshared::m_renderHeight = 0;
 
 DirectX::XMMATRIX dxshared::mView;
 DirectX::XMMATRIX dxshared::mProjection;
+
+DirectX::XMFLOAT4 dxshared::ambientLightColour;

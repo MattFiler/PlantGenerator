@@ -16,4 +16,6 @@ public:
 
 	static DirectX::XMMATRIX mView;
 	static DirectX::XMMATRIX mProjection;
+
+	static DirectX::XMFLOAT4 ambientLightColour;
 };
