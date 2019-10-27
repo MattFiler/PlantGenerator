@@ -36,7 +36,7 @@
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="ModelPart.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="PlantGeneration.cpp" />
+    <ClCompile Include="FlowerGenerator.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -66,7 +66,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModelPart.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="PlantGeneration.h" />
+    <ClInclude Include="FlowerGenerator.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stdafx.h" />

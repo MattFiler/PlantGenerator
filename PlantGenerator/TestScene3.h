@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "PlantGeneration.h"
+#include "FlowerGenerator.h"
 
 class TestScene3 : public Scene
 {
@@ -16,6 +16,6 @@ private:
 	Camera main_cam;
 	Light light_source;
 
-	PlantGeneration plant_generator;
+	FlowerGenerator flower_generator;
 };
 

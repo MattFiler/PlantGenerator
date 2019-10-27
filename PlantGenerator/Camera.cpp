@@ -45,9 +45,9 @@ void Camera::Update(float dt)
 		GameObject::SetPosition(XMFLOAT3(GameObject::GetPosition().x, GameObject::GetPosition().y - moveSpeed, GameObject::GetPosition().z));
 	}
 	if (InputHandler::KeyPressed(WindowsKey::E)) {
-		GameObject::SetRotation(XMFLOAT3(GameObject::GetRotation().x, GameObject::GetRotation().y - dt, GameObject::GetRotation().z));
+		GameObject::SetRotation(XMFLOAT3(GameObject::GetRotation().x - dt, GameObject::GetRotation().y, GameObject::GetRotation().z));
 	}
 	if (InputHandler::KeyPressed(WindowsKey::Q)) {
-		GameObject::SetRotation(XMFLOAT3(GameObject::GetRotation().x, GameObject::GetRotation().y + dt, GameObject::GetRotation().z));
+		GameObject::SetRotation(XMFLOAT3(GameObject::GetRotation().x + dt, GameObject::GetRotation().y, GameObject::GetRotation().z));
 	}
 }
