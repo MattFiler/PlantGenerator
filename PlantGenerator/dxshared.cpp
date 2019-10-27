@@ -11,3 +11,5 @@ DirectX::XMMATRIX dxshared::mView;
 DirectX::XMMATRIX dxshared::mProjection;
 
 DirectX::XMFLOAT4 dxshared::ambientLightColour;
+
+bool dxshared::enableDebug = false;

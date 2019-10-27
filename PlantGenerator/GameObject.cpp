@@ -116,7 +116,7 @@ void GameObject::Render(float dt)
 	if (!isActive) return;
 	if (isInvisible) return;
 #ifdef _DEBUG
-	if (InputHandler::KeyPressed(WindowsKey::P)) {
+	if (dxshared::enableDebug) {
 		//Input layout
 		dxshared::m_pImmediateContext->IASetInputLayout(GO_VertLayout);
 

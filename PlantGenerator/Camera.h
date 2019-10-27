@@ -15,4 +15,14 @@ public:
 	void Render(float dt) override {
 		//GameObject::Render(dt);
 	}
+
+	void SetLocked(bool locked) {
+		isLocked = locked;
+	}
+	bool GetLocked() {
+		return isLocked;
+	}
+
+private:
+	bool isLocked = false;
 };

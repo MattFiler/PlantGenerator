@@ -14,6 +14,7 @@ void FlowerEditor::Init()
 
 	main_cam.SetPosition(DirectX::XMFLOAT3(-4.4f, -5.7f, 8.8f));
 	main_cam.SetRotation(DirectX::XMFLOAT3(-0.95f, 0.0f, 0.0f));
+	main_cam.SetLocked(true);
 	light_source.SetIntensity(0.0f);
 }
 
@@ -35,6 +36,7 @@ bool FlowerEditor::Update(double dt)
 	float leafSize = flower_generator.GetLeafScale();
 	float stemLen = flower_generator.GetStemLength();
 	float stemThicc = flower_generator.GetStemThickness();
+	bool camLock = main_cam.GetLocked();
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
 	float lightIntensity = light_source.GetIntensity();
@@ -61,9 +63,16 @@ bool FlowerEditor::Update(double dt)
 	ImGui::Separator();
 	ImGui::SliderFloat("Stem Length", &stemLen, 0.0f, 20.0f);
 	ImGui::SliderFloat("Stem Width", &stemThicc, 0.0f, 20.0f);
-	ImGui::Dummy(ImVec2(0.0f, 60.0f));
+	ImGui::Separator();
+	ImGui::Dummy(ImVec2(0.0f, 45.0f));
 
 	ImGui::Text("Scene Controls");
+	ImGui::Separator();
+	ImGui::Checkbox("Lock Camera", &camLock);
+#ifdef _DEBUG
+	ImGui::SameLine();
+	ImGui::Checkbox("Enable Debugging", &dxshared::enableDebug);
+#endif
 	ImGui::Separator();
 	ImGui::SliderFloat("Light X", &lightPos.x, -20.0f, 20.0f);
 	ImGui::SliderFloat("Light Y", &lightPos.y, -20.0f, 20.0f);
@@ -76,8 +85,9 @@ bool FlowerEditor::Update(double dt)
 	ImGui::SliderFloat("Ambient R", &dxshared::ambientLightColour.x, 0.0f, 1.0f);
 	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, 0.0f, 1.0f);
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, 0.0f, 1.0f);
+	ImGui::Separator();
 
-	ImGui::Dummy(ImVec2(0.0f, 60.0f));
+	ImGui::Dummy(ImVec2(0.0f, 45.0f));
 	ImGui::Text("Export Flower");
 	ImGui::Separator();
 	char filePath[128] = "";
@@ -89,6 +99,7 @@ bool FlowerEditor::Update(double dt)
 		Debug::Log(filePathString + " << FILEPATH");
 		if (!flower_generator.Save(filePathString)) Debug::Log("Failed to save!!");
 	}
+	ImGui::Separator();
 	ImGui::End();
 
 	flower_generator.SetUseHighPoly(highPoly);
@@ -100,6 +111,7 @@ bool FlowerEditor::Update(double dt)
 	flower_generator.SetLeafScale(leafSize);
 	flower_generator.SetStemLength(stemLen);
 	flower_generator.SetStemThickness(stemThicc);
+	main_cam.SetLocked(camLock);
 	light_source.SetPosition(lightPos);
 	light_source.SetColour(lightCol);
 	light_source.SetIntensity(lightIntensity);

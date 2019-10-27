@@ -18,4 +18,6 @@ public:
 	static DirectX::XMMATRIX mProjection;
 
 	static DirectX::XMFLOAT4 ambientLightColour;
+
+	static bool enableDebug;
 };
