@@ -29,12 +29,15 @@ void TestScene3::Release()
 /* Update the objects in the scene */
 bool TestScene3::Update(double dt)
 {
+	int petalCount = plant_generator.GetPetalCount();
 	float stemLen = plant_generator.GetStemLength();
 	float stemThicc = plant_generator.GetStemThickness();
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
 	float lightIntensity = light_source.GetIntensity();
-	ImGui::Begin("TestScene2 Control");
+	ImGui::Begin("TestScene3 Control");
+	ImGui::SliderInt("Petal Count", &petalCount, 0, 20);
+	ImGui::Separator();
 	ImGui::SliderFloat("Stem Length", &stemLen, 0.0f, 20.0f);
 	ImGui::SliderFloat("Stem Width", &stemThicc, 0.0f, 20.0f);
 	ImGui::Separator();
@@ -50,6 +53,7 @@ bool TestScene3::Update(double dt)
 	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, -1.0f, 1.0f);
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, -1.0f, 1.0f);
 	ImGui::End();
+	plant_generator.SetPetalCount(petalCount);
 	plant_generator.SetStemLength(stemLen);
 	plant_generator.SetStemThickness(stemThicc);
 	light_source.SetPosition(lightPos);
