@@ -61,7 +61,7 @@ bool FlowerEditor::Update(double dt)
 	ImGui::Separator();
 	ImGui::SliderFloat("Stem Length", &stemLen, 0.0f, 20.0f);
 	ImGui::SliderFloat("Stem Width", &stemThicc, 0.0f, 20.0f);
-	ImGui::Dummy(ImVec2(0.0f, 55.0f));
+	ImGui::Dummy(ImVec2(0.0f, 60.0f));
 
 	ImGui::Text("Scene Controls");
 	ImGui::Separator();
@@ -73,19 +73,21 @@ bool FlowerEditor::Update(double dt)
 	ImGui::SliderFloat("Light G", &lightCol.y, 0.0f, 1.0f);
 	ImGui::SliderFloat("Light B", &lightCol.z, 0.0f, 1.0f);
 	ImGui::Separator();
-	ImGui::SliderFloat("Ambient R", &dxshared::ambientLightColour.x, -1.0f, 1.0f);
-	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, -1.0f, 1.0f);
-	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, -1.0f, 1.0f);
+	ImGui::SliderFloat("Ambient R", &dxshared::ambientLightColour.x, 0.0f, 1.0f);
+	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, 0.0f, 1.0f);
+	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, 0.0f, 1.0f);
 
-	ImGui::Dummy(ImVec2(0.0f, 55.0f));
+	ImGui::Dummy(ImVec2(0.0f, 60.0f));
 	ImGui::Text("Export Flower");
 	ImGui::Separator();
-	char filePath[128] = { "" };
+	char filePath[128] = "";
 	ImGui::Text("Output File Path");
 	ImGui::SameLine();
-	if (ImGui::InputText("", filePath, IM_ARRAYSIZE(filePath), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Export"))
+	if (ImGui::InputText("", filePath, IM_ARRAYSIZE(filePath), ImGuiInputTextFlags_EnterReturnsTrue))
 	{
-
+		std::string filePathString(filePath);
+		Debug::Log(filePathString + " << FILEPATH");
+		if (!flower_generator.Save(filePathString)) Debug::Log("Failed to save!!");
 	}
 	ImGui::End();
 

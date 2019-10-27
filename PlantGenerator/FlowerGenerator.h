@@ -74,10 +74,14 @@ public:
 		return leaf.GetScale().x;
 	}
 
+	bool Save(std::string path);
+
 	void Init();
 	void Render(float dt);
 
 private:
+	void TransformAndPush(XMMATRIX world, LoadedModel & model, LoadedModel & push_to);
+
 	Utilities dxutils = Utilities();
 
 	Model stem;
