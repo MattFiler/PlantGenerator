@@ -2,7 +2,7 @@
 
 #include "Scene.h"
 
-class BushEditor : public Scene
+class GrassEditor : public Scene
 {
 public:
 	void Init() override;

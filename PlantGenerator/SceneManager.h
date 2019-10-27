@@ -4,6 +4,7 @@
 #include "TestScene.h"
 #include "BushEditor.h"
 #include "FlowerEditor.h"
+#include "GrassEditor.h"
 
 class Scene;
 
@@ -36,7 +37,9 @@ private:
 	std::vector<Scene*> availableScenes = std::vector<Scene*>();
 
 	TestScene test_scene = TestScene();
+
 	BushEditor bush_editor = BushEditor();
 	FlowerEditor flower_editor = FlowerEditor();
+	GrassEditor grass_editor = GrassEditor();
 };
 

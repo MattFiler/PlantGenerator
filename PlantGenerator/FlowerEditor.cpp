@@ -69,16 +69,16 @@ bool FlowerEditor::Update(double dt)
 	ImGui::SliderFloat("Light Y", &lightPos.y, -20.0f, 20.0f);
 	ImGui::SliderFloat("Light Z", &lightPos.z, -20.0f, 20.0f);
 	ImGui::SliderFloat("Light Intensity", &lightIntensity, 0.0f, 20.0f);
-	ImGui::SliderFloat("Light R", &lightCol.x, -1.0f, 1.0f);
-	ImGui::SliderFloat("Light G", &lightCol.y, -1.0f, 1.0f);
-	ImGui::SliderFloat("Light B", &lightCol.z, -1.0f, 1.0f);
+	ImGui::SliderFloat("Light R", &lightCol.x, 0.0f, 1.0f);
+	ImGui::SliderFloat("Light G", &lightCol.y, 0.0f, 1.0f);
+	ImGui::SliderFloat("Light B", &lightCol.z, 0.0f, 1.0f);
 	ImGui::Separator();
 	ImGui::SliderFloat("Ambient R", &dxshared::ambientLightColour.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, -1.0f, 1.0f);
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, -1.0f, 1.0f);
 
 	ImGui::Dummy(ImVec2(0.0f, 55.0f));
-	ImGui::Text("Scene Controls");
+	ImGui::Text("Export Flower");
 	ImGui::Separator();
 	char filePath[128] = { "" };
 	ImGui::Text("Output File Path");

@@ -15,7 +15,9 @@ bool SceneManager::Init()
 	AddScene(&test_scene);
 	AddScene(&bush_editor);
 	AddScene(&flower_editor);
-	ChangeScene(0);
+	AddScene(&grass_editor);
+
+	ChangeScene(1); //Scene 0 is test_scene
 
 	return dxInit;
 }

@@ -85,6 +85,11 @@ private:
 	Model core;
 	Model leaf;
 
+	LoadedModel stem_data;
+	LoadedModel petal_data;
+	LoadedModel core_data;
+	LoadedModel leaf_data;
+
 	bool highPoly = false;
 	float petalTilt = XM_PI / 7;
 	float stemLength = 14.0f;

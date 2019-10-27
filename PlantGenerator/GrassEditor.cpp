@@ -1,7 +1,7 @@
-#include "BushEditor.h"
+#include "GrassEditor.h"
 
 /* Init the objects in the scene */
-void BushEditor::Init()
+void GrassEditor::Init()
 {
 	Utilities dxutils = Utilities();
 
@@ -19,13 +19,13 @@ void BushEditor::Init()
 }
 
 /* Release the objects in the scene */
-void BushEditor::Release()
+void GrassEditor::Release()
 {
 	GameObjectManager::Release();
 }
 
 /* Update the objects in the scene */
-bool BushEditor::Update(double dt)
+bool GrassEditor::Update(double dt)
 {
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
@@ -58,7 +58,7 @@ bool BushEditor::Update(double dt)
 }
 
 /* Render the objects in the scene */
-void BushEditor::Render(double dt)
+void GrassEditor::Render(double dt)
 {
 	GameObjectManager::Render(dt);
 }

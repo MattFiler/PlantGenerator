@@ -4,10 +4,14 @@
 /* Initialise the flower generation (load OBJs) */
 void FlowerGenerator::Init()
 {
-	stem.SetData(dxutils.LoadModel("models/plant_parts/stem.obj"));
-	petal.SetData(dxutils.LoadModel("models/plant_parts/petal_low.obj"));
-	core.SetData(dxutils.LoadModel("models/plant_parts/flower_middle_low.obj"));
-	leaf.SetData(dxutils.LoadModel("models/plant_parts/leaf_low.obj"));
+	stem_data = dxutils.LoadModel("models/plant_parts/stem.obj");
+	stem.SetData(stem_data);
+	petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
+	petal.SetData(petal_data);
+	core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
+	core.SetData(core_data);
+	leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
+	leaf.SetData(leaf_data);
 
 	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
 	core.SetPosition(DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f));
@@ -70,15 +74,21 @@ void FlowerGenerator::SetUseHighPoly(bool high)
 
 	if (highPoly) 
 	{
-		petal.SetData(dxutils.LoadModel("models/plant_parts/petal.obj"));
-		core.SetData(dxutils.LoadModel("models/plant_parts/flower_middle.obj"));
-		leaf.SetData(dxutils.LoadModel("models/plant_parts/leaf.obj"));
+		petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
+		petal.SetData(petal_data);
+		core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
+		core.SetData(core_data);
+		leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
+		leaf.SetData(leaf_data);
 	}
 	else
 	{
-		petal.SetData(dxutils.LoadModel("models/plant_parts/petal_low.obj"));
-		core.SetData(dxutils.LoadModel("models/plant_parts/flower_middle_low.obj"));
-		leaf.SetData(dxutils.LoadModel("models/plant_parts/leaf_low.obj"));
+		petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
+		petal.SetData(petal_data);
+		core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
+		core.SetData(core_data);
+		leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
+		leaf.SetData(leaf_data);
 	}
 
 	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
