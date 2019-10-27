@@ -20,6 +20,9 @@
 #include <vector>
 #include <fstream>
 
+#include <time.h>
+#include <random>
+
 using namespace DirectX;
 
 /* Handle DX HRESULT errors nicely in debug */

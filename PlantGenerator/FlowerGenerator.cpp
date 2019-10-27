@@ -31,6 +31,15 @@ void FlowerGenerator::Render(float dt)
 		petal.Render(dt);
 	}
 	petal.SetInvisible(true);
+
+	leaf.SetInvisible(false);
+	for (int i = 0; i < leafPositions.size(); i++) {
+		leaf.SetPosition(leafPositions[i]);
+		leaf.SetRotation(leafRotations[i]);
+		leaf.Update(dt);
+		leaf.Render(dt);
+	}
+	leaf.SetInvisible(true);
 }
 
 /* Set the number of petals and calculate their rotations */
@@ -85,4 +94,26 @@ void FlowerGenerator::SetUseHighPoly(bool high)
 	GameObjectManager::AddObject(&petal);
 	GameObjectManager::AddObject(&core);
 	GameObjectManager::AddObject(&leaf);
+}
+
+/* Set the number of leaves */
+void FlowerGenerator::SetLeafCount(int count, bool force)
+{
+	if (leafPositions.size() == count && !force) return;
+	leafPositions.clear();
+	float yPos = -2.0f;
+	for (int i = 0; i < count; i++) {
+		leafPositions.push_back(DirectX::XMFLOAT3(0.0f, yPos, 0.0f));
+		yPos -= (stem.GetScale().y * stemLength) / count;
+	}
+	if (leafPositions.size() != leafRotations.size() || !force) RandomiseLeafRotations();
+}
+
+/* Randomise the rotation of all active leaves */
+void FlowerGenerator::RandomiseLeafRotations()
+{
+	leafRotations.clear();
+	for (int i = 0; i < leafPositions.size(); i++) {
+		leafRotations.push_back(DirectX::XMFLOAT3(0.0f, static_cast<float>(rand())/(static_cast<float>(RAND_MAX / XM_2PI)), 0.0f));
+	}
 }

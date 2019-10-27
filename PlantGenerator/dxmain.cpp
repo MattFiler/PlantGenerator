@@ -91,6 +91,7 @@ int dxmain::Run()
 /* Set appropriate properties and then initialise window */
 bool dxmain::Init()
 {
+	srand(time(NULL));
 	return InitWindow() && InitDirectX() && InitImGUI();
 }
 

@@ -16,8 +16,6 @@ void TestScene3::Init()
 
 	light_source.SetColour(XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
 	light_source.SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -4.1f));
-
-	flower_generator.SetStemLength(5.0f);
 }
 
 /* Release the objects in the scene */
@@ -34,6 +32,8 @@ bool TestScene3::Update(double dt)
 	float petalSize = flower_generator.GetPetalScale();
 	float petalOffset = flower_generator.GetPetalOffset();
 	float petalTilt = flower_generator.GetPetalTilt();
+	int leafCount = flower_generator.GetLeafCount();
+	float leafSize = flower_generator.GetLeafScale();
 	float stemLen = flower_generator.GetStemLength();
 	float stemThicc = flower_generator.GetStemThickness();
 	XMFLOAT3 lightPos = light_source.GetPosition();
@@ -46,6 +46,13 @@ bool TestScene3::Update(double dt)
 	ImGui::SliderFloat("Petal Size", &petalSize, 0.0f, 20.0f);
 	ImGui::SliderFloat("Petal Offset", &petalOffset, -20.0f, 20.0f);
 	ImGui::SliderFloat("Petal Tilt", &petalTilt, -XM_2PI, XM_2PI);
+	ImGui::Separator();
+	ImGui::SliderInt("Leaf Count", &leafCount, 0, 20);
+	if (ImGui::Button("Randomise Leaf Rotations"))
+	{
+		flower_generator.RandomiseLeafRotations();
+	}
+	ImGui::SliderFloat("Leaf Size", &leafSize, 0.0f, 20.0f);
 	ImGui::Separator();
 	ImGui::SliderFloat("Stem Length", &stemLen, 0.0f, 20.0f);
 	ImGui::SliderFloat("Stem Width", &stemThicc, 0.0f, 20.0f);
@@ -67,6 +74,8 @@ bool TestScene3::Update(double dt)
 	flower_generator.SetPetalScale(petalSize);
 	flower_generator.SetPetalOffset(petalOffset);
 	flower_generator.SetPetalTilt(petalTilt);
+	flower_generator.SetLeafCount(leafCount);
+	flower_generator.SetLeafScale(leafSize);
 	flower_generator.SetStemLength(stemLen);
 	flower_generator.SetStemThickness(stemThicc);
 	light_source.SetPosition(lightPos);

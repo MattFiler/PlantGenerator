@@ -11,6 +11,7 @@ public:
 
 	void SetStemLength(float len) {
 		stem.SetScale(XMFLOAT3(stem.GetScale().x, len, stem.GetScale().z));
+		SetLeafCount(GetLeafCount(), true);
 	}
 	float GetStemLength() {
 		return stem.GetScale().y;
@@ -59,6 +60,20 @@ public:
 		return highPoly;
 	}
 
+	void SetLeafCount(int count, bool force = false);
+	int GetLeafCount() {
+		return (int)leafPositions.size();
+	}
+
+	void RandomiseLeafRotations();
+
+	void SetLeafScale(float scale) {
+		leaf.SetScale(scale);
+	}
+	float GetLeafScale() {
+		return leaf.GetScale().x;
+	}
+
 	void Init();
 	void Render(float dt);
 
@@ -72,6 +87,7 @@ private:
 
 	bool highPoly = false;
 	float petalTilt = XM_PI / 7;
+	float stemLength = 14.0f;
 
 	std::vector<DirectX::XMFLOAT3> leafPositions;
 	std::vector<DirectX::XMFLOAT3> leafRotations;

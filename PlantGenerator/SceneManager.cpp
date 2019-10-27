@@ -38,8 +38,11 @@ bool SceneManager::Update(double dt)
 	ImGui::NewFrame();
 
 	//Scene manager ImGui control
-	ImGui::Begin("Scene Manager");
-	ImGui::SliderInt("Current scene", &requestedSceneIndex, 0, availableScenes.size()-1);
+	ImGui::Begin("Editor");
+	if (ImGui::Button("Flower Generator"))
+	{
+		ChangeScene(2);
+	}
 	ImGui::End();
 	
 	//Update current scene
