@@ -6,11 +6,11 @@ void FlowerGenerator::Init()
 {
 	stem_data = dxutils.LoadModel("models/plant_parts/stem.obj");
 	stem.SetData(stem_data);
-	petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
+	petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
 	petal.SetData(petal_data);
-	core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
+	core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
 	core.SetData(core_data);
-	leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
+	leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
 	leaf.SetData(leaf_data);
 
 	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
@@ -59,36 +59,53 @@ void FlowerGenerator::SetPetalCount(int count)
 }
 
 /* Swap between high or low poly models */
-void FlowerGenerator::SetUseHighPoly(bool high)
+void FlowerGenerator::SetPolyLevel(int level)
 {
-	if (highPoly == high) return;
-	highPoly = high;
+	if (polyLevel == level) return;
+	polyLevel = level;
 
+	GameObjectManager::RemoveObject(&stem);
 	GameObjectManager::RemoveObject(&petal);
 	GameObjectManager::RemoveObject(&core);
 	GameObjectManager::RemoveObject(&leaf);
 
+	stem = Model();
 	petal = Model();
 	core = Model();
 	leaf = Model();
 
-	if (highPoly) 
+	switch (polyLevel)
 	{
-		petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
-		petal.SetData(petal_data);
-		core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
-		core.SetData(core_data);
-		leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
-		leaf.SetData(leaf_data);
-	}
-	else
-	{
-		petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
-		petal.SetData(petal_data);
-		core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
-		core.SetData(core_data);
-		leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
-		leaf.SetData(leaf_data);
+		case 0:
+			stem_data = dxutils.LoadModel("models/plant_parts/stem.obj");
+			stem.SetData(stem_data);
+			petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
+			petal.SetData(petal_data);
+			core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
+			core.SetData(core_data);
+			leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
+			leaf.SetData(leaf_data);
+			break;
+		case 1:
+			stem_data = dxutils.LoadModel("models/plant_parts/stem_low.obj");
+			stem.SetData(stem_data);
+			petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
+			petal.SetData(petal_data);
+			core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
+			core.SetData(core_data);
+			leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
+			leaf.SetData(leaf_data);
+			break;
+		case 2:
+			stem_data = dxutils.LoadModel("models/plant_parts/stem_lower.obj");
+			stem.SetData(stem_data);
+			petal_data = dxutils.LoadModel("models/plant_parts/petal_lower.obj");
+			petal.SetData(petal_data);
+			core_data = dxutils.LoadModel("models/plant_parts/flower_middle_lower.obj");
+			core.SetData(core_data);
+			leaf_data = dxutils.LoadModel("models/plant_parts/leaf_lower.obj");
+			leaf.SetData(leaf_data);
+			break;
 	}
 
 	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
@@ -97,10 +114,12 @@ void FlowerGenerator::SetUseHighPoly(bool high)
 	petal.SetInvisible(true);
 	leaf.SetInvisible(true);
 
+	stem.Create();
 	petal.Create();
 	core.Create();
 	leaf.Create();
 
+	GameObjectManager::AddObject(&stem);
 	GameObjectManager::AddObject(&petal);
 	GameObjectManager::AddObject(&core);
 	GameObjectManager::AddObject(&leaf);

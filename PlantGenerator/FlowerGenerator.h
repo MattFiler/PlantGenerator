@@ -55,9 +55,9 @@ public:
 		return petalTilt;
 	}
 
-	void SetUseHighPoly(bool high);
-	bool GetUseHighPoly() {
-		return highPoly;
+	void SetPolyLevel(int level);
+	int GetPolyLevel() {
+		return polyLevel;
 	}
 
 	void SetLeafCount(int count, bool force = false);
@@ -94,7 +94,7 @@ private:
 	LoadedModel core_data;
 	LoadedModel leaf_data;
 
-	bool highPoly = false;
+	int polyLevel = 0;
 	float petalTilt = XM_PI / 7;
 	float stemLength = 14.0f;
 

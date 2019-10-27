@@ -1,7 +1,7 @@
 # Blender v2.79 (sub 0) OBJ File: ''
 # www.blender.org
 mtllib leaf_low.mtl
-o 12973_anemone_flower.001
+o 12973_anemone_flower
 v -0.593632 1.886169 -6.832140
 v 0.149470 1.772928 -6.682508
 v 0.032977 1.748319 -5.904857
@@ -1632,7 +1632,7 @@ vn 0.7673 -0.6251 0.1430
 vn -0.7980 0.4324 -0.4198
 vn 0.9814 -0.1909 -0.0222
 vn -0.9223 0.3666 0.1220
-usemtl 12973_anemone_flower.001
+usemtl 12973_anemone_flower
 s 1
 f 8/1/1 6/2/2 7/3/3
 f 14/4/4 12/5/5 13/6/6

@@ -27,7 +27,7 @@ void FlowerEditor::Release()
 /* Update the objects in the scene */
 bool FlowerEditor::Update(double dt)
 {
-	bool highPoly = flower_generator.GetUseHighPoly();
+	int polyLevel = flower_generator.GetPolyLevel();
 	int petalCount = flower_generator.GetPetalCount();
 	float petalSize = flower_generator.GetPetalScale();
 	float petalOffset = flower_generator.GetPetalOffset();
@@ -47,7 +47,9 @@ bool FlowerEditor::Update(double dt)
 	ImGui::Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus);
 	ImGui::Text("Flower Editor Controls");
 	ImGui::Separator();
-	ImGui::Checkbox("High Poly", &highPoly);
+	ImGui::RadioButton("High Poly", &polyLevel, 0); ImGui::SameLine();
+	ImGui::RadioButton("Medium Poly", &polyLevel, 1); ImGui::SameLine();
+	ImGui::RadioButton("Low Poly", &polyLevel, 2);
 	ImGui::Separator();
 	ImGui::SliderInt("Petal Count", &petalCount, 0, 20);
 	ImGui::SliderFloat("Petal Size", &petalSize, 0.0f, 20.0f);
@@ -91,18 +93,17 @@ bool FlowerEditor::Update(double dt)
 	ImGui::Text("Export Flower");
 	ImGui::Separator();
 	char filePath[128] = "";
-	ImGui::Text("Output File Path");
+	ImGui::Text("Output Filename");
 	ImGui::SameLine();
 	if (ImGui::InputText("", filePath, IM_ARRAYSIZE(filePath), ImGuiInputTextFlags_EnterReturnsTrue))
 	{
 		std::string filePathString(filePath);
-		Debug::Log(filePathString + " << FILEPATH");
 		if (!flower_generator.Save(filePathString)) Debug::Log("Failed to save!!");
 	}
 	ImGui::Separator();
 	ImGui::End();
 
-	flower_generator.SetUseHighPoly(highPoly);
+	flower_generator.SetPolyLevel(polyLevel);
 	flower_generator.SetPetalCount(petalCount);
 	flower_generator.SetPetalScale(petalSize);
 	flower_generator.SetPetalOffset(petalOffset);
