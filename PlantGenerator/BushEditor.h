@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Scene.h"
-#include "FlowerGenerator.h"
 
-class TestScene3 : public Scene
+class BushEditor : public Scene
 {
 public:
 	void Init() override;
@@ -14,8 +13,7 @@ public:
 
 private:
 	Camera main_cam;
+	Model cube_model;
 	Light light_source;
-
-	FlowerGenerator flower_generator;
 };
 

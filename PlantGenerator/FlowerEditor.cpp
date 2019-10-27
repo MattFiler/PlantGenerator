@@ -1,7 +1,7 @@
-#include "TestScene3.h"
+#include "FlowerEditor.h"
 
 /* Init the objects in the scene */
-void TestScene3::Init()
+void FlowerEditor::Init()
 {
 	flower_generator.Init();
 
@@ -12,20 +12,19 @@ void TestScene3::Init()
 	GameObjectManager::AddObject(&main_cam);
 	GameObjectManager::Create();
 
-	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
-
-	light_source.SetColour(XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
-	light_source.SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -4.1f));
+	main_cam.SetPosition(DirectX::XMFLOAT3(-4.4f, -5.7f, 8.8f));
+	main_cam.SetRotation(DirectX::XMFLOAT3(-0.95f, 0.0f, 0.0f));
+	light_source.SetIntensity(0.0f);
 }
 
 /* Release the objects in the scene */
-void TestScene3::Release()
+void FlowerEditor::Release()
 {
 	GameObjectManager::Release();
 }
 
 /* Update the objects in the scene */
-bool TestScene3::Update(double dt)
+bool FlowerEditor::Update(double dt)
 {
 	bool highPoly = flower_generator.GetUseHighPoly();
 	int petalCount = flower_generator.GetPetalCount();
@@ -39,7 +38,13 @@ bool TestScene3::Update(double dt)
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
 	float lightIntensity = light_source.GetIntensity();
-	ImGui::Begin("TestScene3 Control");
+	bool open = true;
+
+	ImGui::SetNextWindowPos(ImVec2(950, 0));
+	ImGui::SetNextWindowSize(ImVec2(330, 720));
+	ImGui::Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus);
+	ImGui::Text("Flower Editor Controls");
+	ImGui::Separator();
 	ImGui::Checkbox("High Poly", &highPoly);
 	ImGui::Separator();
 	ImGui::SliderInt("Petal Count", &petalCount, 0, 20);
@@ -56,6 +61,9 @@ bool TestScene3::Update(double dt)
 	ImGui::Separator();
 	ImGui::SliderFloat("Stem Length", &stemLen, 0.0f, 20.0f);
 	ImGui::SliderFloat("Stem Width", &stemThicc, 0.0f, 20.0f);
+	ImGui::Dummy(ImVec2(0.0f, 55.0f));
+
+	ImGui::Text("Scene Controls");
 	ImGui::Separator();
 	ImGui::SliderFloat("Light X", &lightPos.x, -20.0f, 20.0f);
 	ImGui::SliderFloat("Light Y", &lightPos.y, -20.0f, 20.0f);
@@ -68,7 +76,19 @@ bool TestScene3::Update(double dt)
 	ImGui::SliderFloat("Ambient R", &dxshared::ambientLightColour.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, -1.0f, 1.0f);
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, -1.0f, 1.0f);
+
+	ImGui::Dummy(ImVec2(0.0f, 55.0f));
+	ImGui::Text("Scene Controls");
+	ImGui::Separator();
+	char filePath[128] = { "" };
+	ImGui::Text("Output File Path");
+	ImGui::SameLine();
+	if (ImGui::InputText("", filePath, IM_ARRAYSIZE(filePath), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Export"))
+	{
+
+	}
 	ImGui::End();
+
 	flower_generator.SetUseHighPoly(highPoly);
 	flower_generator.SetPetalCount(petalCount);
 	flower_generator.SetPetalScale(petalSize);
@@ -88,7 +108,7 @@ bool TestScene3::Update(double dt)
 }
 
 /* Render the objects in the scene */
-void TestScene3::Render(double dt)
+void FlowerEditor::Render(double dt)
 {
 	GameObjectManager::Render(dt);
 	flower_generator.Render(dt);

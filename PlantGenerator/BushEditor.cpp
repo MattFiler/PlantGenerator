@@ -1,7 +1,7 @@
-#include "TestScene2.h"
+#include "BushEditor.h"
 
 /* Init the objects in the scene */
-void TestScene2::Init()
+void BushEditor::Init()
 {
 	Utilities dxutils = Utilities();
 
@@ -23,13 +23,13 @@ void TestScene2::Init()
 }
 
 /* Release the objects in the scene */
-void TestScene2::Release()
+void BushEditor::Release()
 {
 	GameObjectManager::Release();
 }
 
 /* Update the objects in the scene */
-bool TestScene2::Update(double dt)
+bool BushEditor::Update(double dt)
 {
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
@@ -57,7 +57,7 @@ bool TestScene2::Update(double dt)
 }
 
 /* Render the objects in the scene */
-void TestScene2::Render(double dt)
+void BushEditor::Render(double dt)
 {
 	GameObjectManager::Render(dt);
 }

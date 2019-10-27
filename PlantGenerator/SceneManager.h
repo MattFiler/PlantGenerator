@@ -2,8 +2,8 @@
 
 #include "dxmain.h"
 #include "TestScene.h"
-#include "TestScene2.h"
-#include "TestScene3.h"
+#include "BushEditor.h"
+#include "FlowerEditor.h"
 
 class Scene;
 
@@ -35,8 +35,8 @@ private:
 	int currentSceneIndex = -1;
 	std::vector<Scene*> availableScenes = std::vector<Scene*>();
 
-	TestScene newScene = TestScene();
-	TestScene2 newScene2 = TestScene2();
-	TestScene3 newScene3 = TestScene3();
+	TestScene test_scene = TestScene();
+	BushEditor bush_editor = BushEditor();
+	FlowerEditor flower_editor = FlowerEditor();
 };
 

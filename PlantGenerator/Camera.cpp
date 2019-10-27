@@ -50,4 +50,9 @@ void Camera::Update(float dt)
 	if (InputHandler::KeyPressed(WindowsKey::Q)) {
 		GameObject::SetRotation(XMFLOAT3(GameObject::GetRotation().x + dt, GameObject::GetRotation().y, GameObject::GetRotation().z));
 	}
+
+	if (InputHandler::KeyPressed(WindowsKey::O)) {
+		Debug::Log("Camera position = X:" + std::to_string(GameObject::GetPosition().x) + ", Y:" + std::to_string(GameObject::GetPosition().y) + ", Z:" + std::to_string(GameObject::GetPosition().z));
+		Debug::Log("Camera rotation = X:" + std::to_string(GameObject::GetRotation().x) + ", Y:" + std::to_string(GameObject::GetRotation().y) + ", Z:" + std::to_string(GameObject::GetRotation().z));
+	}
 }
