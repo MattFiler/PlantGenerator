@@ -121,7 +121,7 @@ void GrassGenerator::RandomisePositions(GrassSize type)
 {
 	for (int i = 0; i < spawnedGrass.size(); i++) {
 		if (spawnedGrass[i].type == type) {
-			spawnedGrass[i].position = XMFLOAT3(0.0f, 0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))));
+			spawnedGrass[i].position = XMFLOAT3(static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))), 0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))));
 		}
 	}
 }
@@ -145,7 +145,7 @@ void GrassGenerator::SpawnNewBlade(int max_size, int diff, GrassSize type)
 			newBlade.type = type;
 			newBlade.variant = rand() % max_size;
 			newBlade.rotation = XMFLOAT3(0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / XM_2PI)), 0.0f);
-			newBlade.position = XMFLOAT3(0.0f, 0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))));
+			newBlade.position = XMFLOAT3(static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))), 0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))));
 			spawnedGrass.push_back(newBlade);
 		}
 	}
@@ -257,20 +257,20 @@ bool GrassGenerator::Save(std::string path)
 		switch (spawnedGrass[i].type) {
 		case GrassSize::SMALL:
 			XMMATRIX thisWorld = XMMatrixScaling(smallBlades[spawnedGrass[i].variant]->GetScale().x, smallBlades[spawnedGrass[i].variant]->GetScale().y, smallBlades[spawnedGrass[i].variant]->GetScale().z) *
-				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z) *
-				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z);
+				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z) *
+				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z);
 			dxutils.TransformAndPush(thisWorld, smallBlades_data[spawnedGrass[i].variant], finalOutput);
 			break;
 		case GrassSize::MEDIUM:
 			XMMATRIX thisWorld2 = XMMatrixScaling(mediumBlades[spawnedGrass[i].variant]->GetScale().x, mediumBlades[spawnedGrass[i].variant]->GetScale().y, mediumBlades[spawnedGrass[i].variant]->GetScale().z) *
-				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z) *
-				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z);
+				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z) *
+				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z);
 			dxutils.TransformAndPush(thisWorld2, mediumBlades_data[spawnedGrass[i].variant], finalOutput);
 			break;
 		case GrassSize::LARGE:
 			XMMATRIX thisWorld3 = XMMatrixScaling(largeBlades[spawnedGrass[i].variant]->GetScale().x, largeBlades[spawnedGrass[i].variant]->GetScale().y, largeBlades[spawnedGrass[i].variant]->GetScale().z) *
-				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z) *
-				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z);
+				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z) *
+				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z);
 			dxutils.TransformAndPush(thisWorld3, largeBlades_data[spawnedGrass[i].variant], finalOutput);
 			break;
 		}

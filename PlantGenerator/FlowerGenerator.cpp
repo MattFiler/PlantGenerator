@@ -165,29 +165,29 @@ bool FlowerGenerator::Save(std::string path)
 
 	//Stem
 	XMMATRIX stemWorld = XMMatrixScaling(stem.GetScale().x, stem.GetScale().y, stem.GetScale().z) *
-						 XMMatrixTranslation(stem.GetPosition().x, stem.GetPosition().y, stem.GetPosition().z) *
-						 XMMatrixRotationRollPitchYaw(stem.GetRotation().x, stem.GetRotation().y, stem.GetRotation().z);
+						 XMMatrixRotationRollPitchYaw(stem.GetRotation().x, stem.GetRotation().y, stem.GetRotation().z) *
+						 XMMatrixTranslation(stem.GetPosition().x, stem.GetPosition().y, stem.GetPosition().z);
 	dxutils.TransformAndPush(stemWorld, stem_data, finalOutput);
 
 	//Leaves
 	for (int i = 0; i < leafRotations.size(); i++) {
 		XMMATRIX thisWorld = XMMatrixScaling(leaf.GetScale().x, leaf.GetScale().y, leaf.GetScale().z) *
-							 XMMatrixTranslation(leafPositions[i].x, leafPositions[i].y, leafPositions[i].z) *
-							 XMMatrixRotationRollPitchYaw(leafRotations[i].x, leafRotations[i].y, leafRotations[i].z);
+							 XMMatrixRotationRollPitchYaw(leafRotations[i].x, leafRotations[i].y, leafRotations[i].z) *
+							 XMMatrixTranslation(leafPositions[i].x, leafPositions[i].y, leafPositions[i].z);
 		dxutils.TransformAndPush(thisWorld, leaf_data, finalOutput);
 	}
 
 	//Flower middle
 	XMMATRIX middleWorld = XMMatrixScaling(core.GetScale().x, core.GetScale().y, core.GetScale().z) *
-						   XMMatrixTranslation(core.GetPosition().x, core.GetPosition().y, core.GetPosition().z) *
-						   XMMatrixRotationRollPitchYaw(core.GetRotation().x, core.GetRotation().y, core.GetRotation().z);
+						   XMMatrixRotationRollPitchYaw(core.GetRotation().x, core.GetRotation().y, core.GetRotation().z) *
+						   XMMatrixTranslation(core.GetPosition().x, core.GetPosition().y, core.GetPosition().z);
 	dxutils.TransformAndPush(middleWorld, core_data, finalOutput);
 
 	//Petals
 	for (int i = 0; i < petalRotations.size(); i++) {
 		XMMATRIX thisWorld = XMMatrixScaling(petal.GetScale().x, petal.GetScale().y, petal.GetScale().z) *
-							 XMMatrixTranslation(petal.GetPosition().x, petal.GetPosition().y, petal.GetPosition().z) *
-							 XMMatrixRotationRollPitchYaw(petalRotations[i].x, petalRotations[i].y, petalRotations[i].z);
+							 XMMatrixRotationRollPitchYaw(petalRotations[i].x, petalRotations[i].y, petalRotations[i].z) *
+							 XMMatrixTranslation(petal.GetPosition().x, petal.GetPosition().y, petal.GetPosition().z);
 		dxutils.TransformAndPush(thisWorld, petal_data, finalOutput);
 	}
 

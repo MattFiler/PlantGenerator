@@ -13,8 +13,8 @@ void GrassEditor::Init()
 	GameObjectManager::AddObject(&main_cam);
 	GameObjectManager::Create();
 
-	main_cam.SetPosition(DirectX::XMFLOAT3(-1.6f, -2.2f, 5.1f));
-	main_cam.SetRotation(DirectX::XMFLOAT3(-0.68f, 0.0f, 0.0f));
+	main_cam.SetPosition(DirectX::XMFLOAT3(-0.82f, -2.34f, 2.9f));
+	main_cam.SetRotation(DirectX::XMFLOAT3(-0.37f, -1.1f, 0.5f));
 	main_cam.SetLocked(true);
 	light_source.SetIntensity(0.0f);
 }
@@ -55,12 +55,12 @@ bool GrassEditor::Update(double dt)
 	ImGui::SliderInt("Small Count", &smlCount, 0, 1000);
 	ImGui::SliderFloat("Small Size", &smlSize, 0.0f, 20.0f);
 	ImGui::SliderFloat("Small Area", &smlDist, 0.0f, 100.0f);
-	if (ImGui::Button("Randomise Positions"))
+	if (ImGui::Button("Randomise S Positions"))
 	{
 		grass_generator.RandomisePositions(GrassSize::SMALL);
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Randomise Rotations"))
+	if (ImGui::Button("Randomise S Rotations"))
 	{
 		grass_generator.RandomiseRotations(GrassSize::SMALL);
 	}
@@ -68,12 +68,12 @@ bool GrassEditor::Update(double dt)
 	ImGui::SliderInt("Medium Count", &medCount, 0, 1000);
 	ImGui::SliderFloat("Medium Size", &medSize, 0.0f, 20.0f);
 	ImGui::SliderFloat("Medium Area", &medDist, 0.0f, 100.0f);
-	if (ImGui::Button("Randomise Positions"))
+	if (ImGui::Button("Randomise M Positions"))
 	{
 		grass_generator.RandomisePositions(GrassSize::MEDIUM);
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Randomise Rotations"))
+	if (ImGui::Button("Randomise M Rotations"))
 	{
 		grass_generator.RandomiseRotations(GrassSize::MEDIUM);
 	}
@@ -81,12 +81,12 @@ bool GrassEditor::Update(double dt)
 	ImGui::SliderInt("Large Count", &lrgCount, 0, 1000);
 	ImGui::SliderFloat("Large Size", &lrgSize, 0.0f, 20.0f);
 	ImGui::SliderFloat("Large Area", &lrgDist, 0.0f, 100.0f);
-	if (ImGui::Button("Randomise Positions"))
+	if (ImGui::Button("Randomise L Positions"))
 	{
 		grass_generator.RandomisePositions(GrassSize::LARGE);
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Randomise Rotations"))
+	if (ImGui::Button("Randomise L Rotations"))
 	{
 		grass_generator.RandomiseRotations(GrassSize::LARGE);
 	}

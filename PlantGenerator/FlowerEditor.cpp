@@ -13,8 +13,8 @@ void FlowerEditor::Init()
 	GameObjectManager::AddObject(&main_cam);
 	GameObjectManager::Create();
 
-	main_cam.SetPosition(DirectX::XMFLOAT3(-4.4f, -5.7f, 8.8f));
-	main_cam.SetRotation(DirectX::XMFLOAT3(-0.95f, 0.0f, 0.0f));
+	main_cam.SetPosition(DirectX::XMFLOAT3(-3.99f, 2.23f, 10.52f));
+	main_cam.SetRotation(DirectX::XMFLOAT3(-0.93f, 0.0f, 0.0f));
 	main_cam.SetLocked(true);
 	light_source.SetIntensity(0.0f);
 }

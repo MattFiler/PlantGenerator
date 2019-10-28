@@ -107,7 +107,7 @@ void GameObject::Release()
 void GameObject::Update(float dt)
 {
 	if (!isActive) return;
-	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	mWorld = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z) * XMMatrixTranslation(position.x, position.y, position.z);
 }
 
 /* Perform low level GameObject render functions */
