@@ -228,6 +228,26 @@ void GrassGenerator::SetPolyLevel(int level)
 	}
 }
 
+/* Get the polycount of the grass */
+int GrassGenerator::GetPolyCount()
+{
+	int count = 0;
+	for (int i = 0; i < spawnedGrass.size(); i++) {
+		switch (spawnedGrass[i].type) {
+		case GrassSize::SMALL:
+			count += smallBlades[spawnedGrass[i].variant]->GetVertCount();
+			break;
+		case GrassSize::MEDIUM:
+			count += mediumBlades[spawnedGrass[i].variant]->GetVertCount();
+			break;
+		case GrassSize::LARGE:
+			count += largeBlades[spawnedGrass[i].variant]->GetVertCount();
+			break;
+		}
+	}
+	return count;
+}
+
 /* Save the generated flower as OBJ/MTL */
 bool GrassGenerator::Save(std::string path)
 {

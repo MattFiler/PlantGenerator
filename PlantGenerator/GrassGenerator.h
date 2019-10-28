@@ -94,6 +94,8 @@ public:
 		return polyLevel;
 	}
 
+	int GetPolyCount();
+
 	bool Save(std::string path);
 
 	void Init();

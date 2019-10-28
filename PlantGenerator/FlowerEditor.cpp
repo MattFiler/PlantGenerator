@@ -67,7 +67,7 @@ bool FlowerEditor::Update(double dt)
 	ImGui::SliderFloat("Stem Length", &stemLen, 0.0f, 20.0f);
 	ImGui::SliderFloat("Stem Width", &stemThicc, 0.0f, 20.0f);
 	ImGui::Separator();
-	ImGui::Dummy(ImVec2(0.0f, 45.0f));
+	ImGui::Dummy(ImVec2(0.0f, 40.0f));
 
 	ImGui::Text("Scene Controls");
 	ImGui::Separator();
@@ -90,7 +90,7 @@ bool FlowerEditor::Update(double dt)
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, 0.0f, 1.0f);
 	ImGui::Separator();
 
-	ImGui::Dummy(ImVec2(0.0f, 45.0f));
+	ImGui::Dummy(ImVec2(0.0f, 40.0f));
 	ImGui::Text("Export Flower");
 	ImGui::Separator();
 	char filePath[128] = "";
@@ -101,6 +101,8 @@ bool FlowerEditor::Update(double dt)
 		std::string filePathString(filePath);
 		if (!flower_generator.Save(filePathString)) Debug::Log("Failed to save!!");
 	}
+	std::string vertCount = "Vertex Count = " + std::to_string(flower_generator.GetPolyCount());
+	ImGui::Text(vertCount.c_str());
 	ImGui::Separator();
 	ImGui::End();
 

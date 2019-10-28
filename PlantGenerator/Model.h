@@ -13,6 +13,10 @@ public:
 	void Update(float dt) override;
 	void Render(float dt) override;
 
+	int GetVertCount() {
+		return vertexCount;
+	}
+
 	void SetRotation(XMFLOAT3 _rot) override
 	{
 		rotation = _rot;

@@ -91,7 +91,7 @@ bool GrassEditor::Update(double dt)
 		grass_generator.RandomiseRotations(GrassSize::LARGE);
 	}
 	ImGui::Separator();
-	ImGui::Dummy(ImVec2(0.0f, 15.0f));
+	ImGui::Dummy(ImVec2(0.0f, 3.0f));
 
 	ImGui::Text("Scene Controls");
 	ImGui::Separator();
@@ -114,7 +114,7 @@ bool GrassEditor::Update(double dt)
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, 0.0f, 1.0f);
 	ImGui::Separator();
 
-	ImGui::Dummy(ImVec2(0.0f, 15.0f));
+	ImGui::Dummy(ImVec2(0.0f, 3.0f));
 	ImGui::Text("Export Grass");
 	ImGui::Separator();
 	char filePath[128] = "";
@@ -125,6 +125,8 @@ bool GrassEditor::Update(double dt)
 		std::string filePathString(filePath);
 		if (!grass_generator.Save(filePathString)) Debug::Log("Failed to save!!");
 	}
+	std::string vertCount = "Vertex Count = " + std::to_string(grass_generator.GetPolyCount());
+	ImGui::Text(vertCount.c_str());
 	ImGui::Separator();
 	ImGui::End();
 

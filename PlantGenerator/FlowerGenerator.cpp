@@ -152,6 +152,12 @@ void FlowerGenerator::RandomiseLeafRotations()
 	}
 }
 
+/* Get the polycount of the flower */
+int FlowerGenerator::GetPolyCount()
+{
+	return core.GetVertCount() + stem.GetVertCount() + (leaf.GetVertCount() * GetLeafCount()) + (petal.GetVertCount() * GetPetalCount());
+}
+
 /* Save the generated flower as OBJ/MTL */
 bool FlowerGenerator::Save(std::string path)
 {

@@ -74,6 +74,8 @@ public:
 		return leaf.GetScale().x;
 	}
 
+	int GetPolyCount();
+
 	bool Save(std::string path);
 
 	void Init();
