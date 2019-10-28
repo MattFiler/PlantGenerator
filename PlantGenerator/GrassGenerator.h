@@ -115,9 +115,9 @@ private:
 	std::vector<Model*> mediumBlades;
 	std::vector<Model*> largeBlades;
 
-	std::vector<LoadedModel*> smallBlades_data;
-	std::vector<LoadedModel*> mediumBlades_data;
-	std::vector<LoadedModel*> largeBlades_data;
+	std::vector<LoadedModel> smallBlades_data;
+	std::vector<LoadedModel> mediumBlades_data;
+	std::vector<LoadedModel> largeBlades_data;
 
 	int polyLevel = 0;
 

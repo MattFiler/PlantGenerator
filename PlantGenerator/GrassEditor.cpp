@@ -3,6 +3,7 @@
 /* Init the objects in the scene */
 void GrassEditor::Init()
 {
+	grass_generator = GrassGenerator();
 	grass_generator.Init();
 
 	main_cam = Camera();
@@ -12,8 +13,8 @@ void GrassEditor::Init()
 	GameObjectManager::AddObject(&main_cam);
 	GameObjectManager::Create();
 
-	main_cam.SetPosition(DirectX::XMFLOAT3(-1.0f, -1.4f, 2.2f));
-	main_cam.SetRotation(DirectX::XMFLOAT3(-0.42f, 0.0f, 0.0f));
+	main_cam.SetPosition(DirectX::XMFLOAT3(-1.6f, -2.2f, 5.1f));
+	main_cam.SetRotation(DirectX::XMFLOAT3(-0.68f, 0.0f, 0.0f));
 	main_cam.SetLocked(true);
 	light_source.SetIntensity(0.0f);
 }
@@ -27,12 +28,16 @@ void GrassEditor::Release()
 /* Update the objects in the scene */
 bool GrassEditor::Update(double dt)
 {
+	int polyLevel = grass_generator.GetPolyLevel();
 	int smlCount = grass_generator.GetNumOfSmall();
 	float smlSize = grass_generator.GetSizeOfSmall();
+	float smlDist = grass_generator.GetDisplacementOfSmall();
 	int medCount = grass_generator.GetNumOfMedium();
 	float medSize = grass_generator.GetSizeOfMedium();
+	float medDist = grass_generator.GetDisplacementOfMedium();
 	int lrgCount = grass_generator.GetNumOfLarge();
 	float lrgSize = grass_generator.GetSizeOfLarge();
+	float lrgDist = grass_generator.GetDisplacementOfLarge();
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
 	float lightIntensity = light_source.GetIntensity();
@@ -44,43 +49,49 @@ bool GrassEditor::Update(double dt)
 	ImGui::Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus);
 	ImGui::Text("Grass Editor Controls");
 	ImGui::Separator();
-	ImGui::SliderInt("Small Count", &smlCount, 0, 100);
+	ImGui::RadioButton("High Poly", &polyLevel, 0); ImGui::SameLine();
+	ImGui::RadioButton("Low Poly", &polyLevel, 1);
+	ImGui::Separator();
+	ImGui::SliderInt("Small Count", &smlCount, 0, 1000);
 	ImGui::SliderFloat("Small Size", &smlSize, 0.0f, 20.0f);
-	if (ImGui::Button("Randomise Small Positions"))
+	ImGui::SliderFloat("Small Area", &smlDist, 0.0f, 100.0f);
+	if (ImGui::Button("Randomise Positions"))
 	{
 		grass_generator.RandomisePositions(GrassSize::SMALL);
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Randomise Small Rotations"))
+	if (ImGui::Button("Randomise Rotations"))
 	{
 		grass_generator.RandomiseRotations(GrassSize::SMALL);
 	}
 	ImGui::Separator();
-	ImGui::SliderInt("Medium Count", &medCount, 0, 100);
+	ImGui::SliderInt("Medium Count", &medCount, 0, 1000);
 	ImGui::SliderFloat("Medium Size", &medSize, 0.0f, 20.0f);
-	if (ImGui::Button("Randomise Medium Positions"))
+	ImGui::SliderFloat("Medium Area", &medDist, 0.0f, 100.0f);
+	if (ImGui::Button("Randomise Positions"))
 	{
 		grass_generator.RandomisePositions(GrassSize::MEDIUM);
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Randomise Medium Rotations"))
+	if (ImGui::Button("Randomise Rotations"))
 	{
 		grass_generator.RandomiseRotations(GrassSize::MEDIUM);
 	}
 	ImGui::Separator();
-	ImGui::SliderInt("Large Count", &lrgCount, 0, 100);
+	ImGui::SliderInt("Large Count", &lrgCount, 0, 1000);
 	ImGui::SliderFloat("Large Size", &lrgSize, 0.0f, 20.0f);
-	if (ImGui::Button("Randomise Large Positions"))
+	ImGui::SliderFloat("Large Area", &lrgDist, 0.0f, 100.0f);
+	if (ImGui::Button("Randomise Positions"))
 	{
 		grass_generator.RandomisePositions(GrassSize::LARGE);
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Randomise Large Rotations"))
+	if (ImGui::Button("Randomise Rotations"))
 	{
 		grass_generator.RandomiseRotations(GrassSize::LARGE);
 	}
 	ImGui::Separator();
-	ImGui::Dummy(ImVec2(0.0f, 45.0f));
+	ImGui::Dummy(ImVec2(0.0f, 15.0f));
 
 	ImGui::Text("Scene Controls");
 	ImGui::Separator();
@@ -103,7 +114,7 @@ bool GrassEditor::Update(double dt)
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, 0.0f, 1.0f);
 	ImGui::Separator();
 
-	ImGui::Dummy(ImVec2(0.0f, 45.0f));
+	ImGui::Dummy(ImVec2(0.0f, 15.0f));
 	ImGui::Text("Export Grass");
 	ImGui::Separator();
 	char filePath[128] = "";
@@ -117,12 +128,16 @@ bool GrassEditor::Update(double dt)
 	ImGui::Separator();
 	ImGui::End();
 
+	grass_generator.SetPolyLevel(polyLevel);
 	grass_generator.SetNumOfSmall(smlCount);
 	grass_generator.SetSizeOfSmall(smlSize);
+	grass_generator.SetDisplacementOfSmall(smlDist);
 	grass_generator.SetNumOfMedium(medCount);
 	grass_generator.SetSizeOfMedium(medSize);
+	grass_generator.SetDisplacementOfMedium(medDist);
 	grass_generator.SetNumOfLarge(lrgCount);
 	grass_generator.SetSizeOfLarge(lrgSize);
+	grass_generator.SetDisplacementOfLarge(lrgDist);
 	light_source.SetPosition(lightPos);
 	light_source.SetColour(lightCol);
 	light_source.SetIntensity(lightIntensity);

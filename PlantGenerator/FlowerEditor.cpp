@@ -3,6 +3,7 @@
 /* Init the objects in the scene */
 void FlowerEditor::Init()
 {
+	flower_generator = FlowerGenerator();
 	flower_generator.Init();
 
 	main_cam = Camera();

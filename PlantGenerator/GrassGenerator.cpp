@@ -6,11 +6,10 @@ void GrassGenerator::Init()
 {
 	//Small grass blades
 	for (int i = 0; i < 1; i++) {
-		LoadedModel thisData = dxutils.LoadModel("models/grass_parts/small_" + std::to_string(i) + ".obj");
-		smallBlades_data.push_back(&thisData);
+		smallBlades_data.push_back(dxutils.LoadModel("models/grass_parts/small_" + std::to_string(i) + ".obj"));
 
 		Model* thisModel = new Model();
-		thisModel->SetData(thisData);
+		thisModel->SetData(smallBlades_data[i]);
 		thisModel->SetInvisible(true);
 		smallBlades.push_back(thisModel);
 		GameObjectManager::AddObject(thisModel);
@@ -18,11 +17,10 @@ void GrassGenerator::Init()
 
 	//Medium grass blades
 	for (int i = 0; i < 6; i++) {
-		LoadedModel thisData = dxutils.LoadModel("models/grass_parts/medium_" + std::to_string(i) + ".obj");
-		mediumBlades_data.push_back(&thisData);
+		mediumBlades_data.push_back(dxutils.LoadModel("models/grass_parts/medium_" + std::to_string(i) + ".obj"));
 
 		Model* thisModel = new Model();
-		thisModel->SetData(thisData);
+		thisModel->SetData(mediumBlades_data[i]);
 		thisModel->SetInvisible(true);
 		mediumBlades.push_back(thisModel);
 		GameObjectManager::AddObject(thisModel);
@@ -30,11 +28,10 @@ void GrassGenerator::Init()
 
 	//Large grass blades
 	for (int i = 0; i < 13; i++) {
-		LoadedModel thisData = dxutils.LoadModel("models/grass_parts/large_" + std::to_string(i) + ".obj");
-		largeBlades_data.push_back(&thisData);
+		largeBlades_data.push_back(dxutils.LoadModel("models/grass_parts/large_" + std::to_string(i) + ".obj"));
 
 		Model* thisModel = new Model();
-		thisModel->SetData(thisData);
+		thisModel->SetData(largeBlades_data[i]);
 		thisModel->SetInvisible(true);
 		largeBlades.push_back(thisModel);
 		GameObjectManager::AddObject(thisModel);
@@ -124,7 +121,7 @@ void GrassGenerator::RandomisePositions(GrassSize type)
 {
 	for (int i = 0; i < spawnedGrass.size(); i++) {
 		if (spawnedGrass[i].type == type) {
-			spawnedGrass[i].position = XMFLOAT3(0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))), static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))));
+			spawnedGrass[i].position = XMFLOAT3(0.0f, 0.0f, static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / GetDisplacementOfType(type))));
 		}
 	}
 }
@@ -168,112 +165,96 @@ void GrassGenerator::SpawnNewBlade(int max_size, int diff, GrassSize type)
 /* Swap between high or low poly models */
 void GrassGenerator::SetPolyLevel(int level)
 {
-	/*
 	if (polyLevel == level) return;
 	polyLevel = level;
+	
+	//Unload all small/medium/large current LOD
+	smallBlades_data.clear();
+	for (int i = 0; i < 1; i++) {
+		smallBlades[i]->Release();
+		GameObjectManager::RemoveObject(smallBlades[i]);
+	}
+	smallBlades.clear();
+	mediumBlades_data.clear();
+	for (int i = 0; i < 6; i++) {
+		mediumBlades[i]->Release();
+		GameObjectManager::RemoveObject(mediumBlades[i]);
+	}
+	mediumBlades.clear();
+	largeBlades_data.clear();
+	for (int i = 0; i < 13; i++) {
+		largeBlades[i]->Release();
+		GameObjectManager::RemoveObject(largeBlades[i]);
+	}
+	largeBlades.clear();
+	
+	std::string appendText = "";
+	if (level == 1) appendText = "_low";
 
-	GameObjectManager::RemoveObject(&stem);
-	GameObjectManager::RemoveObject(&petal);
-	GameObjectManager::RemoveObject(&core);
-	GameObjectManager::RemoveObject(&leaf);
+	//Small grass blades
+	for (int i = 0; i < 1; i++) {
+		smallBlades_data.push_back(dxutils.LoadModel("models/grass_parts/small_" + std::to_string(i) + appendText + ".obj"));
 
-	stem.Release();
-	petal.Release();
-	core.Release();
-	leaf.Release();
-
-	stem = Model();
-	petal = Model();
-	core = Model();
-	leaf = Model();
-
-	switch (polyLevel)
-	{
-	case 0:
-		stem_data = dxutils.LoadModel("models/plant_parts/stem.obj");
-		stem.SetData(stem_data);
-		petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
-		petal.SetData(petal_data);
-		core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
-		core.SetData(core_data);
-		leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
-		leaf.SetData(leaf_data);
-		break;
-	case 1:
-		stem_data = dxutils.LoadModel("models/plant_parts/stem_low.obj");
-		stem.SetData(stem_data);
-		petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
-		petal.SetData(petal_data);
-		core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
-		core.SetData(core_data);
-		leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
-		leaf.SetData(leaf_data);
-		break;
-	case 2:
-		stem_data = dxutils.LoadModel("models/plant_parts/stem_lower.obj");
-		stem.SetData(stem_data);
-		petal_data = dxutils.LoadModel("models/plant_parts/petal_lower.obj");
-		petal.SetData(petal_data);
-		core_data = dxutils.LoadModel("models/plant_parts/flower_middle_lower.obj");
-		core.SetData(core_data);
-		leaf_data = dxutils.LoadModel("models/plant_parts/leaf_lower.obj");
-		leaf.SetData(leaf_data);
-		break;
+		Model* thisModel = new Model();
+		thisModel->SetData(smallBlades_data[i]);
+		thisModel->SetInvisible(true);
+		thisModel->Create();
+		smallBlades.push_back(thisModel);
+		GameObjectManager::AddObject(thisModel);
 	}
 
-	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
-	core.SetPosition(DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f));
+	//Medium grass blades
+	for (int i = 0; i < 6; i++) {
+		mediumBlades_data.push_back(dxutils.LoadModel("models/grass_parts/medium_" + std::to_string(i) + appendText + ".obj"));
 
-	petal.SetInvisible(true);
-	leaf.SetInvisible(true);
+		Model* thisModel = new Model();
+		thisModel->SetData(mediumBlades_data[i]);
+		thisModel->SetInvisible(true);
+		thisModel->Create();
+		mediumBlades.push_back(thisModel);
+		GameObjectManager::AddObject(thisModel);
+	}
 
-	stem.Create();
-	petal.Create();
-	core.Create();
-	leaf.Create();
+	//Large grass blades
+	for (int i = 0; i < 13; i++) {
+		largeBlades_data.push_back(dxutils.LoadModel("models/grass_parts/large_" + std::to_string(i) + appendText + ".obj"));
 
-	GameObjectManager::AddObject(&stem);
-	GameObjectManager::AddObject(&petal);
-	GameObjectManager::AddObject(&core);
-	GameObjectManager::AddObject(&leaf);
-	*/
+		Model* thisModel = new Model();
+		thisModel->SetData(largeBlades_data[i]);
+		thisModel->SetInvisible(true);
+		thisModel->Create();
+		largeBlades.push_back(thisModel);
+		GameObjectManager::AddObject(thisModel);
+	}
 }
 
 /* Save the generated flower as OBJ/MTL */
 bool GrassGenerator::Save(std::string path)
 {
-	/*
 	LoadedModel finalOutput = LoadedModel();
 
-	//Stem
-	XMMATRIX stemWorld = XMMatrixScaling(stem.GetScale().x, stem.GetScale().y, stem.GetScale().z) *
-		XMMatrixTranslation(stem.GetPosition().x, stem.GetPosition().y, stem.GetPosition().z) *
-		XMMatrixRotationRollPitchYaw(stem.GetRotation().x, stem.GetRotation().y, stem.GetRotation().z);
-	dxutils.TransformAndPush(stemWorld, stem_data, finalOutput);
-
-	//Leaves
-	for (int i = 0; i < leafRotations.size(); i++) {
-		XMMATRIX thisWorld = XMMatrixScaling(leaf.GetScale().x, leaf.GetScale().y, leaf.GetScale().z) *
-			XMMatrixTranslation(leafPositions[i].x, leafPositions[i].y, leafPositions[i].z) *
-			XMMatrixRotationRollPitchYaw(leafRotations[i].x, leafRotations[i].y, leafRotations[i].z);
-		dxutils.TransformAndPush(thisWorld, leaf_data, finalOutput);
-	}
-
-	//Flower middle
-	XMMATRIX middleWorld = XMMatrixScaling(core.GetScale().x, core.GetScale().y, core.GetScale().z) *
-		XMMatrixTranslation(core.GetPosition().x, core.GetPosition().y, core.GetPosition().z) *
-		XMMatrixRotationRollPitchYaw(core.GetRotation().x, core.GetRotation().y, core.GetRotation().z);
-	dxutils.TransformAndPush(middleWorld, core_data, finalOutput);
-
-	//Petals
-	for (int i = 0; i < petalRotations.size(); i++) {
-		XMMATRIX thisWorld = XMMatrixScaling(petal.GetScale().x, petal.GetScale().y, petal.GetScale().z) *
-			XMMatrixTranslation(petal.GetPosition().x, petal.GetPosition().y, petal.GetPosition().z) *
-			XMMatrixRotationRollPitchYaw(petalRotations[i].x, petalRotations[i].y, petalRotations[i].z);
-		dxutils.TransformAndPush(thisWorld, petal_data, finalOutput);
+	for (int i = 0; i < spawnedGrass.size(); i++) {
+		switch (spawnedGrass[i].type) {
+		case GrassSize::SMALL:
+			XMMATRIX thisWorld = XMMatrixScaling(smallBlades[spawnedGrass[i].variant]->GetScale().x, smallBlades[spawnedGrass[i].variant]->GetScale().y, smallBlades[spawnedGrass[i].variant]->GetScale().z) *
+				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z) *
+				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z);
+			dxutils.TransformAndPush(thisWorld, smallBlades_data[spawnedGrass[i].variant], finalOutput);
+			break;
+		case GrassSize::MEDIUM:
+			XMMATRIX thisWorld2 = XMMatrixScaling(mediumBlades[spawnedGrass[i].variant]->GetScale().x, mediumBlades[spawnedGrass[i].variant]->GetScale().y, mediumBlades[spawnedGrass[i].variant]->GetScale().z) *
+				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z) *
+				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z);
+			dxutils.TransformAndPush(thisWorld2, mediumBlades_data[spawnedGrass[i].variant], finalOutput);
+			break;
+		case GrassSize::LARGE:
+			XMMATRIX thisWorld3 = XMMatrixScaling(largeBlades[spawnedGrass[i].variant]->GetScale().x, largeBlades[spawnedGrass[i].variant]->GetScale().y, largeBlades[spawnedGrass[i].variant]->GetScale().z) *
+				XMMatrixTranslation(spawnedGrass[i].position.x, spawnedGrass[i].position.y, spawnedGrass[i].position.z) *
+				XMMatrixRotationRollPitchYaw(spawnedGrass[i].rotation.x, spawnedGrass[i].rotation.y, spawnedGrass[i].rotation.z);
+			dxutils.TransformAndPush(thisWorld3, largeBlades_data[spawnedGrass[i].variant], finalOutput);
+			break;
+		}
 	}
 
 	return dxutils.SaveModel(finalOutput, path);
-	*/
-	return false;
 }
