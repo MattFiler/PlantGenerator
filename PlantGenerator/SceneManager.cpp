@@ -17,7 +17,7 @@ bool SceneManager::Init()
 	AddScene(&flower_editor);
 	AddScene(&grass_editor);
 
-	ChangeScene(1); //Scene 0 is test_scene
+	ChangeScene(0); 
 
 	return dxInit;
 }
@@ -44,11 +44,13 @@ bool SceneManager::Update(double dt)
 	ImGui::SetNextWindowPos(ImVec2(0, 685));
 	ImGui::SetNextWindowSize(ImVec2(950, 35));
 	ImGui::Begin("Editor", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus);
+	/*
 	if (ImGui::Button("Bush Generator"))
 	{
 		ChangeScene(1);
 	}
 	ImGui::SameLine();
+	*/
 	if (ImGui::Button("Flower Generator"))
 	{
 		ChangeScene(2);
