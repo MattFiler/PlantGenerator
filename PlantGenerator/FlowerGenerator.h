@@ -80,8 +80,6 @@ public:
 	void Render(float dt);
 
 private:
-	void TransformAndPush(XMMATRIX world, LoadedModel & model, LoadedModel & push_to);
-
 	Utilities dxutils = Utilities();
 
 	Model stem;

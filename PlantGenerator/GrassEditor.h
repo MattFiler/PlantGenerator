@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "GrassGenerator.h"
 
 class GrassEditor : public Scene
 {
@@ -14,5 +15,7 @@ public:
 private:
 	Camera main_cam;
 	Light light_source;
+
+	GrassGenerator grass_generator;
 };
 

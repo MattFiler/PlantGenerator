@@ -3,7 +3,7 @@
 /* Init the objects in the scene */
 void GrassEditor::Init()
 {
-	Utilities dxutils = Utilities();
+	grass_generator.Init();
 
 	main_cam = Camera();
 	light_source = Light();
@@ -12,10 +12,10 @@ void GrassEditor::Init()
 	GameObjectManager::AddObject(&main_cam);
 	GameObjectManager::Create();
 
-	main_cam.SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, 4.1f));
-
-	light_source.SetColour(XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
-	light_source.SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -4.1f));
+	main_cam.SetPosition(DirectX::XMFLOAT3(-1.0f, -1.4f, 2.2f));
+	main_cam.SetRotation(DirectX::XMFLOAT3(-0.42f, 0.0f, 0.0f));
+	main_cam.SetLocked(true);
+	light_source.SetIntensity(0.0f);
 }
 
 /* Release the objects in the scene */
@@ -27,6 +27,12 @@ void GrassEditor::Release()
 /* Update the objects in the scene */
 bool GrassEditor::Update(double dt)
 {
+	int smlCount = grass_generator.GetNumOfSmall();
+	float smlSize = grass_generator.GetSizeOfSmall();
+	int medCount = grass_generator.GetNumOfMedium();
+	float medSize = grass_generator.GetSizeOfMedium();
+	int lrgCount = grass_generator.GetNumOfLarge();
+	float lrgSize = grass_generator.GetSizeOfLarge();
 	XMFLOAT3 lightPos = light_source.GetPosition();
 	XMFLOAT4 lightCol = light_source.GetColour();
 	float lightIntensity = light_source.GetIntensity();
@@ -37,6 +43,42 @@ bool GrassEditor::Update(double dt)
 	ImGui::SetNextWindowSize(ImVec2(330, 720));
 	ImGui::Begin("Controls", &open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus);
 	ImGui::Text("Grass Editor Controls");
+	ImGui::Separator();
+	ImGui::SliderInt("Small Count", &smlCount, 0, 100);
+	ImGui::SliderFloat("Small Size", &smlSize, 0.0f, 20.0f);
+	if (ImGui::Button("Randomise Small Positions"))
+	{
+		grass_generator.RandomisePositions(GrassSize::SMALL);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Randomise Small Rotations"))
+	{
+		grass_generator.RandomiseRotations(GrassSize::SMALL);
+	}
+	ImGui::Separator();
+	ImGui::SliderInt("Medium Count", &medCount, 0, 100);
+	ImGui::SliderFloat("Medium Size", &medSize, 0.0f, 20.0f);
+	if (ImGui::Button("Randomise Medium Positions"))
+	{
+		grass_generator.RandomisePositions(GrassSize::MEDIUM);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Randomise Medium Rotations"))
+	{
+		grass_generator.RandomiseRotations(GrassSize::MEDIUM);
+	}
+	ImGui::Separator();
+	ImGui::SliderInt("Large Count", &lrgCount, 0, 100);
+	ImGui::SliderFloat("Large Size", &lrgSize, 0.0f, 20.0f);
+	if (ImGui::Button("Randomise Large Positions"))
+	{
+		grass_generator.RandomisePositions(GrassSize::LARGE);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Randomise Large Rotations"))
+	{
+		grass_generator.RandomiseRotations(GrassSize::LARGE);
+	}
 	ImGui::Separator();
 	ImGui::Dummy(ImVec2(0.0f, 45.0f));
 
@@ -60,8 +102,27 @@ bool GrassEditor::Update(double dt)
 	ImGui::SliderFloat("Ambient G", &dxshared::ambientLightColour.y, 0.0f, 1.0f);
 	ImGui::SliderFloat("Ambient B", &dxshared::ambientLightColour.z, 0.0f, 1.0f);
 	ImGui::Separator();
+
+	ImGui::Dummy(ImVec2(0.0f, 45.0f));
+	ImGui::Text("Export Grass");
+	ImGui::Separator();
+	char filePath[128] = "";
+	ImGui::Text("Output Filename");
+	ImGui::SameLine();
+	if (ImGui::InputText("", filePath, IM_ARRAYSIZE(filePath), ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		std::string filePathString(filePath);
+		if (!grass_generator.Save(filePathString)) Debug::Log("Failed to save!!");
+	}
+	ImGui::Separator();
 	ImGui::End();
 
+	grass_generator.SetNumOfSmall(smlCount);
+	grass_generator.SetSizeOfSmall(smlSize);
+	grass_generator.SetNumOfMedium(medCount);
+	grass_generator.SetSizeOfMedium(medSize);
+	grass_generator.SetNumOfLarge(lrgCount);
+	grass_generator.SetSizeOfLarge(lrgSize);
 	light_source.SetPosition(lightPos);
 	light_source.SetColour(lightCol);
 	light_source.SetIntensity(lightIntensity);
@@ -76,4 +137,5 @@ bool GrassEditor::Update(double dt)
 void GrassEditor::Render(double dt)
 {
 	GameObjectManager::Render(dt);
+	grass_generator.Render(dt);
 }

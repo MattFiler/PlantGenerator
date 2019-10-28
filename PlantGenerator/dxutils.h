@@ -549,6 +549,23 @@ public:
 		src.close();
 		dst.close();
 	}
+
+	/* Transform a loadedmodel by a world matrix, and push it to another loadedmodel */
+	void TransformAndPush(XMMATRIX world, LoadedModel& model, LoadedModel& push_to) {
+		XMFLOAT3 transformedVert = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		for (int x = 0; x < model.modelParts.size(); x++) {
+			LoadedModelPart thisPart = LoadedModelPart();
+			thisPart.compIndices = model.modelParts[x].compIndices;
+			thisPart.thisMaterial = model.modelParts[x].thisMaterial;
+			for (int y = 0; y < model.modelParts[x].compVertices.size(); y++) {
+				SimpleVertex thisVertInfo = model.modelParts[x].compVertices[y];
+				XMStoreFloat3(&transformedVert, XMVector3Transform(XMLoadFloat3(&model.modelParts[x].compVertices[y].Pos), world));
+				thisVertInfo.Pos = transformedVert;
+				thisPart.compVertices.push_back(thisVertInfo);
+			}
+			push_to.modelParts.push_back(thisPart);
+		}
+	}
 };
 
 namespace Memory 

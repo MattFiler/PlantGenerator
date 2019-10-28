@@ -114,6 +114,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GrassGenerator.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxmain.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GrassGenerator.h">
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

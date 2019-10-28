@@ -69,6 +69,11 @@ void FlowerGenerator::SetPolyLevel(int level)
 	GameObjectManager::RemoveObject(&core);
 	GameObjectManager::RemoveObject(&leaf);
 
+	stem.Release();
+	petal.Release();
+	core.Release();
+	leaf.Release();
+
 	stem = Model();
 	petal = Model();
 	core = Model();
@@ -156,45 +161,29 @@ bool FlowerGenerator::Save(std::string path)
 	XMMATRIX stemWorld = XMMatrixScaling(stem.GetScale().x, stem.GetScale().y, stem.GetScale().z) *
 						 XMMatrixTranslation(stem.GetPosition().x, stem.GetPosition().y, stem.GetPosition().z) *
 						 XMMatrixRotationRollPitchYaw(stem.GetRotation().x, stem.GetRotation().y, stem.GetRotation().z);
-	TransformAndPush(stemWorld, stem_data, finalOutput);
+	dxutils.TransformAndPush(stemWorld, stem_data, finalOutput);
 
 	//Leaves
 	for (int i = 0; i < leafRotations.size(); i++) {
 		XMMATRIX thisWorld = XMMatrixScaling(leaf.GetScale().x, leaf.GetScale().y, leaf.GetScale().z) *
 							 XMMatrixTranslation(leafPositions[i].x, leafPositions[i].y, leafPositions[i].z) *
 							 XMMatrixRotationRollPitchYaw(leafRotations[i].x, leafRotations[i].y, leafRotations[i].z);
-		TransformAndPush(thisWorld, leaf_data, finalOutput);
+		dxutils.TransformAndPush(thisWorld, leaf_data, finalOutput);
 	}
 
 	//Flower middle
 	XMMATRIX middleWorld = XMMatrixScaling(core.GetScale().x, core.GetScale().y, core.GetScale().z) *
 						   XMMatrixTranslation(core.GetPosition().x, core.GetPosition().y, core.GetPosition().z) *
 						   XMMatrixRotationRollPitchYaw(core.GetRotation().x, core.GetRotation().y, core.GetRotation().z);
-	TransformAndPush(middleWorld, core_data, finalOutput);
+	dxutils.TransformAndPush(middleWorld, core_data, finalOutput);
 
 	//Petals
 	for (int i = 0; i < petalRotations.size(); i++) {
 		XMMATRIX thisWorld = XMMatrixScaling(petal.GetScale().x, petal.GetScale().y, petal.GetScale().z) *
 							 XMMatrixTranslation(petal.GetPosition().x, petal.GetPosition().y, petal.GetPosition().z) *
 							 XMMatrixRotationRollPitchYaw(petalRotations[i].x, petalRotations[i].y, petalRotations[i].z);
-		TransformAndPush(thisWorld, petal_data, finalOutput);
+		dxutils.TransformAndPush(thisWorld, petal_data, finalOutput);
 	}
 
 	return dxutils.SaveModel(finalOutput, path);
-}
-void FlowerGenerator::TransformAndPush(XMMATRIX world, LoadedModel & model, LoadedModel & push_to)
-{
-	XMFLOAT3 transformedVert = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	for (int x = 0; x < model.modelParts.size(); x++) {
-		LoadedModelPart thisPart = LoadedModelPart();
-		thisPart.compIndices = model.modelParts[x].compIndices;
-		thisPart.thisMaterial = model.modelParts[x].thisMaterial;
-		for (int y = 0; y < model.modelParts[x].compVertices.size(); y++) {
-			SimpleVertex thisVertInfo = model.modelParts[x].compVertices[y];
-			XMStoreFloat3(&transformedVert, XMVector3Transform(XMLoadFloat3(&model.modelParts[x].compVertices[y].Pos), world));
-			thisVertInfo.Pos = transformedVert;
-			thisPart.compVertices.push_back(thisVertInfo);
-		}
-		push_to.modelParts.push_back(thisPart);
-	}
 }

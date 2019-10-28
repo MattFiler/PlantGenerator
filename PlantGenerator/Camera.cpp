@@ -22,7 +22,7 @@ void Camera::Update(float dt)
 	if (!isActive) return;
 	dxshared::mView = mWorld;
 
-	if (InputHandler::KeyPressed(WindowsKey::O)) {
+	if (dxshared::enableDebug && InputHandler::KeyPressed(WindowsKey::O)) {
 		Debug::Log("Camera position = X:" + std::to_string(GameObject::GetPosition().x) + ", Y:" + std::to_string(GameObject::GetPosition().y) + ", Z:" + std::to_string(GameObject::GetPosition().z));
 		Debug::Log("Camera rotation = X:" + std::to_string(GameObject::GetRotation().x) + ", Y:" + std::to_string(GameObject::GetRotation().y) + ", Z:" + std::to_string(GameObject::GetRotation().z));
 	}
