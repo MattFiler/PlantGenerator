@@ -21,6 +21,7 @@ void Camera::Update(float dt)
 
 	if (!isActive) return;
 	dxshared::mView = mWorld;
+	//dxshared::mView = XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixTranslation(position.x, position.y, position.z) * XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
 
 	if (dxshared::enableDebug && InputHandler::KeyPressed(WindowsKey::O)) {
 		Debug::Log("Camera position = X:" + std::to_string(GameObject::GetPosition().x) + ", Y:" + std::to_string(GameObject::GetPosition().y) + ", Z:" + std::to_string(GameObject::GetPosition().z));
