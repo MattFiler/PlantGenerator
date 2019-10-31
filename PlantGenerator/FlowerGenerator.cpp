@@ -114,7 +114,7 @@ void FlowerGenerator::SetPolyLevel(int level)
 	}
 
 	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
-	core.SetPosition(DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f));
+	core.SetPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
 
 	petal.SetInvisible(true);
 	leaf.SetInvisible(true);
