@@ -2,6 +2,9 @@
 
 #include "dxutils.h"
 #include "Model.h"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 enum GrassSize {
 	SMALL, MEDIUM, LARGE
@@ -121,7 +124,9 @@ private:
 	std::vector<LoadedModel> mediumBlades_data;
 	std::vector<LoadedModel> largeBlades_data;
 
-	int polyLevel = 0;
+	json model_config;
+
+	int polyLevel = -1;
 
 	int smallCount = 0;
 	int mediumCount = 0;

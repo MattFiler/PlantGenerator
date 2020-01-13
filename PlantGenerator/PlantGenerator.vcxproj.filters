@@ -37,6 +37,9 @@
     <Filter Include="Header Files\GameObjects">
       <UniqueIdentifier>{4747e57f-96bd-4611-8875-ef76a9d86fd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\nlohmann">
+      <UniqueIdentifier>{735155ad-9576-4c13-8cf7-e5717cbd627b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winmain.cpp">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="GrassGenerator.h">
       <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="nlohmann\json.hpp">
+      <Filter>Header Files\nlohmann</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

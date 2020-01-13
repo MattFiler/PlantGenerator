@@ -4,38 +4,10 @@
 /* Initialise the grass generation (load OBJs) */
 void GrassGenerator::Init()
 {
-	//Small grass blades
-	for (int i = 0; i < 1; i++) {
-		smallBlades_data.push_back(dxutils.LoadModel("models/grass_parts/small_" + std::to_string(i) + ".obj"));
+	std::fstream i("grass_config.json");
+	i >> model_config;
 
-		Model* thisModel = new Model();
-		thisModel->SetData(smallBlades_data[i]);
-		thisModel->SetInvisible(true);
-		smallBlades.push_back(thisModel);
-		GameObjectManager::AddObject(thisModel);
-	}
-
-	//Medium grass blades
-	for (int i = 0; i < 6; i++) {
-		mediumBlades_data.push_back(dxutils.LoadModel("models/grass_parts/medium_" + std::to_string(i) + ".obj"));
-
-		Model* thisModel = new Model();
-		thisModel->SetData(mediumBlades_data[i]);
-		thisModel->SetInvisible(true);
-		mediumBlades.push_back(thisModel);
-		GameObjectManager::AddObject(thisModel);
-	}
-
-	//Large grass blades
-	for (int i = 0; i < 13; i++) {
-		largeBlades_data.push_back(dxutils.LoadModel("models/grass_parts/large_" + std::to_string(i) + ".obj"));
-
-		Model* thisModel = new Model();
-		thisModel->SetData(largeBlades_data[i]);
-		thisModel->SetInvisible(true);
-		largeBlades.push_back(thisModel);
-		GameObjectManager::AddObject(thisModel);
-	}
+	SetPolyLevel(0);
 }
 
 /* Render the generated grass */
@@ -170,30 +142,30 @@ void GrassGenerator::SetPolyLevel(int level)
 	
 	//Unload all small/medium/large current LOD
 	smallBlades_data.clear();
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < smallBlades.size(); i++) {
 		smallBlades[i]->Release();
 		GameObjectManager::RemoveObject(smallBlades[i]);
 	}
 	smallBlades.clear();
 	mediumBlades_data.clear();
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < mediumBlades.size(); i++) {
 		mediumBlades[i]->Release();
 		GameObjectManager::RemoveObject(mediumBlades[i]);
 	}
 	mediumBlades.clear();
 	largeBlades_data.clear();
-	for (int i = 0; i < 13; i++) {
+	for (int i = 0; i < largeBlades.size(); i++) {
 		largeBlades[i]->Release();
 		GameObjectManager::RemoveObject(largeBlades[i]);
 	}
 	largeBlades.clear();
 	
-	std::string appendText = "";
-	if (level == 1) appendText = "_low";
+	std::string qualityType = "models_hq";
+	if (level == 1) qualityType = "models_lq";
 
 	//Small grass blades
-	for (int i = 0; i < 1; i++) {
-		smallBlades_data.push_back(dxutils.LoadModel("models/grass_parts/small_" + std::to_string(i) + appendText + ".obj"));
+	for (int i = 0; i < model_config["small"][qualityType].size(); i++) {
+		smallBlades_data.push_back(dxutils.LoadModel(model_config["small"][qualityType][i]));
 
 		Model* thisModel = new Model();
 		thisModel->SetData(smallBlades_data[i]);
@@ -204,8 +176,8 @@ void GrassGenerator::SetPolyLevel(int level)
 	}
 
 	//Medium grass blades
-	for (int i = 0; i < 6; i++) {
-		mediumBlades_data.push_back(dxutils.LoadModel("models/grass_parts/medium_" + std::to_string(i) + appendText + ".obj"));
+	for (int i = 0; i < model_config["medium"][qualityType].size(); i++) {
+		mediumBlades_data.push_back(dxutils.LoadModel(model_config["medium"][qualityType][i]));
 
 		Model* thisModel = new Model();
 		thisModel->SetData(mediumBlades_data[i]);
@@ -216,8 +188,8 @@ void GrassGenerator::SetPolyLevel(int level)
 	}
 
 	//Large grass blades
-	for (int i = 0; i < 13; i++) {
-		largeBlades_data.push_back(dxutils.LoadModel("models/grass_parts/large_" + std::to_string(i) + appendText + ".obj"));
+	for (int i = 0; i < model_config["large"][qualityType].size(); i++) {
+		largeBlades_data.push_back(dxutils.LoadModel(model_config["large"][qualityType][i]));
 
 		Model* thisModel = new Model();
 		thisModel->SetData(largeBlades_data[i]);

@@ -1,0 +1,38 @@
+{
+	"stem": {
+		"models": [
+			"models/plant_parts/stem.obj",
+			"models/plant_parts/stem_low.obj",
+			"models/plant_parts/stem_lower.obj"
+		],
+		"rotation": [0,0,0],
+		"position": [0,0,0]
+	},
+	"petal": {
+		"models": [
+			"models/plant_parts/petal.obj",
+			"models/plant_parts/petal_low.obj",
+			"models/plant_parts/petal_lower.obj"
+		],
+		"rotation": [0,0,0],
+		"position": [0,0,0]
+	},
+	"core": {
+		"models": [
+			"models/plant_parts/flower_middle.obj",
+			"models/plant_parts/flower_middle_low.obj",
+			"models/plant_parts/flower_middle_lower.obj"
+		],
+		"rotation": [0,0,3.14159],
+		"position": [0,-0.5,0]
+	},
+	"leaf": {
+		"models": [
+			"models/plant_parts/leaf.obj",
+			"models/plant_parts/leaf_low.obj",
+			"models/plant_parts/leaf_lower.obj"
+		],
+		"rotation": [0,0,0],
+		"position": [0,0,0]
+	}
+}

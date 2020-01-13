@@ -2,6 +2,9 @@
 
 #include "dxutils.h"
 #include "Model.h"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 class FlowerGenerator
 {
@@ -94,7 +97,9 @@ private:
 	LoadedModel core_data;
 	LoadedModel leaf_data;
 
-	int polyLevel = 0;
+	json model_config;
+
+	int polyLevel = -1;
 	float petalTilt = XM_PI / 7;
 	float stemLength = 14.0f;
 

@@ -4,25 +4,10 @@
 /* Initialise the flower generation (load OBJs) */
 void FlowerGenerator::Init()
 {
-	stem_data = dxutils.LoadModel("models/plant_parts/stem.obj");
-	stem.SetData(stem_data);
-	petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
-	petal.SetData(petal_data);
-	core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
-	core.SetData(core_data);
-	leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
-	leaf.SetData(leaf_data);
+	std::fstream i("flower_config.json");
+	i >> model_config;
 
-	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
-	core.SetPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
-
-	petal.SetInvisible(true);
-	leaf.SetInvisible(true);
-
-	GameObjectManager::AddObject(&stem);
-	GameObjectManager::AddObject(&petal);
-	GameObjectManager::AddObject(&core);
-	GameObjectManager::AddObject(&leaf);
+	SetPolyLevel(0);
 }
 
 /* Render the generated flower */
@@ -79,42 +64,25 @@ void FlowerGenerator::SetPolyLevel(int level)
 	core = Model();
 	leaf = Model();
 
-	switch (polyLevel)
-	{
-		case 0:
-			stem_data = dxutils.LoadModel("models/plant_parts/stem.obj");
-			stem.SetData(stem_data);
-			petal_data = dxutils.LoadModel("models/plant_parts/petal.obj");
-			petal.SetData(petal_data);
-			core_data = dxutils.LoadModel("models/plant_parts/flower_middle.obj");
-			core.SetData(core_data);
-			leaf_data = dxutils.LoadModel("models/plant_parts/leaf.obj");
-			leaf.SetData(leaf_data);
-			break;
-		case 1:
-			stem_data = dxutils.LoadModel("models/plant_parts/stem_low.obj");
-			stem.SetData(stem_data);
-			petal_data = dxutils.LoadModel("models/plant_parts/petal_low.obj");
-			petal.SetData(petal_data);
-			core_data = dxutils.LoadModel("models/plant_parts/flower_middle_low.obj");
-			core.SetData(core_data);
-			leaf_data = dxutils.LoadModel("models/plant_parts/leaf_low.obj");
-			leaf.SetData(leaf_data);
-			break;
-		case 2:
-			stem_data = dxutils.LoadModel("models/plant_parts/stem_lower.obj");
-			stem.SetData(stem_data);
-			petal_data = dxutils.LoadModel("models/plant_parts/petal_lower.obj");
-			petal.SetData(petal_data);
-			core_data = dxutils.LoadModel("models/plant_parts/flower_middle_lower.obj");
-			core.SetData(core_data);
-			leaf_data = dxutils.LoadModel("models/plant_parts/leaf_lower.obj");
-			leaf.SetData(leaf_data);
-			break;
-	}
+	stem_data = dxutils.LoadModel(model_config["stem"]["models"][polyLevel]);
+	stem.SetData(stem_data);
+	stem.SetRotation(DirectX::XMFLOAT3(model_config["stem"]["rotation"][0], model_config["stem"]["rotation"][1], model_config["stem"]["rotation"][2]));
+	stem.SetPosition(DirectX::XMFLOAT3(model_config["stem"]["position"][0], model_config["stem"]["position"][1], model_config["stem"]["position"][2]));
 
-	core.SetRotation(DirectX::XMFLOAT3(0.0f, 0.0f, XM_PI));
-	core.SetPosition(DirectX::XMFLOAT3(0.0f, -0.5f, 0.0f));
+	petal_data = dxutils.LoadModel(model_config["petal"]["models"][polyLevel]);
+	petal.SetData(petal_data);
+	petal.SetRotation(DirectX::XMFLOAT3(model_config["petal"]["rotation"][0], model_config["petal"]["rotation"][1], model_config["petal"]["rotation"][2]));
+	petal.SetPosition(DirectX::XMFLOAT3(model_config["petal"]["position"][0], model_config["petal"]["position"][1], model_config["petal"]["position"][2]));
+
+	core_data = dxutils.LoadModel(model_config["core"]["models"][polyLevel]);
+	core.SetData(core_data);
+	core.SetRotation(DirectX::XMFLOAT3(model_config["core"]["rotation"][0], model_config["core"]["rotation"][1], model_config["core"]["rotation"][2]));
+	core.SetPosition(DirectX::XMFLOAT3(model_config["core"]["position"][0], model_config["core"]["position"][1], model_config["core"]["position"][2]));
+
+	leaf_data = dxutils.LoadModel(model_config["leaf"]["models"][polyLevel]);
+	leaf.SetData(leaf_data);
+	leaf.SetRotation(DirectX::XMFLOAT3(model_config["leaf"]["rotation"][0], model_config["leaf"]["rotation"][1], model_config["leaf"]["rotation"][2]));
+	leaf.SetPosition(DirectX::XMFLOAT3(model_config["leaf"]["position"][0], model_config["leaf"]["position"][1], model_config["leaf"]["position"][2]));
 
 	petal.SetInvisible(true);
 	leaf.SetInvisible(true);

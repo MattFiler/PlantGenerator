@@ -1,0 +1,60 @@
+{
+	"small": {
+		"models_hq": [
+			"models/grass_parts/small_0.obj"
+		],
+		"models_lq": [
+			"models/grass_parts/small_0_low.obj"
+		]
+	},
+	"medium": {
+		"models_hq": [
+			"models/grass_parts/medium_0.obj",
+			"models/grass_parts/medium_1.obj",
+			"models/grass_parts/medium_2.obj",
+			"models/grass_parts/medium_3.obj",
+			"models/grass_parts/medium_4.obj",
+			"models/grass_parts/medium_5.obj"
+		],
+		"models_lq": [
+			"models/grass_parts/medium_0_low.obj",
+			"models/grass_parts/medium_1_low.obj",
+			"models/grass_parts/medium_2_low.obj",
+			"models/grass_parts/medium_3_low.obj",
+			"models/grass_parts/medium_4_low.obj",
+			"models/grass_parts/medium_5_low.obj"
+		]
+	},
+	"large": {
+		"models_hq": [
+			"models/grass_parts/large_0.obj",
+			"models/grass_parts/large_1.obj",
+			"models/grass_parts/large_2.obj",
+			"models/grass_parts/large_3.obj",
+			"models/grass_parts/large_4.obj",
+			"models/grass_parts/large_5.obj",
+			"models/grass_parts/large_6.obj",
+			"models/grass_parts/large_7.obj",
+			"models/grass_parts/large_8.obj",
+			"models/grass_parts/large_9.obj",
+			"models/grass_parts/large_10.obj",
+			"models/grass_parts/large_11.obj",
+			"models/grass_parts/large_12.obj"
+		],
+		"models_lq": [
+			"models/grass_parts/large_0_low.obj",
+			"models/grass_parts/large_1_low.obj",
+			"models/grass_parts/large_2_low.obj",
+			"models/grass_parts/large_3_low.obj",
+			"models/grass_parts/large_4_low.obj",
+			"models/grass_parts/large_5_low.obj",
+			"models/grass_parts/large_6_low.obj",
+			"models/grass_parts/large_7_low.obj",
+			"models/grass_parts/large_8_low.obj",
+			"models/grass_parts/large_9_low.obj",
+			"models/grass_parts/large_10_low.obj",
+			"models/grass_parts/large_11_low.obj",
+			"models/grass_parts/large_12_low.obj"
+		]
+	}
+}

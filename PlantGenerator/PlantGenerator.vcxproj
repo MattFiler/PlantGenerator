@@ -71,6 +71,7 @@
     <ClInclude Include="ModelPart.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="FlowerGenerator.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stdafx.h" />
@@ -154,7 +155,9 @@
     <PostBuildEvent>
       <Command>Xcopy /E /I "$(SolutionDir)models" "$(SolutionDir)$(OutDir)models"
 copy "$(SolutionDir)ObjectShader.fx" "$(SolutionDir)$(OutDir)ObjectShader.fx"
-copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"</Command>
+copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"
+copy "$(SolutionDir)flower_config.json" "$(SolutionDir)$(OutDir)flower_config.json"
+copy "$(SolutionDir)grass_config.json" "$(SolutionDir)$(OutDir)grass_config.json"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -167,7 +170,9 @@ copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDe
     <PostBuildEvent>
       <Command>Xcopy /E /I "$(SolutionDir)models" "$(SolutionDir)$(OutDir)models"
 copy "$(SolutionDir)ObjectShader.fx" "$(SolutionDir)$(OutDir)ObjectShader.fx"
-copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"</Command>
+copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"
+copy "$(SolutionDir)flower_config.json" "$(SolutionDir)$(OutDir)flower_config.json"
+copy "$(SolutionDir)grass_config.json" "$(SolutionDir)$(OutDir)grass_config.json"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -186,7 +191,9 @@ copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDe
     <PostBuildEvent>
       <Command>Xcopy /E /I "$(SolutionDir)models" "$(SolutionDir)$(OutDir)models"
 copy "$(SolutionDir)ObjectShader.fx" "$(SolutionDir)$(OutDir)ObjectShader.fx"
-copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"</Command>
+copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"
+copy "$(SolutionDir)flower_config.json" "$(SolutionDir)$(OutDir)flower_config.json"
+copy "$(SolutionDir)grass_config.json" "$(SolutionDir)$(OutDir)grass_config.json"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -205,7 +212,9 @@ copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDe
     <PostBuildEvent>
       <Command>Xcopy /E /I "$(SolutionDir)models" "$(SolutionDir)$(OutDir)models"
 copy "$(SolutionDir)ObjectShader.fx" "$(SolutionDir)$(OutDir)ObjectShader.fx"
-copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"</Command>
+copy "$(SolutionDir)ObjectShaderDebug.fx" "$(SolutionDir)$(OutDir)ObjectShaderDebug.fx"
+copy "$(SolutionDir)flower_config.json" "$(SolutionDir)$(OutDir)flower_config.json"
+copy "$(SolutionDir)grass_config.json" "$(SolutionDir)$(OutDir)grass_config.json"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
